@@ -16,6 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/mlilback/SwiftAntlr4Runtime.git", from: "0.1.0"),
+		.package(url: "https://github.com/apple/swift-log.git", from: "1.1.1"),
     //	.package(path: "../newparser/Antlr"),
     ],
     targets: [
@@ -23,7 +24,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Rc2Parser",
-            dependencies: ["Antlr4"]),
+            dependencies: ["Antlr4", "Logging"]),
         .testTarget(
             name: "Rc2ParserTests",
             dependencies: ["Rc2Parser"]),

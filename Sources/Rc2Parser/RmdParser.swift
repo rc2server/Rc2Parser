@@ -7,6 +7,9 @@
 
 import Foundation
 import Antlr4
+import Logging
+
+internal let parserLog = Logger(label: "io.rc2.rc2parser")
 
 open class RmdParser {
 	
