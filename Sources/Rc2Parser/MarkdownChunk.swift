@@ -15,10 +15,10 @@ class MarkdownChunk: InternalChunk {
 		startLine = token.getStartIndex()
 		startCharIndex = token.getStartIndex()
 		endCharIndex = token.getStopIndex()
-		typeName = "Markdown"
+		type = .markdown
 	}
 	
-	var typeName: String
+	var type: ChunkType
 	
 	var content: String
 	
@@ -36,7 +36,7 @@ class MarkdownChunk: InternalChunk {
 	
 	func isEqualTo(_ other: Chunk) -> Bool {
 		guard let chunk2 = other as? MarkdownChunk else { return false }
-		return typeName == chunk2.typeName &&
+		return type == chunk2.type &&
 			content == chunk2.content &&
 			startLine == chunk2.startLine &&
 			startCharIndex == chunk2.startCharIndex &&

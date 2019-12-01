@@ -7,6 +7,7 @@
 
 import Foundation
 import Antlr4
+import Logging
 
 class Rc2ParserListener: Rc2RawParserBaseListener {
 	var chunks: [AnyChunk] = [] as! [AnyChunk]
@@ -16,22 +17,22 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 	override func enterChunk(_ ctx: Rc2RawParser.ChunkContext) {
 		curContext = ctx
 		guard let start = ctx.getStart() else { print("chunk with no start??"); return }
-		let name = Rc2Lexer.ruleNames[start.getType() - 1]
 		var aChunk: InternalChunk?
 		
 		switch start.getType() {
 		case Rc2Lexer.MDOWN:
 			aChunk = MarkdownChunk(context: ctx)
 		case Rc2Lexer.CODE_START:
-			aChunk = GenericChunk(ruleName: "Code", token: start)
+			aChunk = GenericChunk(type: .code, token: start)
 		case Rc2Lexer.EQ_START:
-			aChunk = GenericChunk(ruleName: "Equation", token: start)
+			aChunk = GenericChunk(type: .equation, token: start)
 		case Rc2Lexer.IC_START:
-			aChunk = GenericChunk(ruleName: "InlineCode", token: start)
+			aChunk = GenericChunk(type: .inlineCode, token: start)
 		case Rc2Lexer.IEQ_START:
-			aChunk = GenericChunk(ruleName: "InlineEquation", token: start)
+			aChunk = GenericChunk(type: .inlineEquation, token: start)
 		default:
-			aChunk = GenericChunk(ruleName: name, token: start)
+			parserLog.error("invalid chunk type: \(Rc2Lexer.ruleNames[start.getType() - 1])")
+			fatalError()
 		}
 		guard let rchunk = aChunk else { fatalError("impossible") }
 		let chunk = AnyChunk(rchunk)

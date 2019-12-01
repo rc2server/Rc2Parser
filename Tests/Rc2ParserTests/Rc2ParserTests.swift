@@ -7,7 +7,7 @@ final class Rc2ParserTests: XCTestCase {
 		let parser = RmdParser();
 		let chunks = try parser.parse(input: src1)
 		for aChunk in chunks {
-			print("chunk \(aChunk.typeName)/\(aChunk.endToken?.typeName ?? "-"), start=\(aChunk.startCharIndex), end=\(aChunk.endCharIndex)")
+			print("chunk \(aChunk.type) start=\(aChunk.startCharIndex), end=\(aChunk.endCharIndex)")
 		}
 		XCTAssertEqual(chunks.count, 7)
 	}

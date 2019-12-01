@@ -8,22 +8,32 @@
 import Foundation
 import Antlr4
 
-public protocol Chunk {
+public enum ChunkType: String, CaseIterable, Codable {
+	case markdown
+	case code
+	case equation
+	case inlineEquation
+	case inlineCode
+}
 
-	var typeName: String {get}
-	var content: String {get}
+public protocol Chunk {
+	var type: ChunkType { get }
+	var content: String { get }
 	var startLine: Int { get }
 	var startCharIndex: Int { get }
 	var endCharIndex: Int { get }
 
 }
 
+/// properties needed for internal use only
 protocol ChunkPrivate {
 	var endToken: Token? { get set }
 
 	func isEqualTo(_ other: Chunk) -> Bool
 }
 
+/// A chunk that is nested inside a MarkdownChunk
+public protocol InlineChunk: Chunk {}
 
 typealias InternalChunk = Chunk & ChunkPrivate
 
@@ -36,7 +46,7 @@ public class AnyChunk: Chunk {
 		chunk = wrapping
 		endToken = wrapping.endToken
 	}
-	public var typeName: String { return chunk.typeName }
+	public var type: ChunkType { return chunk.type }
 	public var content: String { return chunk.content }
 	public var startLine: Int { return chunk.startLine }
 	public var startCharIndex: Int { return chunk.startCharIndex }
@@ -54,12 +64,14 @@ extension AnyChunk: ChunkPrivate {
 	}
 }
 
-public extension AnyChunk {
-	static func ==(lhs: AnyChunk, rhs: AnyChunk) -> Bool {
+extension AnyChunk: Equatable {
+	/// comparison function that implements Equatable
+	public static func ==(lhs: AnyChunk, rhs: AnyChunk) -> Bool {
 		return lhs.chunk.isEqualTo(rhs.chunk)
 	}
 }
 
+/// A Collection of Chunks
 public struct ChunkCollection: RandomAccessCollection {
 	public typealias Index = Int
 	public typealias Element = AnyChunk

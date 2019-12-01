@@ -16,12 +16,12 @@ class GenericChunk: InternalChunk, Hashable, CustomStringConvertible {
 		}
 	}
 
-	let typeName: String
+	let type: ChunkType
 	private var _token: Token
 	
-	init(ruleName: String, token: Token) {
+	init(type: ChunkType, token: Token) {
 		_token = token
-		typeName = ruleName
+		self.type = type
 		endCharIndex = _token.getStopIndex()
 	}
 	
@@ -31,7 +31,7 @@ class GenericChunk: InternalChunk, Hashable, CustomStringConvertible {
 	private(set) var endCharIndex: Int
 
 	var description: String {
-		return "\(typeName): start:\(startCharIndex) end:\(endCharIndex) content:\(content)"
+		return "\(type.rawValue): start:\(startCharIndex) end:\(endCharIndex) content:\(content)"
 	}
 	
 	func hash(into hasher: inout Hasher) {
