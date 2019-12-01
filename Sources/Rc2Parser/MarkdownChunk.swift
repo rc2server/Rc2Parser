@@ -8,33 +8,44 @@
 import Foundation
 import Antlr4
 
-class MarkdownChunk: InternalChunk {
-	init(context: Rc2RawParser.ChunkContext) {
+/// a chunk of markdown possibly including inline chunks
+public class MarkdownChunk: InternalChunk {
+	
+	internal init(context: Rc2RawParser.ChunkContext) {
 		guard let token = context.getStart(), let cnt = token.getText() else { fatalError() }
 		content = cnt
 		startLine = token.getStartIndex()
 		startCharIndex = token.getStartIndex()
 		endCharIndex = token.getStopIndex()
 		type = .markdown
+		inlineChunks = []
 	}
 	
-	var type: ChunkType
+	public var type: ChunkType
 	
-	var content: String
+	public var content: String
 	
-	var startLine: Int
+	public var startLine: Int
 	
-	var startCharIndex: Int
+	public var startCharIndex: Int
 	
-	var endCharIndex: Int
+	public var endCharIndex: Int
 	
-	var endToken: Token? { didSet {
+	/// inline chunks embedded in this chunk
+	public private(set) var inlineChunks: [AnyChunk]
+	
+	internal func append(chunk: AnyChunk) {
+		guard chunk.isInline else { fatalError("markdown can not non-linline chunks") }
+		inlineChunks.append(chunk)
+	}
+	
+	internal var endToken: Token? { didSet {
 			guard let end = endToken else { return }
 			endCharIndex = end.getStopIndex()
 		}
 	}
 	
-	func isEqualTo(_ other: Chunk) -> Bool {
+	internal func isEqualTo(_ other: Chunk) -> Bool {
 		guard let chunk2 = other as? MarkdownChunk else { return false }
 		return type == chunk2.type &&
 			content == chunk2.content &&

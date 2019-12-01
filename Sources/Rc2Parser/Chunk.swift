@@ -40,7 +40,7 @@ public protocol Chunk {
 
 // default implementation
 extension Chunk {
-	var isInline: Bool { return false }
+	public var isInline: Bool { return false }
 }
 
 /// properties needed for internal use only
@@ -72,6 +72,15 @@ public class AnyChunk: Chunk {
 	public var startCharIndex: Int { return chunk.startCharIndex }
 	public var endCharIndex: Int { return chunk.endCharIndex }
 	public var isInline: Bool { return chunk is InlineChunk }
+}
+
+extension AnyChunk: CustomStringConvertible {
+	public var description: String {
+		if let mc = chunk as? MarkdownChunk {
+			return "\(type) chunk with \(mc.inlineChunks.count) inline chunks"
+		}
+		return "\(type) chunk"
+	}
 }
 
 extension AnyChunk: ChunkPrivate {

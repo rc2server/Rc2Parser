@@ -9,10 +9,31 @@ import Foundation
 import Antlr4
 import Logging
 
+enum ListenerErrorType {
+	case inlineChunkAtRoot
+}
+
+struct ListenerError: Error {
+	var type: ListenerErrorType
+	var lineNumber: Int
+	var charIndex: Int
+	var description: String?
+}
+
+class ErrorReporter {
+	var errors = [ListenerError]()
+}
+
 class Rc2ParserListener: Rc2RawParserBaseListener {
 	var chunks: [AnyChunk] = [] as! [AnyChunk]
 	var curContext: Rc2RawParser.ChunkContext?
 	var curChunk: AnyChunk?
+	var curMarkdownChunk: MarkdownChunk?
+	let errorReporter: ErrorReporter?
+	
+	init(errorReporter reporter: ErrorReporter?) {
+		errorReporter = reporter
+	}
 	
 	override func enterChunk(_ ctx: Rc2RawParser.ChunkContext) {
 		curContext = ctx
@@ -21,7 +42,8 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		
 		switch start.getType() {
 		case Rc2Lexer.MDOWN:
-			aChunk = MarkdownChunk(context: ctx)
+			curMarkdownChunk = MarkdownChunk(context: ctx)
+			aChunk = curMarkdownChunk
 		case Rc2Lexer.CODE_START:
 			aChunk = GenericChunk(type: .code, token: start)
 		case Rc2Lexer.EQ_START:
@@ -35,11 +57,21 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 			fatalError()
 		}
 		guard let rchunk = aChunk else { fatalError("impossible") }
+		if rchunk.isInline && curMarkdownChunk == nil {
+			parserLog.warning("inline chunk found at top level")
+			let err = ListenerError(type: .inlineChunkAtRoot, lineNumber: rchunk.startLine, charIndex: rchunk.startCharIndex, description: nil)
+			errorReporter?.errors.append(err)
+		}
 		let chunk = AnyChunk(rchunk)
-		chunks.append(chunk)
+		if rchunk.isInline, let mc = curMarkdownChunk {
+			mc.append(chunk: chunk)
+		} else {
+			chunks.append(chunk)
+		}
 		curChunk = chunk
 	}
 	override func exitChunk(_ ctx: Rc2RawParser.ChunkContext) {
+		if curChunk?.type == .markdown { curMarkdownChunk = nil }
 		curChunk?.endToken = ctx.getStop()
 		curContext = nil
 		curChunk = nil
