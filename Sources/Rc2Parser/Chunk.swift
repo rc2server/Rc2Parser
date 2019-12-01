@@ -8,21 +8,39 @@
 import Foundation
 import Antlr4
 
+/// The types of chunks that can be returned by the parser
 public enum ChunkType: String, CaseIterable, Codable {
+	/// plain markdown  possibly with InlineChunks
 	case markdown
+	/// R code
 	case code
+	/// a Latex equation
 	case equation
+	/// an equation embedded in markdown
 	case inlineEquation
+	/// R code embedded in markdown
 	case inlineCode
 }
 
+/// a Chunk parsed from an RMarkdown file
 public protocol Chunk {
+	/// the type of the chunk
 	var type: ChunkType { get }
+	/// the textual content of the chunk
 	var content: String { get }
+	/// the starting line number
 	var startLine: Int { get }
+	/// the character index where this chunk starts
 	var startCharIndex: Int { get }
+	/// the character index where this chunk ends (inclusive, not like endIndex)
 	var endCharIndex: Int { get }
+	/// true if the is an inline chunk embedded in a markdown chunk
+	var isInline: Bool { get }
+}
 
+// default implementation
+extension Chunk {
+	var isInline: Bool { return false }
 }
 
 /// properties needed for internal use only
@@ -35,11 +53,13 @@ protocol ChunkPrivate {
 /// A chunk that is nested inside a MarkdownChunk
 public protocol InlineChunk: Chunk {}
 
+/// chunk type used internally in the package in place of Chunk
 typealias InternalChunk = Chunk & ChunkPrivate
 
+/// a type-erasing wrapper around a Chunk
 public class AnyChunk: Chunk {
 	internal private(set) var chunk: InternalChunk
-	var endToken: Token? {
+	internal var endToken: Token? {
 		didSet { chunk.endToken = endToken }
 	}
 	internal init(_ wrapping: InternalChunk) {
@@ -51,6 +71,7 @@ public class AnyChunk: Chunk {
 	public var startLine: Int { return chunk.startLine }
 	public var startCharIndex: Int { return chunk.startCharIndex }
 	public var endCharIndex: Int { return chunk.endCharIndex }
+	public var isInline: Bool { return chunk is InlineChunk }
 }
 
 extension AnyChunk: ChunkPrivate {
