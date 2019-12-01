@@ -39,7 +39,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		curChunk = chunk
 	}
 	override func exitChunk(_ ctx: Rc2RawParser.ChunkContext) {
-		curChunk?.endToken = ctx.getStart()
+		curChunk?.endToken = ctx.getStop()
 		curContext = nil
 		curChunk = nil
 	}

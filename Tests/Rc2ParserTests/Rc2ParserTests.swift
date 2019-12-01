@@ -3,6 +3,7 @@ import XCTest
 
 final class Rc2ParserTests: XCTestCase {
 	func testBasicChunks() throws {
+		print("input.count = \(src1.count)")
 		let parser = RmdParser();
 		let chunks = try parser.parse(input: src1)
 		for aChunk in chunks {

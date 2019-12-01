@@ -27,11 +27,14 @@ protocol ChunkPrivate {
 
 typealias InternalChunk = Chunk & ChunkPrivate
 
-public struct AnyChunk: Chunk {
-	internal let chunk: InternalChunk
-	var endToken: Token?
+public class AnyChunk: Chunk {
+	internal private(set) var chunk: InternalChunk
+	var endToken: Token? {
+		didSet { chunk.endToken = endToken }
+	}
 	internal init(_ wrapping: InternalChunk) {
 		chunk = wrapping
+		endToken = wrapping.endToken
 	}
 	public var typeName: String { return chunk.typeName }
 	public var content: String { return chunk.content }
