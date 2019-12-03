@@ -36,6 +36,8 @@ public protocol Chunk {
 	var endCharIndex: Int { get }
 	/// the range of this chunk in the parsed string
 	var range: NSRange { get }
+	/// the range of the content of this chunk, without start/end/argument contents
+	var innerRange: NSRange { get }
 	/// true if the is an inline chunk embedded in a markdown chunk
 	var isInline: Bool { get }
 }
@@ -43,7 +45,11 @@ public protocol Chunk {
 // default implementation
 extension Chunk {
 	public var isInline: Bool { return false }
-	public var range: NSRange { NSRange(location: startCharIndex, length: endCharIndex - startCharIndex) }
+	// all tokens must be at least 1 character
+	public var range: NSRange {
+		NSRange(location: startCharIndex, length: endCharIndex - startCharIndex + 1)
+	}
+	public var innerRange: NSRange { return range }
 }
 
 /// properties needed for internal use only
@@ -55,6 +61,11 @@ protocol ChunkPrivate {
 
 /// A chunk that is nested inside a MarkdownChunk
 public protocol InlineChunk: Chunk {}
+
+public protocol CodeChunk: Chunk {
+	var arguments: String { get }
+	var code: String { get }
+}
 
 /// chunk type used internally in the package in place of Chunk
 typealias InternalChunk = Chunk & ChunkPrivate
