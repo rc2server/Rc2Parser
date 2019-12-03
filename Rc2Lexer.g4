@@ -14,7 +14,7 @@ IC_CODE: ~[`]+;
 
 mode IN_EQ;
 
-EQ_END: { getCharPositionInLine() == 0 }? '$$' (NL | EOF) -> popMode;
+EQ_END:  '$$' -> popMode;
 EQ_CODE: ('$' ~'$' | ~'$')+;
 
 mode IN_IN_EQ;

@@ -32,7 +32,7 @@ open class Rc2RawParser: Parser {
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
-		nil, nil, nil, nil, nil, "'`r '", nil, "'`'", nil, nil, nil, nil, "'$'"
+		nil, nil, nil, nil, nil, "'`r '", nil, "'`'", nil, "'$$'", nil, nil, "'$'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, "CODE_START", "CODE_ARG", "EQ_START", "IEQ_START", "IC_START", "MDOWN", 

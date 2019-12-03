@@ -39,7 +39,7 @@ open class Rc2Lexer: Lexer {
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
-		nil, nil, nil, nil, nil, "'`r '", nil, "'`'", nil, nil, nil, nil, "'$'"
+		nil, nil, nil, nil, nil, "'`r '", nil, "'`'", nil, "'$$'", nil, nil, "'$'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, "CODE_START", "CODE_ARG", "EQ_START", "IEQ_START", "IC_START", "MDOWN", 
@@ -89,8 +89,6 @@ open class Rc2Lexer: Lexer {
 			return try EQ_START_sempred(_localctx?.castdown(RuleContext.self), predIndex)
 		case 3:
 			return try IEQ_START_sempred(_localctx?.castdown(RuleContext.self), predIndex)
-		case 8:
-			return try EQ_END_sempred(_localctx?.castdown(RuleContext.self), predIndex)
 		case 12:
 			return try CODE_END_sempred(_localctx?.castdown(RuleContext.self), predIndex)
 		default: return true
@@ -114,15 +112,9 @@ open class Rc2Lexer: Lexer {
 		    default: return true
 		}
 	}
-	private func EQ_END_sempred(_ _localctx: RuleContext!,  _ predIndex: Int) throws -> Bool {
-		switch (predIndex) {
-		    case 3:return  getCharPositionInLine() == 0 
-		    default: return true
-		}
-	}
 	private func CODE_END_sempred(_ _localctx: RuleContext!,  _ predIndex: Int) throws -> Bool {
 		switch (predIndex) {
-		    case 4:return getCharPositionInLine() == 0
+		    case 3:return getCharPositionInLine() == 0
 		    default: return true
 		}
 	}

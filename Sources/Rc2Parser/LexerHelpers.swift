@@ -17,7 +17,6 @@ extension Rc2Lexer {
 	static let newline = Character("\n").asciiValue!
 	
 	func isEQStart() ->Bool {
-		guard getCharPositionInLine() == 0 else { return false }
 		// _inputLA(-1|1) is the character being evaluated
 		guard let back1 = try? _input!.LA(-1),
 			let cur =  try? _input!.LA(1),
