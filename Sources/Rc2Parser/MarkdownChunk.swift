@@ -12,11 +12,11 @@ import Antlr4
 public class MarkdownChunk: InternalChunk {
 	
 	internal init(context: Rc2RawParser.ChunkContext) {
-		guard let token = context.getStart(), let cnt = token.getText() else { fatalError() }
-		content = cnt
+		guard let token = context.getStart() else { fatalError() }
+		content = context.getText()
 		startLine = token.getStartIndex()
 		startCharIndex = token.getStartIndex()
-		endCharIndex = token.getStopIndex()
+		endCharIndex = context.getStop()!.getStopIndex()
 		type = .markdown
 		inlineChunks = []
 	}
@@ -33,6 +33,15 @@ public class MarkdownChunk: InternalChunk {
 	
 	/// inline chunks embedded in this chunk
 	public private(set) var inlineChunks: [AnyChunk]
+	
+	internal func append(markdown: Token) {
+		guard let txt = markdown.getText() else {
+			parserLog.warning("markdown told to append nil string")
+			return
+		}
+		content += txt
+		endCharIndex = markdown.getStopIndex()
+	}
 	
 	internal func append(chunk: AnyChunk) {
 		guard chunk.isInline else { fatalError("markdown can not non-linline chunks") }
