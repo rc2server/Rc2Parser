@@ -23,7 +23,7 @@ public enum ChunkType: String, CaseIterable, Codable {
 }
 
 /// a Chunk parsed from an RMarkdown file
-public protocol Chunk {
+public protocol Chunk: CustomStringConvertible {
 	/// the type of the chunk
 	var type: ChunkType { get }
 	/// the textual content of the chunk
@@ -44,6 +44,9 @@ public protocol Chunk {
 
 // default implementation
 extension Chunk {
+	public var description: String {
+		return "\(type): range:\(range)"
+	}
 	public var isInline: Bool { return false }
 	// all tokens must be at least 1 character
 	public var range: NSRange {
@@ -86,15 +89,8 @@ public class AnyChunk: Chunk {
 	public var startCharIndex: Int { return chunk.startCharIndex }
 	public var endCharIndex: Int { return chunk.endCharIndex }
 	public var isInline: Bool { return chunk is InlineChunk }
-}
-
-extension AnyChunk: CustomStringConvertible {
-	public var description: String {
-		if let mc = chunk as? MarkdownChunk {
-			return "\(type) chunk with \(mc.inlineChunks.count) inline chunks"
-		}
-		return "\(type) chunk"
-	}
+	public var range: NSRange { return chunk.range }
+	public var innerRange: NSRange { return chunk.innerRange }
 }
 
 extension AnyChunk: ChunkPrivate {

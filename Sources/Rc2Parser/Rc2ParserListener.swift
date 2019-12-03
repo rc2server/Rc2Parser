@@ -52,7 +52,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		case Rc2Lexer.EQ_START:
 			aChunk = GenericChunk(type: .equation, token: start)
 		case Rc2Lexer.IC_START:
-			aChunk = GenericChunk(type: .inlineCode, token: start)
+			aChunk = InlineInternalCodeChunk(start: start)
 		case Rc2Lexer.IEQ_START:
 			aChunk = GenericChunk(type: .inlineEquation, token: start)
 		default:
@@ -79,6 +79,18 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		curChunk?.endToken = ctx.getStop()
 		curContext = nil
 		curChunk = nil
+	}
+	
+	override func exitInlineCode(_ ctx: Rc2RawParser.InlineCodeContext) {
+		guard let kids = ctx.children,
+			kids.count == 3,
+			let iichunk = curChunk?.chunk as? InlineInternalCodeChunk
+			else { fatalError("inline code exit invalid") }
+		iichunk.update(context: ctx)
+	}
+	
+	override func enterCode(_ ctx: Rc2RawParser.CodeContext) {
+		print("got \(ctx.children!.count) tokens")
 	}
 	
 	override func exitCode(_ ctx: Rc2RawParser.CodeContext) {

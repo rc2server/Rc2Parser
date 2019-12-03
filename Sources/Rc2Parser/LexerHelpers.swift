@@ -12,6 +12,16 @@ extension Token {
 	var typeName: String { return Rc2Lexer.ruleNames[(getType()) - 1] }
 }
 
+extension ParserRuleContext {
+	func childSymbol(at idx: Int) -> Token? {
+		guard let kids = children,
+			kids.count > idx,
+			let node = (kids[idx] as? TerminalNode)
+		else { fatalError("invalid child requested") }
+		return node.getSymbol()
+	}
+}
+
 extension Rc2Lexer {
 	static let dollar = Character("$").asciiValue!
 	static let newline = Character("\n").asciiValue!
