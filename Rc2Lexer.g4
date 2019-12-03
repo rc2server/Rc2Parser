@@ -24,7 +24,7 @@ IEQ_END: '$' -> popMode;
 
 mode IN_CODE;
 
-CODE_END: {getCharPositionInLine() == 0}?'```' -> popMode;
+CODE_END: {getCharPositionInLine() == 0}?'```' (NL | EOF) -> popMode;
 NL: '\r'? '\n';
 CODE: NL ANY+;
 NOT_BACKTICK: ~('`');
