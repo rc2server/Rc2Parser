@@ -34,6 +34,8 @@ public protocol Chunk {
 	var startCharIndex: Int { get }
 	/// the character index where this chunk ends (inclusive, not like endIndex)
 	var endCharIndex: Int { get }
+	/// the range of this chunk in the parsed string
+	var range: NSRange { get }
 	/// true if the is an inline chunk embedded in a markdown chunk
 	var isInline: Bool { get }
 }
@@ -41,6 +43,7 @@ public protocol Chunk {
 // default implementation
 extension Chunk {
 	public var isInline: Bool { return false }
+	public var range: NSRange { NSRange(location: startCharIndex, length: endCharIndex - startCharIndex) }
 }
 
 /// properties needed for internal use only
