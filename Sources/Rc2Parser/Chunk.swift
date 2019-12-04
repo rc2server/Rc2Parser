@@ -70,6 +70,10 @@ public protocol CodeChunk: Chunk {
 	var code: String { get }
 }
 
+public protocol EquationChunk: Chunk {
+	var code: String { get }
+}
+
 /// chunk type used internally in the package in place of Chunk
 typealias InternalChunk = Chunk & ChunkPrivate
 

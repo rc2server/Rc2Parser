@@ -50,7 +50,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		case Rc2Lexer.CODE_START:
 			aChunk = InternalCodeChunk(start: start)
 		case Rc2Lexer.EQ_START:
-			aChunk = GenericChunk(type: .equation, token: start)
+			aChunk = InternalEquationChunk(context: ctx)
 		case Rc2Lexer.IC_START:
 			aChunk = InlineInternalCodeChunk(start: start)
 		case Rc2Lexer.IEQ_START:
