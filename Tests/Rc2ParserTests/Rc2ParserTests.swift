@@ -6,10 +6,19 @@ final class Rc2ParserTests: XCTestCase {
 		let parser = RmdParser();
 		let chunks = try parser.parse(input: src1)
 		for aChunk in chunks {
-//			print("\(aChunk) range=\(aChunk.range)")
 			print("\(aChunk.type) range=\(aChunk.range) irange=\(aChunk.innerRange) c:\(aChunk.content)")
 		}
 		XCTAssertEqual(chunks.count, 8)
+		XCTAssertEqual(chunks[0].type, ChunkType.code)
+		XCTAssertEqual(chunks[1].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[1].content, "##two ")
+		XCTAssertEqual(chunks[2].type, ChunkType.inlineCode)
+		XCTAssertEqual(chunks[3].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[4].type, ChunkType.inlineEquation)
+		XCTAssertEqual(chunks[5].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[6].type, ChunkType.equation)
+		XCTAssertEqual(chunks[7].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[7].range, NSRange(location: 111, length: 19))
 	}
 
 	func testRMd1() throws {
