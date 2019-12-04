@@ -9,14 +9,14 @@ import Foundation
 import Antlr4
 
 class InternalCodeChunk: ChunkPrivate, CodeChunk {
-	init(type: ChunkType, token: Token) {
-		self.type = type
-		self.content = token.getText() ?? ""
+	init(start: Token) {
+		self.type = .code
+		self.content = start.getText() ?? ""
 		self.arguments = ""
 		self.code = ""
-		self.startLine = token.getLine()
-		self.startCharIndex = token.getStartIndex()
-		self.endCharIndex = token.getStopIndex()
+		self.startLine = start.getLine()
+		self.startCharIndex = start.getStartIndex()
+		self.endCharIndex = start.getStopIndex()
 	}
 	
 	let type: ChunkType
@@ -29,12 +29,17 @@ class InternalCodeChunk: ChunkPrivate, CodeChunk {
 	var innerRange: NSRange = NSRange(location: 0, length: 0)
 	
 
-	func updateWith(start: Token, args: Token, code rawCode: Token, end: Token) {
+	func updateWith(context: Rc2RawParser.CodeContext) {
+		guard
+			let args = context.CODE_ARG()?.getSymbol(),
+			let rawCode = context.CODE()?.getSymbol(),
+			let end = context.CODE_END()?.getSymbol()
+		else { fatalError() }
 		arguments = args.getText()!
 		code = rawCode.getText()!
-		content = start.getText()! + args.getText()! + rawCode.getText()! + end.getText()!
+		content = context.getText()
 		endCharIndex = end.getStopIndex()
-		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex() + 1)
+		innerRange = NSRange(location: rawCode.getStartIndex(), length: code.count)
 	}
 
 	// this class has no need
@@ -44,7 +49,8 @@ class InternalCodeChunk: ChunkPrivate, CodeChunk {
 	}
 	
 	var description: String {
-		return "\(type.rawValue): start:\(startCharIndex) end:\(endCharIndex) content:\(content)"
+		let nl = code.firstIndex(of: "\n") ?? code.endIndex
+		return "\(type): range:\(range) code:\(code[code.startIndex...nl])"
 	}
 	
 	func hash(into hasher: inout Hasher) {
@@ -63,6 +69,7 @@ class InternalCodeChunk: ChunkPrivate, CodeChunk {
 		lhs.type == rhs.type &&
 			lhs.startCharIndex == rhs.startCharIndex &&
 			lhs.endCharIndex == rhs.endCharIndex &&
+			lhs.arguments == rhs.arguments &&
 			lhs.code == rhs.code
 	}
 

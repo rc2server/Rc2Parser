@@ -48,7 +48,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 				aChunk = curMarkdownChunk
 			}
 		case Rc2Lexer.CODE_START:
-			aChunk = InternalCodeChunk(type: .code, token: start)
+			aChunk = InternalCodeChunk(start: start)
 		case Rc2Lexer.EQ_START:
 			aChunk = GenericChunk(type: .equation, token: start)
 		case Rc2Lexer.IC_START:
@@ -109,6 +109,6 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 			errorReporter?.errors.append(ListenerError(type: .invalidCodeOrder, lineNumber: 0, charIndex: -1, description: nil))
 			return
 		}
-		chunk.updateWith(start: start, args: args, code: code, end: end)
+		chunk.updateWith(context: ctx)
 	}
 }

@@ -51,9 +51,7 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 	
 	public var endCharIndex: Int
 	
-	public var innerRange: NSRange { willSet {
-		print("will set from \(innerRange) to \(newValue)")
-		}}
+	public var innerRange: NSRange
 	
 	var arguments: String = ""
 	var code: String
