@@ -9,28 +9,19 @@ import Foundation
 import Antlr4
 
 class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
-	init(start: Token) {
+	init(context: Rc2RawParser.ChunkContext) {
+		guard let ctx = context.inlineCode(),
+			let start = ctx.IC_START()?.getSymbol(),
+			let rawCode = ctx.IC_CODE()?.getSymbol(),
+			let end = ctx.IC_END()?.getSymbol()
+		else { fatalError() }
 		type = .inlineCode
-		content = start.getText() ?? ""
-		code = ""
+		content = ctx.getText()
+		code = rawCode.getText() ?? ""
 		startLine = start.getLine()
 		startCharIndex = start.getStartIndex()
-		endCharIndex = start.getStopIndex()
-		innerRange = NSRange(location: startCharIndex, length: endCharIndex - startCharIndex + 1 )
-	}
-
-	func update(context: Rc2RawParser.InlineCodeContext) {
-		guard let start = context.IC_START()?.getSymbol(),
-		let rawCode = context.IC_CODE()?.getSymbol(),
-		let end = context.IC_END()?.getSymbol(),
-		start.getType() == Rc2Lexer.IC_START,
-		rawCode.getType() == Rc2Lexer.IC_CODE,
-		end.getType() == Rc2Lexer.IC_END
-		else { fatalError() }
-		content = context.getText()
-		code = rawCode.getText()!
 		endCharIndex = end.getStopIndex()
-		innerRange = NSRange(location: rawCode.getStartIndex(), length: code.count)
+		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex())
 	}
 	
 	// FIXME: why is this not being called?
@@ -39,7 +30,7 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 	}
 
 	// this class has no need for this property
-	var endToken: Token? { get { return nil } set {  } }
+	var endToken: Token?
 
 	public var type: ChunkType
 	
@@ -57,8 +48,9 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 	var code: String
 	
 	internal func isEqualTo(_ other: Chunk) -> Bool {
-		guard let chunk2 = other as? MarkdownChunk else { return false }
+		guard let chunk2 = other as? InlineInternalCodeChunk else { return false }
 		return type == chunk2.type &&
+			code == chunk2.code &&
 			content == chunk2.content &&
 			startLine == chunk2.startLine &&
 			startCharIndex == chunk2.startCharIndex &&

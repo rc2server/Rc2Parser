@@ -10,15 +10,32 @@ final class Rc2ParserTests: XCTestCase {
 		}
 		XCTAssertEqual(chunks.count, 8)
 		XCTAssertEqual(chunks[0].type, ChunkType.code)
+		XCTAssertEqual(chunks[0].content, "```{r title}\nu <- 22 `21`\n```\n")
 		XCTAssertEqual(chunks[1].type, ChunkType.markdown)
 		XCTAssertEqual(chunks[1].content, "##two ")
 		XCTAssertEqual(chunks[2].type, ChunkType.inlineCode)
+		XCTAssertEqual(chunks[2].content, "`r \\\"oo\\\"`")
 		XCTAssertEqual(chunks[3].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[3].content, " dl ")
 		XCTAssertEqual(chunks[4].type, ChunkType.inlineEquation)
+		if let ieq = chunks[4].chunk as? InlineInternalEquation {
+			XCTAssertEqual(ieq.code, #"""
+				\frac{1}{n} \sum_{i=i}^{n} x_{i}
+				"""#)
+		}
 		XCTAssertEqual(chunks[5].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[5].content, "\n\n")
 		XCTAssertEqual(chunks[6].type, ChunkType.equation)
+		if let eq = chunks[6].chunk as? InternalEquationChunk {
+			XCTAssertEqual(eq.code, #"""
+			
+			\{ 43 ^ 42 \}
+			5-3^4
+
+			"""#)
+		}
 		XCTAssertEqual(chunks[7].type, ChunkType.markdown)
-		XCTAssertEqual(chunks[7].range, NSRange(location: 111, length: 19))
+		XCTAssertEqual(chunks[7].content, " some other content")
 	}
 
 	func testRMd1() throws {

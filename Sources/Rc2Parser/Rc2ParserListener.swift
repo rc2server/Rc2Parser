@@ -52,9 +52,9 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		case Rc2Lexer.EQ_START:
 			aChunk = InternalEquationChunk(context: ctx)
 		case Rc2Lexer.IC_START:
-			aChunk = InlineInternalCodeChunk(start: start)
+			aChunk = InlineInternalCodeChunk(context: ctx)
 		case Rc2Lexer.IEQ_START:
-			aChunk = GenericChunk(type: .inlineEquation, token: start)
+			aChunk = InlineInternalEquation(context: ctx)
 		default:
 			parserLog.error("invalid chunk type: \(Rc2Lexer.ruleNames[start.getType() - 1])")
 			fatalError()
@@ -80,19 +80,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		curContext = nil
 		curChunk = nil
 	}
-	
-	override func exitInlineCode(_ ctx: Rc2RawParser.InlineCodeContext) {
-		guard let kids = ctx.children,
-			kids.count == 3,
-			let iichunk = curChunk?.chunk as? InlineInternalCodeChunk
-			else { fatalError("inline code exit invalid") }
-		iichunk.update(context: ctx)
-	}
-	
-	override func enterCode(_ ctx: Rc2RawParser.CodeContext) {
-		print("got \(ctx.children!.count) tokens")
-	}
-	
+		
 	override func exitCode(_ ctx: Rc2RawParser.CodeContext) {
 		guard ctx.children?.count == 4,
 			let chunk = curChunk?.chunk as? InternalCodeChunk,

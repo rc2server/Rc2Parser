@@ -1,28 +1,30 @@
 //
-//  InternalEquationChunk.swift
+//  InlineInternalEquation.swift
 //  
 //
-//  Created by Mark Lilback on 12/4/19.
+//  Created by Mark Lilback on 12/5/19.
 //
 
 import Foundation
 import Antlr4
 
+
 /// a chunk representing a display equation
-public class InternalEquationChunk: InternalChunk, EquationChunk {
+public class InlineInternalEquation: InternalChunk, InlineChunk, EquationChunk {
 	var endToken: Token?
 	
 	internal init(context: Rc2RawParser.ChunkContext) {
-		guard let icontext = context.equation(),
-			let start = icontext.EQ_START()?.getSymbol(),
-			let eqcode = icontext.EQ_CODE()?.getSymbol(),
-			let end = icontext.EQ_END()?.getSymbol()
+		
+		guard let icontext = context.inlineEQ(),
+			let start = icontext.IEQ_START()?.getSymbol(),
+			let eqcode = icontext.IEQ_CODE()?.getSymbol(),
+			let end = icontext.IEQ_END()?.getSymbol()
 		else { fatalError() }
-		content = context.getText()
+		content = icontext.getText()
 		startLine = start.getStartIndex()
 		startCharIndex = start.getStartIndex()
 		endCharIndex = end.getStopIndex()
-		type = .equation
+		type = .inlineEquation
 		code = eqcode.getText() ?? ""
 		innerRange = NSRange(location: eqcode.getStartIndex(), length: eqcode.getStopIndex() - eqcode.getStartIndex() + 1)
 	}
@@ -38,11 +40,11 @@ public class InternalEquationChunk: InternalChunk, EquationChunk {
 	public var endCharIndex: Int
 	
 	public var code: String
-	
+
 	public var innerRange: NSRange
-	
+
 	internal func isEqualTo(_ other: Chunk) -> Bool {
-		guard let chunk2 = other as? InternalEquationChunk else { return false }
+		guard let chunk2 = other as? InlineInternalEquation else { return false }
 		return type == chunk2.type &&
 			code == chunk2.code &&
 			content == chunk2.content &&
@@ -53,3 +55,4 @@ public class InternalEquationChunk: InternalChunk, EquationChunk {
 	
 	
 }
+

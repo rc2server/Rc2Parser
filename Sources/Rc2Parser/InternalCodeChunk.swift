@@ -8,7 +8,7 @@
 import Foundation
 import Antlr4
 
-class InternalCodeChunk: ChunkPrivate, CodeChunk {
+class InternalCodeChunk: InternalChunk, CodeChunk {
 	init(start: Token) {
 		self.type = .code
 		self.content = start.getText() ?? ""
