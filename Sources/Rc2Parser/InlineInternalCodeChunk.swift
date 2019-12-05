@@ -21,7 +21,7 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 		startLine = start.getLine()
 		startCharIndex = start.getStartIndex()
 		endCharIndex = end.getStopIndex()
-		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex())
+		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex() + 1)
 	}
 	
 	// FIXME: why is this not being called?

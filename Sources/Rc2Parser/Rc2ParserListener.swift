@@ -48,7 +48,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 				aChunk = curMarkdownChunk
 			}
 		case Rc2Lexer.CODE_START:
-			aChunk = InternalCodeChunk(start: start)
+			aChunk = InternalCodeChunk(context: ctx)
 		case Rc2Lexer.EQ_START:
 			aChunk = InternalEquationChunk(context: ctx)
 		case Rc2Lexer.IC_START:
@@ -79,24 +79,5 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		curChunk?.endToken = ctx.getStop()
 		curContext = nil
 		curChunk = nil
-	}
-		
-	override func exitCode(_ ctx: Rc2RawParser.CodeContext) {
-		guard ctx.children?.count == 4,
-			let chunk = curChunk?.chunk as? InternalCodeChunk,
-			let start = (ctx.children?[0] as? TerminalNode)?.getSymbol(),
-			let args = (ctx.children?[1] as? TerminalNode)?.getSymbol(),
-			let code = (ctx.children?[2] as? TerminalNode)?.getSymbol(),
-			let end = (ctx.children?[3] as? TerminalNode)?.getSymbol(),
-			start.getType() == Rc2Lexer.CODE_START,
-			args.getType() == Rc2Lexer.CODE_ARG,
-			code.getType() == Rc2Lexer.CODE,
-			end.getType() == Rc2Lexer.CODE_END
-		else {
-			parserLog.warning("exitCode children were invalid")
-			errorReporter?.errors.append(ListenerError(type: .invalidCodeOrder, lineNumber: 0, charIndex: -1, description: nil))
-			return
-		}
-		chunk.updateWith(context: ctx)
 	}
 }

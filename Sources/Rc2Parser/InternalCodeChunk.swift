@@ -9,14 +9,21 @@ import Foundation
 import Antlr4
 
 class InternalCodeChunk: InternalChunk, CodeChunk {
-	init(start: Token) {
-		self.type = .code
-		self.content = start.getText() ?? ""
-		self.arguments = ""
-		self.code = ""
-		self.startLine = start.getLine()
-		self.startCharIndex = start.getStartIndex()
-		self.endCharIndex = start.getStopIndex()
+	init(context: Rc2RawParser.ChunkContext) {
+		guard let ctx = context.code(),
+			let start = ctx.CODE_START()?.getSymbol(),
+			let args = ctx.CODE_ARG()?.getSymbol(),
+			let rawCode = ctx.CODE()?.getSymbol(),
+			let end = ctx.CODE_END()?.getSymbol()
+			else { fatalError() }
+		type = .code
+		content = ctx.getText()
+		arguments = args.getText() ?? ""
+		code = rawCode.getText() ?? ""
+		startLine = start.getLine()
+		startCharIndex = start.getStartIndex()
+		endCharIndex = end.getStopIndex()
+		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex() + 1)
 	}
 	
 	let type: ChunkType
@@ -26,27 +33,9 @@ class InternalCodeChunk: InternalChunk, CodeChunk {
 	var startLine: Int
 	var startCharIndex: Int
 	private(set) var endCharIndex: Int
-	var innerRange: NSRange = NSRange(location: 0, length: 0)
+	var innerRange: NSRange
 	
-
-	func updateWith(context: Rc2RawParser.CodeContext) {
-		guard
-			let args = context.CODE_ARG()?.getSymbol(),
-			let rawCode = context.CODE()?.getSymbol(),
-			let end = context.CODE_END()?.getSymbol()
-		else { fatalError() }
-		arguments = args.getText()!
-		code = rawCode.getText()!
-		content = context.getText()
-		endCharIndex = end.getStopIndex()
-		innerRange = NSRange(location: rawCode.getStartIndex(), length: code.count)
-	}
-
-	// this class has no need
-	var endToken: Token? {
-		get { return nil }
-		set {  }
-	}
+	var endToken: Token?
 	
 	var description: String {
 		let nl = code.firstIndex(of: "\n") ?? code.endIndex

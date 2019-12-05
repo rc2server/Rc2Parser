@@ -15,6 +15,7 @@ final class Rc2ParserTests: XCTestCase {
 		XCTAssertEqual(chunks[1].content, "##two ")
 		XCTAssertEqual(chunks[2].type, ChunkType.inlineCode)
 		XCTAssertEqual(chunks[2].content, "`r \\\"oo\\\"`")
+		XCTAssertEqual((chunks[2].chunk as! InlineInternalCodeChunk).code, "\\\"oo\\\"")
 		XCTAssertEqual(chunks[3].type, ChunkType.markdown)
 		XCTAssertEqual(chunks[3].content, " dl ")
 		XCTAssertEqual(chunks[4].type, ChunkType.inlineEquation)
@@ -26,14 +27,12 @@ final class Rc2ParserTests: XCTestCase {
 		XCTAssertEqual(chunks[5].type, ChunkType.markdown)
 		XCTAssertEqual(chunks[5].content, "\n\n")
 		XCTAssertEqual(chunks[6].type, ChunkType.equation)
-		if let eq = chunks[6].chunk as? InternalEquationChunk {
-			XCTAssertEqual(eq.code, #"""
-			
-			\{ 43 ^ 42 \}
-			5-3^4
+		XCTAssertEqual((chunks[6].chunk as! InternalEquationChunk).code, #"""
+		
+		\{ 43 ^ 42 \}
+		5-3^4
 
-			"""#)
-		}
+		"""#)
 		XCTAssertEqual(chunks[7].type, ChunkType.markdown)
 		XCTAssertEqual(chunks[7].content, " some other content")
 	}
