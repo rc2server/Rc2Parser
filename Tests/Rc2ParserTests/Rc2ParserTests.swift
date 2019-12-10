@@ -8,33 +8,30 @@ final class Rc2ParserTests: XCTestCase {
 		for aChunk in chunks {
 			print("\(aChunk.type) range=\(aChunk.range) irange=\(aChunk.innerRange) c:\(aChunk.content)")
 		}
-		XCTAssertEqual(chunks.count, 8)
+		XCTAssertEqual(chunks.count, 6)
 		XCTAssertEqual(chunks[0].type, ChunkType.code)
 		XCTAssertEqual(chunks[0].content, "```{r title}\nu <- 22 `21`\n```\n")
 		XCTAssertEqual(chunks[1].type, ChunkType.markdown)
 		XCTAssertEqual(chunks[1].content, "##two ")
-		XCTAssertEqual(chunks[2].type, ChunkType.inlineCode)
-		XCTAssertEqual(chunks[2].content, "`r \\\"oo\\\"`")
-		XCTAssertEqual((chunks[2].chunk as! InlineInternalCodeChunk).code, "\\\"oo\\\"")
-		XCTAssertEqual(chunks[3].type, ChunkType.markdown)
-		XCTAssertEqual(chunks[3].content, " dl ")
-		XCTAssertEqual(chunks[4].type, ChunkType.inlineEquation)
-		if let ieq = chunks[4].chunk as? InlineInternalEquation {
-			XCTAssertEqual(ieq.code, #"""
+		XCTAssertEqual(chunks[1].asMarkdown!.inlineChunks[0].content, "`r \\\"oo\\\"`")
+		XCTAssertEqual(chunks[2].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[2].content, " dl ")
+		XCTAssertEqual(chunks[2].asMarkdown!.inlineChunks[0].type, ChunkType.inlineEquation)
+		XCTAssertEqual(chunks[2].asMarkdown!.inlineChunks[0].asInlineEquation!.code,
+				#"""
 				\frac{1}{n} \sum_{i=i}^{n} x_{i}
 				"""#)
-		}
-		XCTAssertEqual(chunks[5].type, ChunkType.markdown)
-		XCTAssertEqual(chunks[5].content, "\n\n")
-		XCTAssertEqual(chunks[6].type, ChunkType.equation)
-		XCTAssertEqual((chunks[6].chunk as! InternalEquationChunk).code, #"""
+		XCTAssertEqual(chunks[3].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[3].content, "\n\n")
+		XCTAssertEqual(chunks[4].type, ChunkType.equation)
+		XCTAssertEqual((chunks[4].chunk as! InternalEquationChunk).code, #"""
 		
 		\{ 43 ^ 42 \}
 		5-3^4
 
 		"""#)
-		XCTAssertEqual(chunks[7].type, ChunkType.markdown)
-		XCTAssertEqual(chunks[7].content, " some other content")
+		XCTAssertEqual(chunks[5].type, ChunkType.markdown)
+		XCTAssertEqual(chunks[5].content, " some other content")
 	}
 
 	func testRMd1() throws {
@@ -48,7 +45,9 @@ final class Rc2ParserTests: XCTestCase {
 //			print("\(aChunk) \(aChunk.type) range=\(aChunk.range): \(aChunk.content)")
 			print("\(aChunk.type) range=\(aChunk.range) irange=\(aChunk.innerRange)")
 		}
-		XCTAssertEqual(chunks.count, 59)
+		let inlineCount = chunks.filter( { $0.type == .markdown }).reduce(0, { $0 + (($1.asMarkdown)?.inlineChunks.count ?? 0) })
+		XCTAssertEqual(inlineCount, 20)
+		XCTAssertEqual(chunks.count, 39)
 	}
 
     static var allTests = [
