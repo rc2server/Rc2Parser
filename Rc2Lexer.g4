@@ -1,7 +1,7 @@
 lexer grammar Rc2Lexer;
 
 CODE_START: {getCharPositionInLine() == 0}? '```' ;
-CODE_ARG: '{r' ANY '}' -> pushMode(IN_CODE);
+CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
 EQ_START: { isEQStart() }? '$$' -> pushMode(IN_EQ);
 IEQ_START: '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);
 IC_START: '`r ' -> pushMode(IN_ICODE);

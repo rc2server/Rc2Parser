@@ -48,7 +48,7 @@ final class Rc2ParserTests: XCTestCase {
 //			print("\(aChunk) \(aChunk.type) range=\(aChunk.range): \(aChunk.content)")
 			print("\(aChunk.type) range=\(aChunk.range) irange=\(aChunk.innerRange)")
 		}
-		XCTAssertEqual(chunks.count, 11)
+		XCTAssertEqual(chunks.count, 59)
 	}
 
     static var allTests = [
