@@ -29,9 +29,6 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 		return "\(type): range:\(range) content:\(content)"
 	}
 
-	// this class has no need for this property
-	var endToken: Token?
-
 	public var type: ChunkType
 	
 	public var content: String

@@ -76,7 +76,6 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 	
 	override func exitChunk(_ ctx: Rc2RawParser.ChunkContext) {
 		if curChunk?.type != .markdown {curMarkdownChunk = nil }
-		curChunk?.endToken = ctx.getStop()
 		curContext = nil
 		curChunk = nil
 	}

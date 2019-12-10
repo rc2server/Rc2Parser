@@ -10,7 +10,6 @@ import Antlr4
 
 /// a chunk representing a display equation
 public class InternalEquationChunk: InternalChunk, EquationChunk {
-	var endToken: Token?
 	
 	internal init(context: Rc2RawParser.ChunkContext) {
 		guard let icontext = context.equation(),

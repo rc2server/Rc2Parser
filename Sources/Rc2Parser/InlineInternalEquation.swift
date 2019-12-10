@@ -11,7 +11,6 @@ import Antlr4
 
 /// a chunk representing a display equation
 public class InlineInternalEquation: InternalChunk, InlineChunk, EquationChunk {
-	var endToken: Token?
 	
 	internal init(context: Rc2RawParser.ChunkContext) {
 		

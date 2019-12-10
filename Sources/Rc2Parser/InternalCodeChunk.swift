@@ -35,8 +35,6 @@ class InternalCodeChunk: InternalChunk, CodeChunk {
 	private(set) var endCharIndex: Int
 	var innerRange: NSRange
 	
-	var endToken: Token?
-	
 	var description: String {
 		let nl = code.firstIndex(of: "\n") ?? code.endIndex
 		return "\(type): range:\(range) code:\(code[code.startIndex...nl])"

@@ -48,12 +48,6 @@ public class MarkdownChunk: InternalChunk {
 		inlineChunks.append(chunk)
 	}
 	
-	internal var endToken: Token? { didSet {
-			guard let end = endToken else { return }
-			endCharIndex = end.getStopIndex()
-		}
-	}
-	
 	internal func isEqualTo(_ other: Chunk) -> Bool {
 		guard let chunk2 = other as? MarkdownChunk else { return false }
 		return type == chunk2.type &&

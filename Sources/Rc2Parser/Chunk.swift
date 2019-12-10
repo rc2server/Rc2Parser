@@ -57,8 +57,6 @@ extension Chunk {
 
 /// properties needed for internal use only
 protocol ChunkPrivate {
-	var endToken: Token? { get set }
-
 	func isEqualTo(_ other: Chunk) -> Bool
 }
 
@@ -80,13 +78,11 @@ typealias InternalChunk = Chunk & ChunkPrivate
 /// a type-erasing wrapper around a Chunk
 public class AnyChunk: Chunk {
 	internal private(set) var chunk: InternalChunk
-	internal var endToken: Token? {
-		didSet { chunk.endToken = endToken }
-	}
+
 	internal init(_ wrapping: InternalChunk) {
 		chunk = wrapping
-		endToken = wrapping.endToken
 	}
+
 	public var type: ChunkType { return chunk.type }
 	public var content: String { return chunk.content }
 	public var startLine: Int { return chunk.startLine }
