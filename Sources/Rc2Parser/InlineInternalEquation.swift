@@ -42,6 +42,8 @@ public class InlineInternalEquation: InternalChunk, InlineChunk, EquationChunk {
 
 	public var innerRange: NSRange
 
+	public var isInline: Bool { return true }
+	
 	internal func isEqualTo(_ other: Chunk) -> Bool {
 		guard let chunk2 = other as? InlineInternalEquation else { return false }
 		return type == chunk2.type &&

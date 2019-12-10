@@ -41,6 +41,8 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 	
 	public var innerRange: NSRange
 	
+	public var isInline: Bool { return true }
+	
 	var arguments: String = ""
 	var code: String
 	
