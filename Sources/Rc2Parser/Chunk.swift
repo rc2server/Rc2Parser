@@ -72,6 +72,12 @@ public protocol EquationChunk: Chunk {
 	var code: String { get }
 }
 
+/// the type representing an inline equation
+public typealias InlineEquationChunk = EquationChunk & InlineChunk
+
+/// the type representing an inline code chunk
+public typealias InlineCodeChunk = CodeChunk & InlineChunk
+
 /// chunk type used internally in the package in place of Chunk
 typealias InternalChunk = Chunk & ChunkPrivate
 
@@ -82,6 +88,17 @@ public class AnyChunk: Chunk {
 	internal init(_ wrapping: InternalChunk) {
 		chunk = wrapping
 	}
+
+	/// the chunk as a CodeChunk, or nil if it isn't a CodeChunk
+	public var asCode: CodeChunk? { return chunk as? CodeChunk }
+	/// the chunk as a MarkdownChunk, or nil if it isn't a MarkdownChunk
+	public var asMarkdown: MarkdownChunk? { return chunk as? MarkdownChunk }
+	/// the chunk as a EquationChunk, or nil if it isn't a EquationChunk
+	public var asEquation: EquationChunk? { return chunk as? EquationChunk }
+	/// the chunk as an InlineEquationChunk, or nil if it isn't an InlineEquationChunk
+	public var asInlineEquation: InlineEquationChunk? { return chunk as? InlineEquationChunk }
+	/// the chunk as an InlineCodeChunk, or nil if it isn't an InlineCodeChunk
+	public var asInlineCode: InlineCodeChunk? { return chunk as? InlineCodeChunk }
 
 	public var type: ChunkType { return chunk.type }
 	public var content: String { return chunk.content }
