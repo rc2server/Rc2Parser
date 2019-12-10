@@ -13,6 +13,8 @@ internal let parserLog = Logger(label: "io.rc2.rc2parser")
 
 open class RmdParser {
 	
+	public init() {}
+	
 	/// parses a string of RMarkdown into chunks
 	public final func parse(input: String) throws -> ChunkCollection {
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
