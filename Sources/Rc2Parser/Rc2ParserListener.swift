@@ -9,6 +9,11 @@ import Foundation
 import Antlr4
 import Logging
 
+fileprivate extension Token {
+	var typeName: String { return Rc2Lexer.ruleNames[(getType()) - 1] }
+}
+
+
 enum ListenerErrorType {
 	case inlineChunkAtRoot
 	case invalidCodeOrder

@@ -97,6 +97,18 @@ open class Rc2RawParser: Parser {
 				listener.exitDocument(self)
 			}
 		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitDocument(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitDocument(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
 	}
 	@discardableResult
 	 open func document() throws -> DocumentContext {
@@ -175,6 +187,18 @@ open class Rc2RawParser: Parser {
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? Rc2RawParserListener {
 				listener.exitChunk(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitChunk(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitChunk(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
 			}
 		}
 	}
@@ -261,6 +285,18 @@ open class Rc2RawParser: Parser {
 				listener.exitMdown(self)
 			}
 		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitMdown(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitMdown(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
 	}
 	@discardableResult
 	 open func mdown() throws -> MdownContext {
@@ -334,6 +370,18 @@ open class Rc2RawParser: Parser {
 				listener.exitCode(self)
 			}
 		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitCode(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitCode(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
 	}
 	@discardableResult
 	 open func code() throws -> CodeContext {
@@ -392,6 +440,18 @@ open class Rc2RawParser: Parser {
 				listener.exitInlineCode(self)
 			}
 		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitInlineCode(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitInlineCode(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
 	}
 	@discardableResult
 	 open func inlineCode() throws -> InlineCodeContext {
@@ -448,6 +508,18 @@ open class Rc2RawParser: Parser {
 				listener.exitInlineEQ(self)
 			}
 		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitInlineEQ(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitInlineEQ(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
 	}
 	@discardableResult
 	 open func inlineEQ() throws -> InlineEQContext {
@@ -502,6 +574,18 @@ open class Rc2RawParser: Parser {
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? Rc2RawParserListener {
 				listener.exitEquation(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? Rc2RawParserVisitor {
+			    return visitor.visitEquation(self)
+			}
+			else if let visitor = visitor as? Rc2RawParserBaseVisitor {
+			    return visitor.visitEquation(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
 			}
 		}
 	}

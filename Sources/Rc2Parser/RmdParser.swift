@@ -12,6 +12,18 @@ import Logging
 internal let parserLog = Logger(label: "io.rc2.rc2parser")
 
 open class RmdParser {
+	/// the key the highlighter's will use to mark attributes
+	public static let SyntaxKey = NSAttributedString.Key("Rc2Style")
+	
+	/// the types of styles that will be tagged under StyleKey
+	public enum SyntaxElement: String, CaseIterable {
+		case none
+		case quote
+		case comment
+		case keyword
+		case symbol
+		case number
+	}
 	
 	public init() {}
 	
@@ -28,5 +40,13 @@ open class RmdParser {
 			throw errors.errors[0]
 		}
 		return ChunkCollection(listener.chunks)
+	}
+
+	public final func highlight(content: NSMutableAttributedString) throws {
+		let lexer = RLexer(ANTLRInputStream(content.string))
+		let parser =  try RParser(CommonTokenStream(lexer))
+		let tree = try parser.prog()
+		let visitor = RParserVisitor(string: content)
+		visitor.visit(tree)
 	}
 }

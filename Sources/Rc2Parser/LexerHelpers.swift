@@ -8,10 +8,6 @@
 import Foundation
 import Antlr4
 
-extension Token {
-	var typeName: String { return Rc2Lexer.ruleNames[(getType()) - 1] }
-}
-
 extension ParserRuleContext {
 	func childSymbol(at idx: Int) -> Token? {
 		guard let kids = children,
