@@ -27,40 +27,53 @@ class RParserVisitor: RBaseVisitor<Void> {
 	
 	override func visitCallFunc(_ ctx: RParser.CallFuncContext) -> Void? {
 		guard let funToken = ctx.expr()?.getStart(),
-			let funName = funToken.getText(),
 			let params = ctx.sublist()
 		else { fatalError() }
 		let range = funToken.range
-		source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.keyword, range: range)
+		source.addAttribute(SyntaxKey, value: SyntaxElement.keyword, range: range)
 		// know child1 is arg1
-		print("name = \(funName), args=\(params.getText())")
+//		print("name = \(funName), args=\(params.getText())")
 		self.visit(params)
 		return nil
 	}
 
-	override func visitSublist(_ ctx: RParser.SublistContext) -> Void? {
-		self.visitChildren(ctx)
+//	override func visitSublist(_ ctx: RParser.SublistContext) -> Void? {
+//		self.visitChildren(ctx)
+//		return nil
+//	}
+	
+	override func visitAssignOp(_ ctx: RParser.AssignOpContext) -> Void? {
+//		if let range = ctx.getStart()?.range {
+//			source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.quote, range: range)
+//		}
 		return nil
 	}
 	
 	override func visitNumber(_ ctx: RParser.NumberContext) -> Void? {
 		if let range = ctx.getStart()?.range {
-			source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.number, range: range)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.number, range: range)
+		}
+		return nil
+	}
+
+	override func visitStringRule(_ ctx: RParser.StringRuleContext) -> Void? {
+		if let range = ctx.getStart()?.range {
+			source.addAttribute(SyntaxKey, value: SyntaxElement.quote, range: range)
 		}
 		return nil
 	}
 	
 	override func visitIdRule(_ ctx: RParser.IdRuleContext) -> Void? {
-		guard let range = ctx.ID()?.getSymbol()?.range else {
-			print("ERROR")
-			return nil
-		}
-		source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.keyword, range: range)
+//		guard let range = ctx.ID()?.getSymbol()?.range else {
+//			print("ERROR")
+//			return nil
+//		}
+//		source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.keyword, range: range)
 		return nil
 	}
 	override func visitComment(_ ctx: RParser.CommentContext) -> Void? {
 		if let range = ctx.getStart()?.range {
-			source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.comment, range: range)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.comment, range: range)
 		}
 		return nil
 	}

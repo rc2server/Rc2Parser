@@ -11,19 +11,20 @@ import Logging
 
 internal let parserLog = Logger(label: "io.rc2.rc2parser")
 
+/// the key the highlighter's will use to mark attributes
+public let SyntaxKey = NSAttributedString.Key("Rc2Style")
+
+/// the types of styles that will be tagged under StyleKey
+public enum SyntaxElement: String, CaseIterable {
+	case none
+	case quote
+	case comment
+	case keyword
+	case symbol
+	case number
+}
+
 open class RmdParser {
-	/// the key the highlighter's will use to mark attributes
-	public static let SyntaxKey = NSAttributedString.Key("Rc2Style")
-	
-	/// the types of styles that will be tagged under StyleKey
-	public enum SyntaxElement: String, CaseIterable {
-		case none
-		case quote
-		case comment
-		case keyword
-		case symbol
-		case number
-	}
 	
 	public init() {}
 	
