@@ -16,11 +16,15 @@ public let SyntaxKey = NSAttributedString.Key("Rc2Style")
 
 /// the types of styles that will be tagged under StyleKey
 public enum SyntaxElement: String, CaseIterable {
-	case none
+	/// a quoted string (single or double)
 	case string
+	/// a comment starting with #
 	case comment
-	case keyword
+	/// the name oi a function
+	case functonName
+	/// an operator or reserved work (if, else, etc.)
 	case symbol
+	/// a numeric value, including integer, real, and complex numbers
 	case number
 }
 

@@ -34,10 +34,10 @@ final class RParserTests: XCTestCase {
 		XCTAssertEqual(keys[3], SyntaxElement.number)
 		XCTAssertEqual(keys[4], SyntaxElement.symbol)
 		XCTAssertEqual(keys[5], SyntaxElement.number)
-		XCTAssertEqual(keys[6], SyntaxElement.keyword)
+		XCTAssertEqual(keys[6], SyntaxElement.functonName)
 		XCTAssertEqual(keys[7], SyntaxElement.number)
-		XCTAssertEqual(keys[8], SyntaxElement.keyword)
-		XCTAssertEqual(keys[9], SyntaxElement.keyword)
+		XCTAssertEqual(keys[8], SyntaxElement.functonName)
+		XCTAssertEqual(keys[9], SyntaxElement.functonName)
 		XCTAssertEqual(keys[10], SyntaxElement.number)
 	}
 	

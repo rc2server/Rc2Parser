@@ -41,7 +41,7 @@ class RParserVisitor: RBaseVisitor<Void> {
 		if rKeywords.contains(funToken.getText()!.lowercased()) {
 			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: range)
 		} else {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.keyword, range: range)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.functonName, range: range)
 		}
 		// know child1 is arg1
 //		print("name = \(funName), args=\(params.getText())")
