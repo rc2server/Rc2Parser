@@ -46,6 +46,7 @@ token.setChannel(type(of: token).HIDDEN_CHANNEL)})+ ;
 
 elem:   op eat?
     |   atom
+    |	comment
     |   '{' eat? {curlies += 1} (elem|NL|';')* {curlies -= 1} '}'
     |   '(' (elem|eat)* ')'
     |   '[' (elem|eat)* ']'
@@ -80,6 +81,7 @@ elem:   op eat?
         }
     ;
 
+comment: COMMENT ;
 atom:   'next' | 'break' | ID | STRING | HEX | INT | FLOAT | COMPLEX | 'NULL'
     |   'NA' | 'Inf' | 'NaN' | 'TRUE' | 'FALSE'
     ;

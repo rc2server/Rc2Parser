@@ -68,6 +68,7 @@ expr:   expr '[[' sublist ']' ']'  # listRef // '[[' follows R's yacc grammar
     |   expr (ASTERICK|SLASH) expr # mulDiv
     |   expr (PLUS|MINUS) expr # plusMinus
     |   expr rcomparison expr # comparison
+    |	rcomment # comment
     |   NOT expr # notExpr
     |   expr AND_OP expr # andExpr
     |   expr (BAR|DBAR) expr # orExpr
@@ -83,20 +84,12 @@ expr:   expr '[[' sublist ']' ']'  # listRef // '[[' follows R's yacc grammar
     |   WHILE '(' expr ')' expr # whileLoop
     |   REPEAT expr # repeatLoop
     |   QMARK expr # helpRequest // get help on expr, usually string or ID
-    |   NEXT # nextStmt
-    |   BREAK # breakStmt
+    |   keyword # keywordRule
     |   '(' expr ')' # listExp
     |   ID # idRule
     |   STRING # stringRule
     |   HEX # hexRule
     |   number # numRule
-    |   'NULL' # nullRule
-    |   'NA' # naRule
-    |   'Inf' # infinity
-    |   'NaN' # notNumber
-    |   'TRUE' # trueRule
-    |   'FALSE' # falseRule
-    |	rcomment # comment
     ;
 
 exprlist
@@ -135,6 +128,24 @@ assignOp: ASSIGN | DASSIGN | RASSIGN | DRASSIGN | EQ_CHAR ;
 number : INT | FLOAT | COMPLEX ;
 
 rcomment : COMMENT ;
+
+keyword : IF # ifKeyWord
+		| ELSE # elseKeyword
+		| REPEAT # repeatKeyword
+		| WHILE # whileKeyword
+		| FOR # forKeyword
+		| BREAK # breakKeyword
+		| IN # inKeyword
+		| NEXT # hexKeyword
+		| FUNCTION # functionKeyword
+		| TRUE # trueKeyword
+		| FALSE # falseKeyword
+		| NA # naKeyword
+		| NaN # nanKeyword
+		| INF # infKeyword
+		| NULL # nullKeyword
+		;
+
 
 HEX :   '0' ('x'|'X') HEXDIGIT+ [Ll]? ;
 
@@ -228,6 +239,7 @@ NOTEQUAL_OP : '!=' ;
 NOT : '!';
 PERCENT: '%';
 
+HASH: '#';
 BAR: '|';
 DBAR: '||';
 AMP: '&';

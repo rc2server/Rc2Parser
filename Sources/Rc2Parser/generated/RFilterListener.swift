@@ -43,6 +43,18 @@ public protocol RFilterListener: ParseTreeListener {
 	 */
 	func exitElem(_ ctx: RFilter.ElemContext)
 	/**
+	 * Enter a parse tree produced by {@link RFilter#comment}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterComment(_ ctx: RFilter.CommentContext)
+	/**
+	 * Exit a parse tree produced by {@link RFilter#comment}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitComment(_ ctx: RFilter.CommentContext)
+	/**
 	 * Enter a parse tree produced by {@link RFilter#atom}.
 	 - Parameters:
 	   - ctx: the parse tree

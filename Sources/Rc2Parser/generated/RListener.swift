@@ -61,20 +61,6 @@ public protocol RListener: ParseTreeListener {
 	 */
 	func exitRepeatLoop(_ ctx: RParser.RepeatLoopContext)
 	/**
-	 * Enter a parse tree produced by the {@code trueRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterTrueRule(_ ctx: RParser.TrueRuleContext)
-	/**
-	 * Exit a parse tree produced by the {@code trueRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitTrueRule(_ ctx: RParser.TrueRuleContext)
-	/**
 	 * Enter a parse tree produced by the {@code expTildeExp}
 	 * labeled alternative in {@link RParser#expr}.
 	 - Parameters:
@@ -173,20 +159,6 @@ public protocol RListener: ParseTreeListener {
 	 */
 	func exitHexRule(_ ctx: RParser.HexRuleContext)
 	/**
-	 * Enter a parse tree produced by the {@code falseRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterFalseRule(_ ctx: RParser.FalseRuleContext)
-	/**
-	 * Exit a parse tree produced by the {@code falseRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitFalseRule(_ ctx: RParser.FalseRuleContext)
-	/**
 	 * Enter a parse tree produced by the {@code array}
 	 * labeled alternative in {@link RParser#expr}.
 	 - Parameters:
@@ -256,6 +228,20 @@ public protocol RListener: ParseTreeListener {
 	   - ctx: the parse tree
 	 */
 	func exitNumRule(_ ctx: RParser.NumRuleContext)
+	/**
+	 * Enter a parse tree produced by the {@code keywordRule}
+	 * labeled alternative in {@link RParser#expr}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterKeywordRule(_ ctx: RParser.KeywordRuleContext)
+	/**
+	 * Exit a parse tree produced by the {@code keywordRule}
+	 * labeled alternative in {@link RParser#expr}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitKeywordRule(_ ctx: RParser.KeywordRuleContext)
 	/**
 	 * Enter a parse tree produced by the {@code forLoop}
 	 * labeled alternative in {@link RParser#expr}.
@@ -341,20 +327,6 @@ public protocol RListener: ParseTreeListener {
 	 */
 	func exitAssignExp(_ ctx: RParser.AssignExpContext)
 	/**
-	 * Enter a parse tree produced by the {@code notNumber}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterNotNumber(_ ctx: RParser.NotNumberContext)
-	/**
-	 * Exit a parse tree produced by the {@code notNumber}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitNotNumber(_ ctx: RParser.NotNumberContext)
-	/**
 	 * Enter a parse tree produced by the {@code orExpr}
 	 * labeled alternative in {@link RParser#expr}.
 	 - Parameters:
@@ -439,20 +411,6 @@ public protocol RListener: ParseTreeListener {
 	 */
 	func exitUserExpr(_ ctx: RParser.UserExprContext)
 	/**
-	 * Enter a parse tree produced by the {@code breakStmt}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterBreakStmt(_ ctx: RParser.BreakStmtContext)
-	/**
-	 * Exit a parse tree produced by the {@code breakStmt}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitBreakStmt(_ ctx: RParser.BreakStmtContext)
-	/**
 	 * Enter a parse tree produced by the {@code colon}
 	 * labeled alternative in {@link RParser#expr}.
 	 - Parameters:
@@ -467,20 +425,6 @@ public protocol RListener: ParseTreeListener {
 	 */
 	func exitColon(_ ctx: RParser.ColonContext)
 	/**
-	 * Enter a parse tree produced by the {@code infinity}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterInfinity(_ ctx: RParser.InfinityContext)
-	/**
-	 * Exit a parse tree produced by the {@code infinity}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitInfinity(_ ctx: RParser.InfinityContext)
-	/**
 	 * Enter a parse tree produced by the {@code comment}
 	 * labeled alternative in {@link RParser#expr}.
 	 - Parameters:
@@ -494,20 +438,6 @@ public protocol RListener: ParseTreeListener {
 	   - ctx: the parse tree
 	 */
 	func exitComment(_ ctx: RParser.CommentContext)
-	/**
-	 * Enter a parse tree produced by the {@code naRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterNaRule(_ ctx: RParser.NaRuleContext)
-	/**
-	 * Exit a parse tree produced by the {@code naRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitNaRule(_ ctx: RParser.NaRuleContext)
 	/**
 	 * Enter a parse tree produced by the {@code dollarOrAt}
 	 * labeled alternative in {@link RParser#expr}.
@@ -536,34 +466,6 @@ public protocol RListener: ParseTreeListener {
 	   - ctx: the parse tree
 	 */
 	func exitPlusNeg(_ ctx: RParser.PlusNegContext)
-	/**
-	 * Enter a parse tree produced by the {@code nextStmt}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterNextStmt(_ ctx: RParser.NextStmtContext)
-	/**
-	 * Exit a parse tree produced by the {@code nextStmt}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitNextStmt(_ ctx: RParser.NextStmtContext)
-	/**
-	 * Enter a parse tree produced by the {@code nullRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterNullRule(_ ctx: RParser.NullRuleContext)
-	/**
-	 * Exit a parse tree produced by the {@code nullRule}
-	 * labeled alternative in {@link RParser#expr}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitNullRule(_ ctx: RParser.NullRuleContext)
 	/**
 	 * Enter a parse tree produced by the {@code andExpr}
 	 * labeled alternative in {@link RParser#expr}.
@@ -698,4 +600,214 @@ public protocol RListener: ParseTreeListener {
 	   - ctx: the parse tree
 	 */
 	func exitRcomment(_ ctx: RParser.RcommentContext)
+	/**
+	 * Enter a parse tree produced by the {@code ifKeyWord}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterIfKeyWord(_ ctx: RParser.IfKeyWordContext)
+	/**
+	 * Exit a parse tree produced by the {@code ifKeyWord}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitIfKeyWord(_ ctx: RParser.IfKeyWordContext)
+	/**
+	 * Enter a parse tree produced by the {@code elseKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterElseKeyword(_ ctx: RParser.ElseKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code elseKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitElseKeyword(_ ctx: RParser.ElseKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code repeatKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterRepeatKeyword(_ ctx: RParser.RepeatKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code repeatKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitRepeatKeyword(_ ctx: RParser.RepeatKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code whileKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterWhileKeyword(_ ctx: RParser.WhileKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code whileKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitWhileKeyword(_ ctx: RParser.WhileKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code forKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterForKeyword(_ ctx: RParser.ForKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code forKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitForKeyword(_ ctx: RParser.ForKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code breakKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterBreakKeyword(_ ctx: RParser.BreakKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code breakKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitBreakKeyword(_ ctx: RParser.BreakKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code inKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterInKeyword(_ ctx: RParser.InKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code inKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitInKeyword(_ ctx: RParser.InKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code hexKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterHexKeyword(_ ctx: RParser.HexKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code hexKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitHexKeyword(_ ctx: RParser.HexKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code functionKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterFunctionKeyword(_ ctx: RParser.FunctionKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code functionKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitFunctionKeyword(_ ctx: RParser.FunctionKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code trueKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterTrueKeyword(_ ctx: RParser.TrueKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code trueKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitTrueKeyword(_ ctx: RParser.TrueKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code falseKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterFalseKeyword(_ ctx: RParser.FalseKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code falseKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitFalseKeyword(_ ctx: RParser.FalseKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code naKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterNaKeyword(_ ctx: RParser.NaKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code naKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitNaKeyword(_ ctx: RParser.NaKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code nanKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterNanKeyword(_ ctx: RParser.NanKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code nanKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitNanKeyword(_ ctx: RParser.NanKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code infKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterInfKeyword(_ ctx: RParser.InfKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code infKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitInfKeyword(_ ctx: RParser.InfKeywordContext)
+	/**
+	 * Enter a parse tree produced by the {@code nullKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterNullKeyword(_ ctx: RParser.NullKeywordContext)
+	/**
+	 * Exit a parse tree produced by the {@code nullKeyword}
+	 * labeled alternative in {@link RParser#keyword}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitNullKeyword(_ ctx: RParser.NullKeywordContext)
 }

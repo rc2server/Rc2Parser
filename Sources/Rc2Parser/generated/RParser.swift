@@ -23,48 +23,50 @@ open class RParser: Parser {
                  DBRA_CLOSE = 22, BRC_OPEN = 23, BRC_CLOSE = 24, QMARK = 25, 
                  PLUS = 26, MINUS = 27, ASTERICK = 28, SLASH = 29, LT = 30, 
                  LTE = 31, GT = 32, GTE = 33, EQUAL_OP = 34, NOTEQUAL_OP = 35, 
-                 NOT = 36, PERCENT = 37, BAR = 38, DBAR = 39, AMP = 40, 
-                 DAMP = 41, COLEQ = 42, ASSIGN = 43, DASSIGN = 44, RASSIGN = 45, 
-                 DRASSIGN = 46, EQ_CHAR = 47, TRIPLE_COLON = 48, DOUBLE_COLON = 49, 
-                 COLON = 50, DOLLAR_CHAR = 51, AT_CHAR = 52, TILDE = 53, 
-                 USCORE = 54, PERIOD = 55, SQUOTE = 56, DQUOTE = 57, TRIPLE_DOT = 58, 
-                 COMMA = 59, BACKTICK = 60, SEMI = 61, CARAT = 62, NULL = 63, 
-                 NaN = 64, TRUE = 65, FALSE = 66, NA = 67, INF = 68, USER_OP = 69, 
-                 COMMENT = 70, NL = 71, WS = 72
+                 NOT = 36, PERCENT = 37, HASH = 38, BAR = 39, DBAR = 40, 
+                 AMP = 41, DAMP = 42, COLEQ = 43, ASSIGN = 44, DASSIGN = 45, 
+                 RASSIGN = 46, DRASSIGN = 47, EQ_CHAR = 48, TRIPLE_COLON = 49, 
+                 DOUBLE_COLON = 50, COLON = 51, DOLLAR_CHAR = 52, AT_CHAR = 53, 
+                 TILDE = 54, USCORE = 55, PERIOD = 56, SQUOTE = 57, DQUOTE = 58, 
+                 TRIPLE_DOT = 59, COMMA = 60, BACKTICK = 61, SEMI = 62, 
+                 CARAT = 63, NULL = 64, NaN = 65, TRUE = 66, FALSE = 67, 
+                 NA = 68, INF = 69, USER_OP = 70, COMMENT = 71, NL = 72, 
+                 WS = 73
 	}
 
 	public
 	static let RULE_prog = 0, RULE_expr = 1, RULE_exprlist = 2, RULE_formlist = 3, 
             RULE_form = 4, RULE_sublist = 5, RULE_sub = 6, RULE_functionCall = 7, 
-            RULE_rcomparison = 8, RULE_assignOp = 9, RULE_number = 10, RULE_rcomment = 11
+            RULE_rcomparison = 8, RULE_assignOp = 9, RULE_number = 10, RULE_rcomment = 11, 
+            RULE_keyword = 12
 
 	public
 	static let ruleNames: [String] = [
 		"prog", "expr", "exprlist", "formlist", "form", "sublist", "sub", "functionCall", 
-		"rcomparison", "assignOp", "number", "rcomment"
+		"rcomparison", "assignOp", "number", "rcomment", "keyword"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
 		nil, nil, nil, nil, nil, nil, nil, "'if'", "'else'", "'repeat'", "'while'", 
 		"'for'", "'in'", "'break'", "'next'", "'function'", nil, "'('", "')'", 
 		"'['", "']'", "'[['", "']]'", "'{'", "'}'", "'?'", "'+'", "'-'", "'*'", 
-		"'/'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'!'", "'%'", "'|'", 
-		"'||'", "'&'", "'&&'", "':='", "'<-'", "'<<-'", "'->'", "'->>'", "'='", 
-		"':::'", "'::'", "':'", "'$'", "'@'", "'~'", "'_'", "'.'", "'''", "'\"'", 
-		"'...'", "','", "'`'", "';'", "'^'", "'NULL'", "'NaN'", "'TRUE'", "'FALSE'", 
-		"'NA'", "'Inf'"
+		"'/'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'!'", "'%'", "'#'", 
+		"'|'", "'||'", "'&'", "'&&'", "':='", "'<-'", "'<<-'", "'->'", "'->>'", 
+		"'='", "':::'", "'::'", "':'", "'$'", "'@'", "'~'", "'_'", "'.'", "'''", 
+		"'\"'", "'...'", "','", "'`'", "';'", "'^'", "'NULL'", "'NaN'", "'TRUE'", 
+		"'FALSE'", "'NA'", "'Inf'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, "HEX", "INT", "FLOAT", "COMPLEX", "STRING", "ID", "IF", "ELSE", "REPEAT", 
 		"WHILE", "FOR", "IN", "BREAK", "NEXT", "FUNCTION", "AND_OP", "PAR_OPEN", 
 		"PAR_CLOSE", "BRA_OPEN", "BRA_CLOSE", "DBRA_OPEN", "DBRA_CLOSE", "BRC_OPEN", 
 		"BRC_CLOSE", "QMARK", "PLUS", "MINUS", "ASTERICK", "SLASH", "LT", "LTE", 
-		"GT", "GTE", "EQUAL_OP", "NOTEQUAL_OP", "NOT", "PERCENT", "BAR", "DBAR", 
-		"AMP", "DAMP", "COLEQ", "ASSIGN", "DASSIGN", "RASSIGN", "DRASSIGN", "EQ_CHAR", 
-		"TRIPLE_COLON", "DOUBLE_COLON", "COLON", "DOLLAR_CHAR", "AT_CHAR", "TILDE", 
-		"USCORE", "PERIOD", "SQUOTE", "DQUOTE", "TRIPLE_DOT", "COMMA", "BACKTICK", 
-		"SEMI", "CARAT", "NULL", "NaN", "TRUE", "FALSE", "NA", "INF", "USER_OP", 
-		"COMMENT", "NL", "WS"
+		"GT", "GTE", "EQUAL_OP", "NOTEQUAL_OP", "NOT", "PERCENT", "HASH", "BAR", 
+		"DBAR", "AMP", "DAMP", "COLEQ", "ASSIGN", "DASSIGN", "RASSIGN", "DRASSIGN", 
+		"EQ_CHAR", "TRIPLE_COLON", "DOUBLE_COLON", "COLON", "DOLLAR_CHAR", "AT_CHAR", 
+		"TILDE", "USCORE", "PERIOD", "SQUOTE", "DQUOTE", "TRIPLE_DOT", "COMMA", 
+		"BACKTICK", "SEMI", "CARAT", "NULL", "NaN", "TRUE", "FALSE", "NA", "INF", 
+		"USER_OP", "COMMENT", "NL", "WS"
 	]
 	public
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
@@ -164,22 +166,22 @@ open class RParser: Parser {
 		do {
 			var _alt:Int
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(34)
+		 	setState(36)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
 		 	 { () -> Bool in
 		 	      var testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, RParser.Tokens.HEX.rawValue,RParser.Tokens.INT.rawValue,RParser.Tokens.FLOAT.rawValue,RParser.Tokens.COMPLEX.rawValue,RParser.Tokens.STRING.rawValue,RParser.Tokens.ID.rawValue,RParser.Tokens.IF.rawValue,RParser.Tokens.REPEAT.rawValue,RParser.Tokens.WHILE.rawValue,RParser.Tokens.FOR.rawValue,RParser.Tokens.BREAK.rawValue,RParser.Tokens.NEXT.rawValue,RParser.Tokens.FUNCTION.rawValue,RParser.Tokens.PAR_OPEN.rawValue,RParser.Tokens.BRC_OPEN.rawValue,RParser.Tokens.QMARK.rawValue,RParser.Tokens.PLUS.rawValue,RParser.Tokens.MINUS.rawValue,RParser.Tokens.NOT.rawValue,RParser.Tokens.TILDE.rawValue,RParser.Tokens.NULL.rawValue]
+		 	   let testArray: [Int] = [_la, RParser.Tokens.HEX.rawValue,RParser.Tokens.INT.rawValue,RParser.Tokens.FLOAT.rawValue,RParser.Tokens.COMPLEX.rawValue,RParser.Tokens.STRING.rawValue,RParser.Tokens.ID.rawValue,RParser.Tokens.IF.rawValue,RParser.Tokens.ELSE.rawValue,RParser.Tokens.REPEAT.rawValue,RParser.Tokens.WHILE.rawValue,RParser.Tokens.FOR.rawValue,RParser.Tokens.IN.rawValue,RParser.Tokens.BREAK.rawValue,RParser.Tokens.NEXT.rawValue,RParser.Tokens.FUNCTION.rawValue,RParser.Tokens.PAR_OPEN.rawValue,RParser.Tokens.BRC_OPEN.rawValue,RParser.Tokens.QMARK.rawValue,RParser.Tokens.PLUS.rawValue,RParser.Tokens.MINUS.rawValue,RParser.Tokens.NOT.rawValue,RParser.Tokens.TILDE.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	          testSet = testSet || {  () -> Bool in
-		 	             let testArray: [Int] = [_la, RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue,RParser.Tokens.NL.rawValue]
+		 	             let testArray: [Int] = [_la, RParser.Tokens.NULL.rawValue,RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue,RParser.Tokens.NL.rawValue]
 		 	              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 	          }()
 		 	      return testSet
 		 	 }()) {
-		 		setState(32)
+		 		setState(34)
 		 		try _errHandler.sync(self)
 		 		switch (RParser.Tokens(rawValue: try _input.LA(1))!) {
 		 		case .HEX:fallthrough
@@ -189,9 +191,11 @@ open class RParser: Parser {
 		 		case .STRING:fallthrough
 		 		case .ID:fallthrough
 		 		case .IF:fallthrough
+		 		case .ELSE:fallthrough
 		 		case .REPEAT:fallthrough
 		 		case .WHILE:fallthrough
 		 		case .FOR:fallthrough
+		 		case .IN:fallthrough
 		 		case .BREAK:fallthrough
 		 		case .NEXT:fallthrough
 		 		case .FUNCTION:fallthrough
@@ -209,14 +213,14 @@ open class RParser: Parser {
 		 		case .NA:fallthrough
 		 		case .INF:fallthrough
 		 		case .COMMENT:
-		 			setState(24)
+		 			setState(26)
 		 			try expr(0)
-		 			setState(28)
+		 			setState(30)
 		 			try _errHandler.sync(self)
 		 			_alt = try getInterpreter().adaptivePredict(_input,0,_ctx)
 		 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
 		 				if ( _alt==1 ) {
-		 					setState(25)
+		 					setState(27)
 		 					_la = try _input.LA(1)
 		 					if (!(//closure
 		 					 { () -> Bool in
@@ -232,7 +236,7 @@ open class RParser: Parser {
 
 		 			 
 		 				}
-		 				setState(30)
+		 				setState(32)
 		 				try _errHandler.sync(self)
 		 				_alt = try getInterpreter().adaptivePredict(_input,0,_ctx)
 		 			}
@@ -240,7 +244,7 @@ open class RParser: Parser {
 		 			break
 
 		 		case .NL:
-		 			setState(31)
+		 			setState(33)
 		 			try match(RParser.Tokens.NL.rawValue)
 
 		 			break
@@ -248,11 +252,11 @@ open class RParser: Parser {
 		 			throw ANTLRException.recognition(e: NoViableAltException(self))
 		 		}
 
-		 		setState(36)
+		 		setState(38)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(37)
+		 	setState(39)
 		 	try match(RParser.Tokens.EOF.rawValue)
 
 		}
@@ -398,42 +402,6 @@ open class RParser: Parser {
 			}
 			else if let visitor = visitor as? RBaseVisitor {
 			    return visitor.visitRepeatLoop(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	public class TrueRuleContext: ExprContext {
-			open
-			func TRUE() -> TerminalNode? {
-				return getToken(RParser.Tokens.TRUE.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterTrueRule(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitTrueRule(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitTrueRule(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitTrueRule(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -756,42 +724,6 @@ open class RParser: Parser {
 			}
 		}
 	}
-	public class FalseRuleContext: ExprContext {
-			open
-			func FALSE() -> TerminalNode? {
-				return getToken(RParser.Tokens.FALSE.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterFalseRule(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitFalseRule(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitFalseRule(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitFalseRule(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
 	public class ArrayContext: ExprContext {
 			open
 			func expr() -> ExprContext? {
@@ -990,6 +922,42 @@ open class RParser: Parser {
 			}
 			else if let visitor = visitor as? RBaseVisitor {
 			    return visitor.visitNumRule(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class KeywordRuleContext: ExprContext {
+			open
+			func keyword() -> KeywordContext? {
+				return getRuleContext(KeywordContext.self, 0)
+			}
+
+		public
+		init(_ ctx: ExprContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterKeywordRule(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitKeywordRule(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitKeywordRule(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitKeywordRule(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -1274,42 +1242,6 @@ open class RParser: Parser {
 			}
 			else if let visitor = visitor as? RBaseVisitor {
 			    return visitor.visitAssignExp(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	public class NotNumberContext: ExprContext {
-			open
-			func NaN() -> TerminalNode? {
-				return getToken(RParser.Tokens.NaN.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterNotNumber(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitNotNumber(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitNotNumber(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitNotNumber(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -1604,42 +1536,6 @@ open class RParser: Parser {
 			}
 		}
 	}
-	public class BreakStmtContext: ExprContext {
-			open
-			func BREAK() -> TerminalNode? {
-				return getToken(RParser.Tokens.BREAK.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterBreakStmt(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitBreakStmt(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitBreakStmt(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitBreakStmt(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
 	public class ColonContext: ExprContext {
 			open
 			func expr() -> [ExprContext] {
@@ -1684,42 +1580,6 @@ open class RParser: Parser {
 			}
 		}
 	}
-	public class InfinityContext: ExprContext {
-			open
-			func INF() -> TerminalNode? {
-				return getToken(RParser.Tokens.INF.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterInfinity(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitInfinity(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitInfinity(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitInfinity(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
 	public class CommentContext: ExprContext {
 			open
 			func rcomment() -> RcommentContext? {
@@ -1750,42 +1610,6 @@ open class RParser: Parser {
 			}
 			else if let visitor = visitor as? RBaseVisitor {
 			    return visitor.visitComment(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	public class NaRuleContext: ExprContext {
-			open
-			func NA() -> TerminalNode? {
-				return getToken(RParser.Tokens.NA.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterNaRule(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitNaRule(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitNaRule(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitNaRule(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -1884,78 +1708,6 @@ open class RParser: Parser {
 			}
 		}
 	}
-	public class NextStmtContext: ExprContext {
-			open
-			func NEXT() -> TerminalNode? {
-				return getToken(RParser.Tokens.NEXT.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterNextStmt(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitNextStmt(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitNextStmt(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitNextStmt(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	public class NullRuleContext: ExprContext {
-			open
-			func NULL() -> TerminalNode? {
-				return getToken(RParser.Tokens.NULL.rawValue, 0)
-			}
-
-		public
-		init(_ ctx: ExprContext) {
-			super.init()
-			copyFrom(ctx)
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.enterNullRule(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? RListener {
-				listener.exitNullRule(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? RVisitor {
-			    return visitor.visitNullRule(self)
-			}
-			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitNullRule(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
 	public class AndExprContext: ExprContext {
 			open
 			func expr() -> [ExprContext] {
@@ -2019,7 +1771,7 @@ open class RParser: Parser {
 		do {
 			var _alt: Int
 			try enterOuterAlt(_localctx, 1)
-			setState(106)
+			setState(101)
 			try _errHandler.sync(self)
 			switch(try getInterpreter().adaptivePredict(_input,4, _ctx)) {
 			case 1:
@@ -2027,7 +1779,7 @@ open class RParser: Parser {
 				_ctx = _localctx
 				_prevctx = _localctx
 
-				setState(40)
+				setState(42)
 				_la = try _input.LA(1)
 				if (!(//closure
 				 { () -> Bool in
@@ -2040,39 +1792,47 @@ open class RParser: Parser {
 					_errHandler.reportMatch(self)
 					try consume()
 				}
-				setState(41)
-				try expr(35)
+				setState(43)
+				try expr(28)
 
 				break
 			case 2:
-				_localctx = NotExprContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(42)
-				try match(RParser.Tokens.NOT.rawValue)
-				setState(43)
-				try expr(29)
-
-				break
-			case 3:
-				_localctx = TildeExpContext(_localctx)
+				_localctx = CommentContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
 				setState(44)
-				try match(RParser.Tokens.TILDE.rawValue)
+				try rcomment()
+
+				break
+			case 3:
+				_localctx = NotExprContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
 				setState(45)
-				try expr(26)
+				try match(RParser.Tokens.NOT.rawValue)
+				setState(46)
+				try expr(21)
 
 				break
 			case 4:
+				_localctx = TildeExpContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(47)
+				try match(RParser.Tokens.TILDE.rawValue)
+				setState(48)
+				try expr(18)
+
+				break
+			case 5:
 				_localctx = DefineFuncContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(46)
-				try match(RParser.Tokens.FUNCTION.rawValue)
-				setState(47)
-				try match(RParser.Tokens.PAR_OPEN.rawValue)
 				setState(49)
+				try match(RParser.Tokens.FUNCTION.rawValue)
+				setState(50)
+				try match(RParser.Tokens.PAR_OPEN.rawValue)
+				setState(52)
 				try _errHandler.sync(self)
 				_la = try _input.LA(1)
 				if (//closure
@@ -2083,146 +1843,138 @@ open class RParser: Parser {
 				}()
 				      return testSet
 				 }()) {
-					setState(48)
+					setState(51)
 					try formlist()
 
 				}
 
-				setState(51)
-				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(52)
-				try expr(23)
-
-				break
-			case 5:
-				_localctx = CompoundStmtContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(53)
-				try match(RParser.Tokens.BRC_OPEN.rawValue)
 				setState(54)
-				try exprlist()
+				try match(RParser.Tokens.PAR_CLOSE.rawValue)
 				setState(55)
-				try match(RParser.Tokens.BRC_CLOSE.rawValue)
-
-				break
-			case 6:
-				_localctx = IfStmtContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(57)
-				try match(RParser.Tokens.IF.rawValue)
-				setState(58)
-				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(59)
-				try expr(0)
-				setState(60)
-				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(61)
-				try expr(20)
-
-				break
-			case 7:
-				_localctx = IfelseStmtContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(63)
-				try match(RParser.Tokens.IF.rawValue)
-				setState(64)
-				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(65)
-				try expr(0)
-				setState(66)
-				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(67)
-				try expr(0)
-				setState(68)
-				try match(RParser.Tokens.ELSE.rawValue)
-				setState(69)
-				try expr(19)
-
-				break
-			case 8:
-				_localctx = ForLoopContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(71)
-				try match(RParser.Tokens.FOR.rawValue)
-				setState(72)
-				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(73)
-				try match(RParser.Tokens.ID.rawValue)
-				setState(74)
-				try match(RParser.Tokens.IN.rawValue)
-				setState(75)
-				try expr(0)
-				setState(76)
-				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(77)
-				try expr(18)
-
-				break
-			case 9:
-				_localctx = WhileLoopContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(79)
-				try match(RParser.Tokens.WHILE.rawValue)
-				setState(80)
-				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(81)
-				try expr(0)
-				setState(82)
-				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(83)
-				try expr(17)
-
-				break
-			case 10:
-				_localctx = RepeatLoopContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(85)
-				try match(RParser.Tokens.REPEAT.rawValue)
-				setState(86)
-				try expr(16)
-
-				break
-			case 11:
-				_localctx = HelpRequestContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(87)
-				try match(RParser.Tokens.QMARK.rawValue)
-				setState(88)
 				try expr(15)
 
 				break
-			case 12:
-				_localctx = NextStmtContext(_localctx)
+			case 6:
+				_localctx = CompoundStmtContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(89)
-				try match(RParser.Tokens.NEXT.rawValue)
+				setState(56)
+				try match(RParser.Tokens.BRC_OPEN.rawValue)
+				setState(57)
+				try exprlist()
+				setState(58)
+				try match(RParser.Tokens.BRC_CLOSE.rawValue)
 
 				break
-			case 13:
-				_localctx = BreakStmtContext(_localctx)
+			case 7:
+				_localctx = IfStmtContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(60)
+				try match(RParser.Tokens.IF.rawValue)
+				setState(61)
+				try match(RParser.Tokens.PAR_OPEN.rawValue)
+				setState(62)
+				try expr(0)
+				setState(63)
+				try match(RParser.Tokens.PAR_CLOSE.rawValue)
+				setState(64)
+				try expr(12)
+
+				break
+			case 8:
+				_localctx = IfelseStmtContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(66)
+				try match(RParser.Tokens.IF.rawValue)
+				setState(67)
+				try match(RParser.Tokens.PAR_OPEN.rawValue)
+				setState(68)
+				try expr(0)
+				setState(69)
+				try match(RParser.Tokens.PAR_CLOSE.rawValue)
+				setState(70)
+				try expr(0)
+				setState(71)
+				try match(RParser.Tokens.ELSE.rawValue)
+				setState(72)
+				try expr(11)
+
+				break
+			case 9:
+				_localctx = ForLoopContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(74)
+				try match(RParser.Tokens.FOR.rawValue)
+				setState(75)
+				try match(RParser.Tokens.PAR_OPEN.rawValue)
+				setState(76)
+				try match(RParser.Tokens.ID.rawValue)
+				setState(77)
+				try match(RParser.Tokens.IN.rawValue)
+				setState(78)
+				try expr(0)
+				setState(79)
+				try match(RParser.Tokens.PAR_CLOSE.rawValue)
+				setState(80)
+				try expr(10)
+
+				break
+			case 10:
+				_localctx = WhileLoopContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(82)
+				try match(RParser.Tokens.WHILE.rawValue)
+				setState(83)
+				try match(RParser.Tokens.PAR_OPEN.rawValue)
+				setState(84)
+				try expr(0)
+				setState(85)
+				try match(RParser.Tokens.PAR_CLOSE.rawValue)
+				setState(86)
+				try expr(9)
+
+				break
+			case 11:
+				_localctx = RepeatLoopContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(88)
+				try match(RParser.Tokens.REPEAT.rawValue)
+				setState(89)
+				try expr(8)
+
+				break
+			case 12:
+				_localctx = HelpRequestContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
 				setState(90)
-				try match(RParser.Tokens.BREAK.rawValue)
+				try match(RParser.Tokens.QMARK.rawValue)
+				setState(91)
+				try expr(7)
+
+				break
+			case 13:
+				_localctx = KeywordRuleContext(_localctx)
+				_ctx = _localctx
+				_prevctx = _localctx
+				setState(92)
+				try keyword()
 
 				break
 			case 14:
 				_localctx = ListExpContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(91)
-				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(92)
-				try expr(0)
 				setState(93)
+				try match(RParser.Tokens.PAR_OPEN.rawValue)
+				setState(94)
+				try expr(0)
+				setState(95)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
 
 				break
@@ -2230,7 +1982,7 @@ open class RParser: Parser {
 				_localctx = IdRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(95)
+				setState(97)
 				try match(RParser.Tokens.ID.rawValue)
 
 				break
@@ -2238,7 +1990,7 @@ open class RParser: Parser {
 				_localctx = StringRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(96)
+				setState(98)
 				try match(RParser.Tokens.STRING.rawValue)
 
 				break
@@ -2246,7 +1998,7 @@ open class RParser: Parser {
 				_localctx = HexRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(97)
+				setState(99)
 				try match(RParser.Tokens.HEX.rawValue)
 
 				break
@@ -2254,70 +2006,14 @@ open class RParser: Parser {
 				_localctx = NumRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(98)
-				try number()
-
-				break
-			case 19:
-				_localctx = NullRuleContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(99)
-				try match(RParser.Tokens.NULL.rawValue)
-
-				break
-			case 20:
-				_localctx = NaRuleContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
 				setState(100)
-				try match(RParser.Tokens.NA.rawValue)
-
-				break
-			case 21:
-				_localctx = InfinityContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(101)
-				try match(RParser.Tokens.INF.rawValue)
-
-				break
-			case 22:
-				_localctx = NotNumberContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(102)
-				try match(RParser.Tokens.NaN.rawValue)
-
-				break
-			case 23:
-				_localctx = TrueRuleContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(103)
-				try match(RParser.Tokens.TRUE.rawValue)
-
-				break
-			case 24:
-				_localctx = FalseRuleContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(104)
-				try match(RParser.Tokens.FALSE.rawValue)
-
-				break
-			case 25:
-				_localctx = CommentContext(_localctx)
-				_ctx = _localctx
-				_prevctx = _localctx
-				setState(105)
-				try rcomment()
+				try number()
 
 				break
 			default: break
 			}
 			_ctx!.stop = try _input.LT(-1)
-			setState(164)
+			setState(159)
 			try _errHandler.sync(self)
 			_alt = try getInterpreter().adaptivePredict(_input,6,_ctx)
 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
@@ -2326,17 +2022,17 @@ open class RParser: Parser {
 					   try triggerExitRuleEvent()
 					}
 					_prevctx = _localctx
-					setState(162)
+					setState(157)
 					try _errHandler.sync(self)
 					switch(try getInterpreter().adaptivePredict(_input,5, _ctx)) {
 					case 1:
 						_localctx = DescendantContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(108)
-						if (!(precpred(_ctx, 38))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 38)"))
+						setState(103)
+						if (!(precpred(_ctx, 31))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 31)"))
 						}
-						setState(109)
+						setState(104)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2349,18 +2045,18 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(110)
-						try expr(39)
+						setState(105)
+						try expr(32)
 
 						break
 					case 2:
 						_localctx = DollarOrAtContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(111)
-						if (!(precpred(_ctx, 37))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 37)"))
+						setState(106)
+						if (!(precpred(_ctx, 30))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 30)"))
 						}
-						setState(112)
+						setState(107)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2373,57 +2069,57 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(113)
-						try expr(38)
+						setState(108)
+						try expr(31)
 
 						break
 					case 3:
 						_localctx = HouseContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(114)
-						if (!(precpred(_ctx, 36))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 36)"))
+						setState(109)
+						if (!(precpred(_ctx, 29))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 29)"))
 						}
-						setState(115)
+						setState(110)
 						try match(RParser.Tokens.CARAT.rawValue)
-						setState(116)
-						try expr(36)
+						setState(111)
+						try expr(29)
 
 						break
 					case 4:
 						_localctx = ColonContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(117)
-						if (!(precpred(_ctx, 34))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 34)"))
+						setState(112)
+						if (!(precpred(_ctx, 27))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 27)"))
 						}
-						setState(118)
+						setState(113)
 						try match(RParser.Tokens.COLON.rawValue)
-						setState(119)
-						try expr(35)
+						setState(114)
+						try expr(28)
 
 						break
 					case 5:
 						_localctx = UserExprContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(120)
-						if (!(precpred(_ctx, 33))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 33)"))
+						setState(115)
+						if (!(precpred(_ctx, 26))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 26)"))
 						}
-						setState(121)
+						setState(116)
 						try match(RParser.Tokens.USER_OP.rawValue)
-						setState(122)
-						try expr(34)
+						setState(117)
+						try expr(27)
 
 						break
 					case 6:
 						_localctx = MulDivContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(123)
-						if (!(precpred(_ctx, 32))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 32)"))
+						setState(118)
+						if (!(precpred(_ctx, 25))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 25)"))
 						}
-						setState(124)
+						setState(119)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2436,18 +2132,18 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(125)
-						try expr(33)
+						setState(120)
+						try expr(26)
 
 						break
 					case 7:
 						_localctx = PlusMinusContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(126)
-						if (!(precpred(_ctx, 31))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 31)"))
+						setState(121)
+						if (!(precpred(_ctx, 24))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 24)"))
 						}
-						setState(127)
+						setState(122)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2460,44 +2156,44 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(128)
-						try expr(32)
+						setState(123)
+						try expr(25)
 
 						break
 					case 8:
 						_localctx = ComparisonContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(129)
-						if (!(precpred(_ctx, 30))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 30)"))
+						setState(124)
+						if (!(precpred(_ctx, 23))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 23)"))
 						}
-						setState(130)
+						setState(125)
 						try rcomparison()
-						setState(131)
-						try expr(31)
+						setState(126)
+						try expr(24)
 
 						break
 					case 9:
 						_localctx = AndExprContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(133)
-						if (!(precpred(_ctx, 28))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 28)"))
+						setState(128)
+						if (!(precpred(_ctx, 20))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 20)"))
 						}
-						setState(134)
+						setState(129)
 						try match(RParser.Tokens.AND_OP.rawValue)
-						setState(135)
-						try expr(29)
+						setState(130)
+						try expr(21)
 
 						break
 					case 10:
 						_localctx = OrExprContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(136)
-						if (!(precpred(_ctx, 27))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 27)"))
+						setState(131)
+						if (!(precpred(_ctx, 19))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 19)"))
 						}
-						setState(137)
+						setState(132)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2510,80 +2206,80 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(138)
-						try expr(28)
+						setState(133)
+						try expr(20)
 
 						break
 					case 11:
 						_localctx = ExpTildeExpContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(139)
-						if (!(precpred(_ctx, 25))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 25)"))
+						setState(134)
+						if (!(precpred(_ctx, 17))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 17)"))
 						}
-						setState(140)
+						setState(135)
 						try match(RParser.Tokens.TILDE.rawValue)
-						setState(141)
-						try expr(26)
+						setState(136)
+						try expr(18)
 
 						break
 					case 12:
 						_localctx = AssignExpContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(142)
-						if (!(precpred(_ctx, 24))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 24)"))
+						setState(137)
+						if (!(precpred(_ctx, 16))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 16)"))
 						}
-						setState(143)
+						setState(138)
 						try assignOp()
-						setState(144)
-						try expr(25)
+						setState(139)
+						try expr(17)
 
 						break
 					case 13:
 						_localctx = ListRefContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(146)
-						if (!(precpred(_ctx, 40))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 40)"))
+						setState(141)
+						if (!(precpred(_ctx, 33))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 33)"))
 						}
-						setState(147)
+						setState(142)
 						try match(RParser.Tokens.DBRA_OPEN.rawValue)
-						setState(148)
+						setState(143)
 						try sublist()
-						setState(149)
+						setState(144)
 						try match(RParser.Tokens.BRA_CLOSE.rawValue)
-						setState(150)
+						setState(145)
 						try match(RParser.Tokens.BRA_CLOSE.rawValue)
 
 						break
 					case 14:
 						_localctx = ArrayContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(152)
-						if (!(precpred(_ctx, 39))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 39)"))
+						setState(147)
+						if (!(precpred(_ctx, 32))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 32)"))
 						}
-						setState(153)
+						setState(148)
 						try match(RParser.Tokens.BRA_OPEN.rawValue)
-						setState(154)
+						setState(149)
 						try sublist()
-						setState(155)
+						setState(150)
 						try match(RParser.Tokens.BRA_CLOSE.rawValue)
 
 						break
 					case 15:
 						_localctx = CallFuncContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(157)
-						if (!(precpred(_ctx, 22))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 22)"))
+						setState(152)
+						if (!(precpred(_ctx, 14))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 14)"))
 						}
-						setState(158)
+						setState(153)
 						try match(RParser.Tokens.PAR_OPEN.rawValue)
-						setState(159)
+						setState(154)
 						try sublist()
-						setState(160)
+						setState(155)
 						try match(RParser.Tokens.PAR_CLOSE.rawValue)
 
 						break
@@ -2591,7 +2287,7 @@ open class RParser: Parser {
 					}
 			 
 				}
-				setState(166)
+				setState(161)
 				try _errHandler.sync(self)
 				_alt = try getInterpreter().adaptivePredict(_input,6,_ctx)
 			}
@@ -2669,7 +2365,7 @@ open class RParser: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(178)
+		 	setState(173)
 		 	try _errHandler.sync(self)
 		 	switch (RParser.Tokens(rawValue: try _input.LA(1))!) {
 		 	case .HEX:fallthrough
@@ -2679,9 +2375,11 @@ open class RParser: Parser {
 		 	case .STRING:fallthrough
 		 	case .ID:fallthrough
 		 	case .IF:fallthrough
+		 	case .ELSE:fallthrough
 		 	case .REPEAT:fallthrough
 		 	case .WHILE:fallthrough
 		 	case .FOR:fallthrough
+		 	case .IN:fallthrough
 		 	case .BREAK:fallthrough
 		 	case .NEXT:fallthrough
 		 	case .FUNCTION:fallthrough
@@ -2700,9 +2398,9 @@ open class RParser: Parser {
 		 	case .INF:fallthrough
 		 	case .COMMENT:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(167)
+		 		setState(162)
 		 		try expr(0)
-		 		setState(174)
+		 		setState(169)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
@@ -2710,7 +2408,7 @@ open class RParser: Parser {
 		 		      let testSet: Bool = _la == RParser.Tokens.SEMI.rawValue || _la == RParser.Tokens.NL.rawValue
 		 		      return testSet
 		 		 }()) {
-		 			setState(168)
+		 			setState(163)
 		 			_la = try _input.LA(1)
 		 			if (!(//closure
 		 			 { () -> Bool in
@@ -2723,29 +2421,29 @@ open class RParser: Parser {
 		 				_errHandler.reportMatch(self)
 		 				try consume()
 		 			}
-		 			setState(170)
+		 			setState(165)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 			if (//closure
 		 			 { () -> Bool in
 		 			      var testSet: Bool = {  () -> Bool in
-		 			   let testArray: [Int] = [_la, RParser.Tokens.HEX.rawValue,RParser.Tokens.INT.rawValue,RParser.Tokens.FLOAT.rawValue,RParser.Tokens.COMPLEX.rawValue,RParser.Tokens.STRING.rawValue,RParser.Tokens.ID.rawValue,RParser.Tokens.IF.rawValue,RParser.Tokens.REPEAT.rawValue,RParser.Tokens.WHILE.rawValue,RParser.Tokens.FOR.rawValue,RParser.Tokens.BREAK.rawValue,RParser.Tokens.NEXT.rawValue,RParser.Tokens.FUNCTION.rawValue,RParser.Tokens.PAR_OPEN.rawValue,RParser.Tokens.BRC_OPEN.rawValue,RParser.Tokens.QMARK.rawValue,RParser.Tokens.PLUS.rawValue,RParser.Tokens.MINUS.rawValue,RParser.Tokens.NOT.rawValue,RParser.Tokens.TILDE.rawValue,RParser.Tokens.NULL.rawValue]
+		 			   let testArray: [Int] = [_la, RParser.Tokens.HEX.rawValue,RParser.Tokens.INT.rawValue,RParser.Tokens.FLOAT.rawValue,RParser.Tokens.COMPLEX.rawValue,RParser.Tokens.STRING.rawValue,RParser.Tokens.ID.rawValue,RParser.Tokens.IF.rawValue,RParser.Tokens.ELSE.rawValue,RParser.Tokens.REPEAT.rawValue,RParser.Tokens.WHILE.rawValue,RParser.Tokens.FOR.rawValue,RParser.Tokens.IN.rawValue,RParser.Tokens.BREAK.rawValue,RParser.Tokens.NEXT.rawValue,RParser.Tokens.FUNCTION.rawValue,RParser.Tokens.PAR_OPEN.rawValue,RParser.Tokens.BRC_OPEN.rawValue,RParser.Tokens.QMARK.rawValue,RParser.Tokens.PLUS.rawValue,RParser.Tokens.MINUS.rawValue,RParser.Tokens.NOT.rawValue,RParser.Tokens.TILDE.rawValue]
 		 			    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 			}()
 		 			          testSet = testSet || {  () -> Bool in
-		 			             let testArray: [Int] = [_la, RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue]
+		 			             let testArray: [Int] = [_la, RParser.Tokens.NULL.rawValue,RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue]
 		 			              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 			          }()
 		 			      return testSet
 		 			 }()) {
-		 				setState(169)
+		 				setState(164)
 		 				try expr(0)
 
 		 			}
 
 
 
-		 			setState(176)
+		 			setState(171)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
@@ -2825,9 +2523,9 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(180)
+		 	setState(175)
 		 	try form()
-		 	setState(185)
+		 	setState(180)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
@@ -2835,13 +2533,13 @@ open class RParser: Parser {
 		 	      let testSet: Bool = _la == RParser.Tokens.COMMA.rawValue
 		 	      return testSet
 		 	 }()) {
-		 		setState(181)
+		 		setState(176)
 		 		try match(RParser.Tokens.COMMA.rawValue)
-		 		setState(182)
+		 		setState(177)
 		 		try form()
 
 
-		 		setState(187)
+		 		setState(182)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
@@ -2914,34 +2612,34 @@ open class RParser: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(194)
+		 	setState(189)
 		 	try _errHandler.sync(self)
 		 	switch(try getInterpreter().adaptivePredict(_input,11, _ctx)) {
 		 	case 1:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(188)
+		 		setState(183)
 		 		try match(RParser.Tokens.ID.rawValue)
 
 		 		break
 		 	case 2:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(189)
+		 		setState(184)
 		 		try match(RParser.Tokens.ID.rawValue)
-		 		setState(190)
+		 		setState(185)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-		 		setState(191)
+		 		setState(186)
 		 		try expr(0)
 
 		 		break
 		 	case 3:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(192)
+		 		setState(187)
 		 		try match(RParser.Tokens.TRIPLE_DOT.rawValue)
 
 		 		break
 		 	case 4:
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(193)
+		 		setState(188)
 		 		try match(RParser.Tokens.PERIOD.rawValue)
 
 		 		break
@@ -3013,9 +2711,9 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(196)
+		 	setState(191)
 		 	try sub()
-		 	setState(201)
+		 	setState(196)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
@@ -3023,13 +2721,13 @@ open class RParser: Parser {
 		 	      let testSet: Bool = _la == RParser.Tokens.COMMA.rawValue
 		 	      return testSet
 		 	 }()) {
-		 		setState(197)
+		 		setState(192)
 		 		try match(RParser.Tokens.COMMA.rawValue)
-		 		setState(198)
+		 		setState(193)
 		 		try sub()
 
 
-		 		setState(203)
+		 		setState(198)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
@@ -3110,78 +2808,78 @@ open class RParser: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(223)
+		 	setState(218)
 		 	try _errHandler.sync(self)
 		 	switch(try getInterpreter().adaptivePredict(_input,13, _ctx)) {
 		 	case 1:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(204)
+		 		setState(199)
 		 		try expr(0)
 
 		 		break
 		 	case 2:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(205)
+		 		setState(200)
 		 		try match(RParser.Tokens.ID.rawValue)
-		 		setState(206)
+		 		setState(201)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 3:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(207)
+		 		setState(202)
 		 		try match(RParser.Tokens.ID.rawValue)
+		 		setState(203)
+		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
+		 		setState(204)
+		 		try expr(0)
+
+		 		break
+		 	case 4:
+		 		try enterOuterAlt(_localctx, 4)
+		 		setState(205)
+		 		try match(RParser.Tokens.STRING.rawValue)
+		 		setState(206)
+		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
+
+		 		break
+		 	case 5:
+		 		try enterOuterAlt(_localctx, 5)
+		 		setState(207)
+		 		try match(RParser.Tokens.STRING.rawValue)
 		 		setState(208)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 		 		setState(209)
 		 		try expr(0)
 
 		 		break
-		 	case 4:
-		 		try enterOuterAlt(_localctx, 4)
+		 	case 6:
+		 		try enterOuterAlt(_localctx, 6)
 		 		setState(210)
-		 		try match(RParser.Tokens.STRING.rawValue)
+		 		try match(RParser.Tokens.NULL.rawValue)
 		 		setState(211)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
-		 	case 5:
-		 		try enterOuterAlt(_localctx, 5)
+		 	case 7:
+		 		try enterOuterAlt(_localctx, 7)
 		 		setState(212)
-		 		try match(RParser.Tokens.STRING.rawValue)
+		 		try match(RParser.Tokens.NULL.rawValue)
 		 		setState(213)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 		 		setState(214)
 		 		try expr(0)
 
 		 		break
-		 	case 6:
-		 		try enterOuterAlt(_localctx, 6)
-		 		setState(215)
-		 		try match(RParser.Tokens.NULL.rawValue)
-		 		setState(216)
-		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-
-		 		break
-		 	case 7:
-		 		try enterOuterAlt(_localctx, 7)
-		 		setState(217)
-		 		try match(RParser.Tokens.NULL.rawValue)
-		 		setState(218)
-		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-		 		setState(219)
-		 		try expr(0)
-
-		 		break
 		 	case 8:
 		 		try enterOuterAlt(_localctx, 8)
-		 		setState(220)
+		 		setState(215)
 		 		try match(RParser.Tokens.TRIPLE_DOT.rawValue)
 
 		 		break
 		 	case 9:
 		 		try enterOuterAlt(_localctx, 9)
-		 		setState(221)
+		 		setState(216)
 		 		try match(RParser.Tokens.PERIOD.rawValue)
 
 		 		break
@@ -3256,13 +2954,13 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(225)
+		 	setState(220)
 		 	try expr(0)
-		 	setState(226)
+		 	setState(221)
 		 	try match(RParser.Tokens.PAR_OPEN.rawValue)
-		 	setState(227)
+		 	setState(222)
 		 	try sublist()
-		 	setState(228)
+		 	setState(223)
 		 	try match(RParser.Tokens.PAR_CLOSE.rawValue)
 
 		}
@@ -3339,7 +3037,7 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(230)
+		 	setState(225)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
@@ -3426,7 +3124,7 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(232)
+		 	setState(227)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
@@ -3505,7 +3203,7 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(234)
+		 	setState(229)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
@@ -3575,9 +3273,698 @@ open class RParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(236)
+		 	setState(231)
 		 	try match(RParser.Tokens.COMMENT.rawValue)
 
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	public class KeywordContext: ParserRuleContext {
+		override open
+		func getRuleIndex() -> Int {
+			return RParser.RULE_keyword
+		}
+	}
+	public class ForKeywordContext: KeywordContext {
+			open
+			func FOR() -> TerminalNode? {
+				return getToken(RParser.Tokens.FOR.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterForKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitForKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitForKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitForKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class NullKeywordContext: KeywordContext {
+			open
+			func NULL() -> TerminalNode? {
+				return getToken(RParser.Tokens.NULL.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterNullKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitNullKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitNullKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitNullKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class IfKeyWordContext: KeywordContext {
+			open
+			func IF() -> TerminalNode? {
+				return getToken(RParser.Tokens.IF.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterIfKeyWord(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitIfKeyWord(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitIfKeyWord(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitIfKeyWord(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class InKeywordContext: KeywordContext {
+			open
+			func IN() -> TerminalNode? {
+				return getToken(RParser.Tokens.IN.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterInKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitInKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitInKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitInKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class InfKeywordContext: KeywordContext {
+			open
+			func INF() -> TerminalNode? {
+				return getToken(RParser.Tokens.INF.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterInfKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitInfKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitInfKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitInfKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class NanKeywordContext: KeywordContext {
+			open
+			func NaN() -> TerminalNode? {
+				return getToken(RParser.Tokens.NaN.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterNanKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitNanKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitNanKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitNanKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class BreakKeywordContext: KeywordContext {
+			open
+			func BREAK() -> TerminalNode? {
+				return getToken(RParser.Tokens.BREAK.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterBreakKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitBreakKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitBreakKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitBreakKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class WhileKeywordContext: KeywordContext {
+			open
+			func WHILE() -> TerminalNode? {
+				return getToken(RParser.Tokens.WHILE.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterWhileKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitWhileKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitWhileKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitWhileKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class ElseKeywordContext: KeywordContext {
+			open
+			func ELSE() -> TerminalNode? {
+				return getToken(RParser.Tokens.ELSE.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterElseKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitElseKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitElseKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitElseKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class FalseKeywordContext: KeywordContext {
+			open
+			func FALSE() -> TerminalNode? {
+				return getToken(RParser.Tokens.FALSE.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterFalseKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitFalseKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitFalseKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitFalseKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class NaKeywordContext: KeywordContext {
+			open
+			func NA() -> TerminalNode? {
+				return getToken(RParser.Tokens.NA.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterNaKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitNaKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitNaKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitNaKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class RepeatKeywordContext: KeywordContext {
+			open
+			func REPEAT() -> TerminalNode? {
+				return getToken(RParser.Tokens.REPEAT.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterRepeatKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitRepeatKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitRepeatKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitRepeatKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class FunctionKeywordContext: KeywordContext {
+			open
+			func FUNCTION() -> TerminalNode? {
+				return getToken(RParser.Tokens.FUNCTION.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterFunctionKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitFunctionKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitFunctionKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitFunctionKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class TrueKeywordContext: KeywordContext {
+			open
+			func TRUE() -> TerminalNode? {
+				return getToken(RParser.Tokens.TRUE.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterTrueKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitTrueKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitTrueKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitTrueKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class HexKeywordContext: KeywordContext {
+			open
+			func NEXT() -> TerminalNode? {
+				return getToken(RParser.Tokens.NEXT.rawValue, 0)
+			}
+
+		public
+		init(_ ctx: KeywordContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterHexKeyword(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitHexKeyword(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitHexKeyword(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitHexKeyword(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	@discardableResult
+	 open func keyword() throws -> KeywordContext {
+		var _localctx: KeywordContext = KeywordContext(_ctx, getState())
+		try enterRule(_localctx, 24, RParser.RULE_keyword)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	setState(248)
+		 	try _errHandler.sync(self)
+		 	switch (RParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .IF:
+		 		_localctx =  IfKeyWordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 1)
+		 		setState(233)
+		 		try match(RParser.Tokens.IF.rawValue)
+
+		 		break
+
+		 	case .ELSE:
+		 		_localctx =  ElseKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 2)
+		 		setState(234)
+		 		try match(RParser.Tokens.ELSE.rawValue)
+
+		 		break
+
+		 	case .REPEAT:
+		 		_localctx =  RepeatKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 3)
+		 		setState(235)
+		 		try match(RParser.Tokens.REPEAT.rawValue)
+
+		 		break
+
+		 	case .WHILE:
+		 		_localctx =  WhileKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 4)
+		 		setState(236)
+		 		try match(RParser.Tokens.WHILE.rawValue)
+
+		 		break
+
+		 	case .FOR:
+		 		_localctx =  ForKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 5)
+		 		setState(237)
+		 		try match(RParser.Tokens.FOR.rawValue)
+
+		 		break
+
+		 	case .BREAK:
+		 		_localctx =  BreakKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 6)
+		 		setState(238)
+		 		try match(RParser.Tokens.BREAK.rawValue)
+
+		 		break
+
+		 	case .IN:
+		 		_localctx =  InKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 7)
+		 		setState(239)
+		 		try match(RParser.Tokens.IN.rawValue)
+
+		 		break
+
+		 	case .NEXT:
+		 		_localctx =  HexKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 8)
+		 		setState(240)
+		 		try match(RParser.Tokens.NEXT.rawValue)
+
+		 		break
+
+		 	case .FUNCTION:
+		 		_localctx =  FunctionKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 9)
+		 		setState(241)
+		 		try match(RParser.Tokens.FUNCTION.rawValue)
+
+		 		break
+
+		 	case .TRUE:
+		 		_localctx =  TrueKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 10)
+		 		setState(242)
+		 		try match(RParser.Tokens.TRUE.rawValue)
+
+		 		break
+
+		 	case .FALSE:
+		 		_localctx =  FalseKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 11)
+		 		setState(243)
+		 		try match(RParser.Tokens.FALSE.rawValue)
+
+		 		break
+
+		 	case .NA:
+		 		_localctx =  NaKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 12)
+		 		setState(244)
+		 		try match(RParser.Tokens.NA.rawValue)
+
+		 		break
+
+		 	case .NaN:
+		 		_localctx =  NanKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 13)
+		 		setState(245)
+		 		try match(RParser.Tokens.NaN.rawValue)
+
+		 		break
+
+		 	case .INF:
+		 		_localctx =  InfKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 14)
+		 		setState(246)
+		 		try match(RParser.Tokens.INF.rawValue)
+
+		 		break
+
+		 	case .NULL:
+		 		_localctx =  NullKeywordContext(_localctx);
+		 		try enterOuterAlt(_localctx, 15)
+		 		setState(247)
+		 		try match(RParser.Tokens.NULL.rawValue)
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
 		}
 		catch ANTLRException.recognition(let re) {
 			_localctx.exception = re
@@ -3598,21 +3985,21 @@ open class RParser: Parser {
 	}
 	private func expr_sempred(_ _localctx: ExprContext!,  _ predIndex: Int) throws -> Bool {
 		switch (predIndex) {
-		    case 0:return precpred(_ctx, 38)
-		    case 1:return precpred(_ctx, 37)
-		    case 2:return precpred(_ctx, 36)
-		    case 3:return precpred(_ctx, 34)
-		    case 4:return precpred(_ctx, 33)
-		    case 5:return precpred(_ctx, 32)
-		    case 6:return precpred(_ctx, 31)
-		    case 7:return precpred(_ctx, 30)
-		    case 8:return precpred(_ctx, 28)
-		    case 9:return precpred(_ctx, 27)
-		    case 10:return precpred(_ctx, 25)
-		    case 11:return precpred(_ctx, 24)
-		    case 12:return precpred(_ctx, 40)
-		    case 13:return precpred(_ctx, 39)
-		    case 14:return precpred(_ctx, 22)
+		    case 0:return precpred(_ctx, 31)
+		    case 1:return precpred(_ctx, 30)
+		    case 2:return precpred(_ctx, 29)
+		    case 3:return precpred(_ctx, 27)
+		    case 4:return precpred(_ctx, 26)
+		    case 5:return precpred(_ctx, 25)
+		    case 6:return precpred(_ctx, 24)
+		    case 7:return precpred(_ctx, 23)
+		    case 8:return precpred(_ctx, 20)
+		    case 9:return precpred(_ctx, 19)
+		    case 10:return precpred(_ctx, 17)
+		    case 11:return precpred(_ctx, 16)
+		    case 12:return precpred(_ctx, 33)
+		    case 13:return precpred(_ctx, 32)
+		    case 14:return precpred(_ctx, 14)
 		    default: return true
 		}
 	}

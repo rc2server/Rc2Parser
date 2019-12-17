@@ -67,19 +67,6 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterTrueRule(_ ctx: RParser.TrueRuleContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitTrueRule(_ ctx: RParser.TrueRuleContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	open func enterExpTildeExp(_ ctx: RParser.ExpTildeExpContext) { }
 	/**
 	 * {@inheritDoc}
@@ -171,19 +158,6 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterFalseRule(_ ctx: RParser.FalseRuleContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitFalseRule(_ ctx: RParser.FalseRuleContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	open func enterArray(_ ctx: RParser.ArrayContext) { }
 	/**
 	 * {@inheritDoc}
@@ -243,6 +217,19 @@ open class RBaseListener: RListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	open func exitNumRule(_ ctx: RParser.NumRuleContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterKeywordRule(_ ctx: RParser.KeywordRuleContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitKeywordRule(_ ctx: RParser.KeywordRuleContext) { }
 
 	/**
 	 * {@inheritDoc}
@@ -327,19 +314,6 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterNotNumber(_ ctx: RParser.NotNumberContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitNotNumber(_ ctx: RParser.NotNumberContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	open func enterOrExpr(_ ctx: RParser.OrExprContext) { }
 	/**
 	 * {@inheritDoc}
@@ -418,19 +392,6 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterBreakStmt(_ ctx: RParser.BreakStmtContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitBreakStmt(_ ctx: RParser.BreakStmtContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	open func enterColon(_ ctx: RParser.ColonContext) { }
 	/**
 	 * {@inheritDoc}
@@ -444,19 +405,6 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterInfinity(_ ctx: RParser.InfinityContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitInfinity(_ ctx: RParser.InfinityContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	open func enterComment(_ ctx: RParser.CommentContext) { }
 	/**
 	 * {@inheritDoc}
@@ -464,19 +412,6 @@ open class RBaseListener: RListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	open func exitComment(_ ctx: RParser.CommentContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func enterNaRule(_ ctx: RParser.NaRuleContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitNaRule(_ ctx: RParser.NaRuleContext) { }
 
 	/**
 	 * {@inheritDoc}
@@ -503,32 +438,6 @@ open class RBaseListener: RListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	open func exitPlusNeg(_ ctx: RParser.PlusNegContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func enterNextStmt(_ ctx: RParser.NextStmtContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitNextStmt(_ ctx: RParser.NextStmtContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func enterNullRule(_ ctx: RParser.NullRuleContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	open func exitNullRule(_ ctx: RParser.NullRuleContext) { }
 
 	/**
 	 * {@inheritDoc}
@@ -672,6 +581,201 @@ open class RBaseListener: RListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	open func exitRcomment(_ ctx: RParser.RcommentContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterIfKeyWord(_ ctx: RParser.IfKeyWordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitIfKeyWord(_ ctx: RParser.IfKeyWordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterElseKeyword(_ ctx: RParser.ElseKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitElseKeyword(_ ctx: RParser.ElseKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterRepeatKeyword(_ ctx: RParser.RepeatKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitRepeatKeyword(_ ctx: RParser.RepeatKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterWhileKeyword(_ ctx: RParser.WhileKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitWhileKeyword(_ ctx: RParser.WhileKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterForKeyword(_ ctx: RParser.ForKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitForKeyword(_ ctx: RParser.ForKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterBreakKeyword(_ ctx: RParser.BreakKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitBreakKeyword(_ ctx: RParser.BreakKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterInKeyword(_ ctx: RParser.InKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitInKeyword(_ ctx: RParser.InKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterHexKeyword(_ ctx: RParser.HexKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitHexKeyword(_ ctx: RParser.HexKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterFunctionKeyword(_ ctx: RParser.FunctionKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitFunctionKeyword(_ ctx: RParser.FunctionKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterTrueKeyword(_ ctx: RParser.TrueKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitTrueKeyword(_ ctx: RParser.TrueKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterFalseKeyword(_ ctx: RParser.FalseKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitFalseKeyword(_ ctx: RParser.FalseKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterNaKeyword(_ ctx: RParser.NaKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitNaKeyword(_ ctx: RParser.NaKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterNanKeyword(_ ctx: RParser.NanKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitNanKeyword(_ ctx: RParser.NanKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterInfKeyword(_ ctx: RParser.InfKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitInfKeyword(_ ctx: RParser.InfKeywordContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterNullKeyword(_ ctx: RParser.NullKeywordContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitNullKeyword(_ ctx: RParser.NullKeywordContext) { }
 
 	/**
 	 * {@inheritDoc}

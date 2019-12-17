@@ -40,6 +40,16 @@ open class RFilterVisitor<T>: ParseTreeVisitor<T> {
 	}
 
 	/**
+	 * Visit a parse tree produced by {@link RFilter#comment}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitComment(_ ctx: RFilter.CommentContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
+
+	/**
 	 * Visit a parse tree produced by {@link RFilter#atom}.
 	- Parameters:
 	  - ctx: the parse tree

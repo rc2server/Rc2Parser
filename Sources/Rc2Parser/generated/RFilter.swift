@@ -23,46 +23,47 @@ open class RFilter: Parser {
                  DBRA_CLOSE = 22, BRC_OPEN = 23, BRC_CLOSE = 24, QMARK = 25, 
                  PLUS = 26, MINUS = 27, ASTERICK = 28, SLASH = 29, LT = 30, 
                  LTE = 31, GT = 32, GTE = 33, EQUAL_OP = 34, NOTEQUAL_OP = 35, 
-                 NOT = 36, PERCENT = 37, BAR = 38, DBAR = 39, AMP = 40, 
-                 DAMP = 41, COLEQ = 42, ASSIGN = 43, DASSIGN = 44, RASSIGN = 45, 
-                 DRASSIGN = 46, EQ_CHAR = 47, TRIPLE_COLON = 48, DOUBLE_COLON = 49, 
-                 COLON = 50, DOLLAR_CHAR = 51, AT_CHAR = 52, TILDE = 53, 
-                 USCORE = 54, PERIOD = 55, SQUOTE = 56, DQUOTE = 57, TRIPLE_DOT = 58, 
-                 COMMA = 59, BACKTICK = 60, SEMI = 61, CARAT = 62, NULL = 63, 
-                 NaN = 64, TRUE = 65, FALSE = 66, NA = 67, INF = 68, USER_OP = 69, 
-                 COMMENT = 70, NL = 71, WS = 72
+                 NOT = 36, PERCENT = 37, HASH = 38, BAR = 39, DBAR = 40, 
+                 AMP = 41, DAMP = 42, COLEQ = 43, ASSIGN = 44, DASSIGN = 45, 
+                 RASSIGN = 46, DRASSIGN = 47, EQ_CHAR = 48, TRIPLE_COLON = 49, 
+                 DOUBLE_COLON = 50, COLON = 51, DOLLAR_CHAR = 52, AT_CHAR = 53, 
+                 TILDE = 54, USCORE = 55, PERIOD = 56, SQUOTE = 57, DQUOTE = 58, 
+                 TRIPLE_DOT = 59, COMMA = 60, BACKTICK = 61, SEMI = 62, 
+                 CARAT = 63, NULL = 64, NaN = 65, TRUE = 66, FALSE = 67, 
+                 NA = 68, INF = 69, USER_OP = 70, COMMENT = 71, NL = 72, 
+                 WS = 73
 	}
 
 	public
-	static let RULE_stream = 0, RULE_eat = 1, RULE_elem = 2, RULE_atom = 3, 
-            RULE_op = 4
+	static let RULE_stream = 0, RULE_eat = 1, RULE_elem = 2, RULE_comment = 3, 
+            RULE_atom = 4, RULE_op = 5
 
 	public
 	static let ruleNames: [String] = [
-		"stream", "eat", "elem", "atom", "op"
+		"stream", "eat", "elem", "comment", "atom", "op"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
 		nil, nil, nil, nil, nil, nil, nil, "'if'", "'else'", "'repeat'", "'while'", 
 		"'for'", "'in'", "'break'", "'next'", "'function'", nil, "'('", "')'", 
 		"'['", "']'", "'[['", "']]'", "'{'", "'}'", "'?'", "'+'", "'-'", "'*'", 
-		"'/'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'!'", "'%'", "'|'", 
-		"'||'", "'&'", "'&&'", "':='", "'<-'", "'<<-'", "'->'", "'->>'", "'='", 
-		"':::'", "'::'", "':'", "'$'", "'@'", "'~'", "'_'", "'.'", "'''", "'\"'", 
-		"'...'", "','", "'`'", "';'", "'^'", "'NULL'", "'NaN'", "'TRUE'", "'FALSE'", 
-		"'NA'", "'Inf'"
+		"'/'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'!'", "'%'", "'#'", 
+		"'|'", "'||'", "'&'", "'&&'", "':='", "'<-'", "'<<-'", "'->'", "'->>'", 
+		"'='", "':::'", "'::'", "':'", "'$'", "'@'", "'~'", "'_'", "'.'", "'''", 
+		"'\"'", "'...'", "','", "'`'", "';'", "'^'", "'NULL'", "'NaN'", "'TRUE'", 
+		"'FALSE'", "'NA'", "'Inf'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, "HEX", "INT", "FLOAT", "COMPLEX", "STRING", "ID", "IF", "ELSE", "REPEAT", 
 		"WHILE", "FOR", "IN", "BREAK", "NEXT", "FUNCTION", "AND_OP", "PAR_OPEN", 
 		"PAR_CLOSE", "BRA_OPEN", "BRA_CLOSE", "DBRA_OPEN", "DBRA_CLOSE", "BRC_OPEN", 
 		"BRC_CLOSE", "QMARK", "PLUS", "MINUS", "ASTERICK", "SLASH", "LT", "LTE", 
-		"GT", "GTE", "EQUAL_OP", "NOTEQUAL_OP", "NOT", "PERCENT", "BAR", "DBAR", 
-		"AMP", "DAMP", "COLEQ", "ASSIGN", "DASSIGN", "RASSIGN", "DRASSIGN", "EQ_CHAR", 
-		"TRIPLE_COLON", "DOUBLE_COLON", "COLON", "DOLLAR_CHAR", "AT_CHAR", "TILDE", 
-		"USCORE", "PERIOD", "SQUOTE", "DQUOTE", "TRIPLE_DOT", "COMMA", "BACKTICK", 
-		"SEMI", "CARAT", "NULL", "NaN", "TRUE", "FALSE", "NA", "INF", "USER_OP", 
-		"COMMENT", "NL", "WS"
+		"GT", "GTE", "EQUAL_OP", "NOTEQUAL_OP", "NOT", "PERCENT", "HASH", "BAR", 
+		"DBAR", "AMP", "DAMP", "COLEQ", "ASSIGN", "DASSIGN", "RASSIGN", "DRASSIGN", 
+		"EQ_CHAR", "TRIPLE_COLON", "DOUBLE_COLON", "COLON", "DOLLAR_CHAR", "AT_CHAR", 
+		"TILDE", "USCORE", "PERIOD", "SQUOTE", "DQUOTE", "TRIPLE_DOT", "COMMA", 
+		"BACKTICK", "SEMI", "CARAT", "NULL", "NaN", "TRUE", "FALSE", "NA", "INF", 
+		"USER_OP", "COMMENT", "NL", "WS"
 	]
 	public
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
@@ -164,22 +165,22 @@ open class RFilter: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(15)
+		 	setState(17)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
 		 	 { () -> Bool in
 		 	      var testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.SEMI.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 	   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.SEMI.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	          testSet = testSet || {  () -> Bool in
-		 	             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 	             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 	              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 	          }()
 		 	      return testSet
 		 	 }()) {
-		 		setState(13)
+		 		setState(15)
 		 		try _errHandler.sync(self)
 		 		switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 		case .HEX:fallthrough
@@ -235,20 +236,21 @@ open class RFilter: Parser {
 		 		case .FALSE:fallthrough
 		 		case .NA:fallthrough
 		 		case .INF:fallthrough
-		 		case .USER_OP:
-		 			setState(10)
+		 		case .USER_OP:fallthrough
+		 		case .COMMENT:
+		 			setState(12)
 		 			try elem()
 
 		 			break
 
 		 		case .NL:
-		 			setState(11)
+		 			setState(13)
 		 			try match(RFilter.Tokens.NL.rawValue)
 
 		 			break
 
 		 		case .SEMI:
-		 			setState(12)
+		 			setState(14)
 		 			try match(RFilter.Tokens.SEMI.rawValue)
 
 		 			break
@@ -256,11 +258,11 @@ open class RFilter: Parser {
 		 			throw ANTLRException.recognition(e: NoViableAltException(self))
 		 		}
 
-		 		setState(17)
+		 		setState(19)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(18)
+		 	setState(20)
 		 	try match(RFilter.Tokens.EOF.rawValue)
 
 		}
@@ -321,13 +323,13 @@ open class RFilter: Parser {
 		do {
 			var _alt:Int
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(22); 
+		 	setState(24); 
 		 	try _errHandler.sync(self)
 		 	_alt = 1;
 		 	repeat {
 		 		switch (_alt) {
 		 		case 1:
-		 			setState(20)
+		 			setState(22)
 		 			try match(RFilter.Tokens.NL.rawValue)
 		 			let token = _localctx.castdown(EatContext.self) as! WritableToken
 		 			token.setChannel(type(of: token).HIDDEN_CHANNEL)
@@ -337,7 +339,7 @@ open class RFilter: Parser {
 		 		default:
 		 			throw ANTLRException.recognition(e: NoViableAltException(self))
 		 		}
-		 		setState(24); 
+		 		setState(26); 
 		 		try _errHandler.sync(self)
 		 		_alt = try getInterpreter().adaptivePredict(_input,2,_ctx)
 		 	} while (_alt != 2 && _alt !=  ATN.INVALID_ALT_NUMBER)
@@ -368,6 +370,10 @@ open class RFilter: Parser {
 			open
 			func atom() -> AtomContext? {
 				return getRuleContext(AtomContext.self, 0)
+			}
+			open
+			func comment() -> CommentContext? {
+				return getRuleContext(CommentContext.self, 0)
 			}
 			open
 			func BRC_OPEN() -> TerminalNode? {
@@ -483,7 +489,7 @@ open class RFilter: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(140)
+		 	setState(143)
 		 	try _errHandler.sync(self)
 		 	switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 	case .REPEAT:fallthrough
@@ -518,13 +524,13 @@ open class RFilter: Parser {
 		 	case .CARAT:fallthrough
 		 	case .USER_OP:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(26)
-		 		try op()
 		 		setState(28)
+		 		try op()
+		 		setState(30)
 		 		try _errHandler.sync(self)
 		 		switch (try getInterpreter().adaptivePredict(_input,3,_ctx)) {
 		 		case 1:
-		 			setState(27)
+		 			setState(29)
 		 			try eat()
 
 		 			break
@@ -547,42 +553,49 @@ open class RFilter: Parser {
 		 	case .NA:fallthrough
 		 	case .INF:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(30)
+		 		setState(32)
 		 		try atom()
 
 		 		break
 
-		 	case .BRC_OPEN:
+		 	case .COMMENT:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(31)
-		 		try match(RFilter.Tokens.BRC_OPEN.rawValue)
 		 		setState(33)
+		 		try comment()
+
+		 		break
+
+		 	case .BRC_OPEN:
+		 		try enterOuterAlt(_localctx, 4)
+		 		setState(34)
+		 		try match(RFilter.Tokens.BRC_OPEN.rawValue)
+		 		setState(36)
 		 		try _errHandler.sync(self)
 		 		switch (try getInterpreter().adaptivePredict(_input,4,_ctx)) {
 		 		case 1:
-		 			setState(32)
+		 			setState(35)
 		 			try eat()
 
 		 			break
 		 		default: break
 		 		}
 		 		curlies += 1
-		 		setState(41)
+		 		setState(44)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.SEMI.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.SEMI.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(39)
+		 			setState(42)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -638,20 +651,21 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(36)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(39)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(37)
+		 				setState(40)
 		 				try match(RFilter.Tokens.NL.rawValue)
 
 		 				break
 
 		 			case .SEMI:
-		 				setState(38)
+		 				setState(41)
 		 				try match(RFilter.Tokens.SEMI.rawValue)
 
 		 				break
@@ -659,36 +673,36 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(43)
+		 			setState(46)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
 		 		curlies -= 1
-		 		setState(45)
+		 		setState(48)
 		 		try match(RFilter.Tokens.BRC_CLOSE.rawValue)
 
 		 		break
 
 		 	case .PAR_OPEN:
-		 		try enterOuterAlt(_localctx, 4)
-		 		setState(46)
+		 		try enterOuterAlt(_localctx, 5)
+		 		setState(49)
 		 		try match(RFilter.Tokens.PAR_OPEN.rawValue)
-		 		setState(51)
+		 		setState(54)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(49)
+		 			setState(52)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -744,14 +758,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(47)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(50)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(48)
+		 				setState(51)
 		 				try eat()
 
 		 				break
@@ -759,35 +774,35 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(53)
+		 			setState(56)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(54)
+		 		setState(57)
 		 		try match(RFilter.Tokens.PAR_CLOSE.rawValue)
 
 		 		break
 
 		 	case .BRA_OPEN:
-		 		try enterOuterAlt(_localctx, 5)
-		 		setState(55)
+		 		try enterOuterAlt(_localctx, 6)
+		 		setState(58)
 		 		try match(RFilter.Tokens.BRA_OPEN.rawValue)
-		 		setState(60)
+		 		setState(63)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(58)
+		 			setState(61)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -843,14 +858,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(56)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(59)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(57)
+		 				setState(60)
 		 				try eat()
 
 		 				break
@@ -858,35 +874,35 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(62)
+		 			setState(65)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(63)
+		 		setState(66)
 		 		try match(RFilter.Tokens.BRA_CLOSE.rawValue)
 
 		 		break
 
 		 	case .DBRA_OPEN:
-		 		try enterOuterAlt(_localctx, 6)
-		 		setState(64)
+		 		try enterOuterAlt(_localctx, 7)
+		 		setState(67)
 		 		try match(RFilter.Tokens.DBRA_OPEN.rawValue)
-		 		setState(69)
+		 		setState(72)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(67)
+		 			setState(70)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -942,14 +958,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(65)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(68)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(66)
+		 				setState(69)
 		 				try eat()
 
 		 				break
@@ -957,22 +974,22 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(71)
+		 			setState(74)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(72)
+		 		setState(75)
 		 		try match(RFilter.Tokens.BRA_CLOSE.rawValue)
-		 		setState(73)
+		 		setState(76)
 		 		try match(RFilter.Tokens.BRA_CLOSE.rawValue)
 
 		 		break
 
 		 	case .FUNCTION:
-		 		try enterOuterAlt(_localctx, 7)
-		 		setState(74)
+		 		try enterOuterAlt(_localctx, 8)
+		 		setState(77)
 		 		try match(RFilter.Tokens.FUNCTION.rawValue)
-		 		setState(76)
+		 		setState(79)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		if (//closure
@@ -980,29 +997,29 @@ open class RFilter: Parser {
 		 		      let testSet: Bool = _la == RFilter.Tokens.NL.rawValue
 		 		      return testSet
 		 		 }()) {
-		 			setState(75)
+		 			setState(78)
 		 			try eat()
 
 		 		}
 
-		 		setState(78)
+		 		setState(81)
 		 		try match(RFilter.Tokens.PAR_OPEN.rawValue)
-		 		setState(83)
+		 		setState(86)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(81)
+		 			setState(84)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -1058,14 +1075,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(79)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(82)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(80)
+		 				setState(83)
 		 				try eat()
 
 		 				break
@@ -1073,17 +1091,17 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(85)
+		 			setState(88)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(86)
+		 		setState(89)
 		 		try match(RFilter.Tokens.PAR_CLOSE.rawValue)
-		 		setState(88)
+		 		setState(91)
 		 		try _errHandler.sync(self)
 		 		switch (try getInterpreter().adaptivePredict(_input,16,_ctx)) {
 		 		case 1:
-		 			setState(87)
+		 			setState(90)
 		 			try eat()
 
 		 			break
@@ -1093,10 +1111,10 @@ open class RFilter: Parser {
 		 		break
 
 		 	case .FOR:
-		 		try enterOuterAlt(_localctx, 8)
-		 		setState(90)
+		 		try enterOuterAlt(_localctx, 9)
+		 		setState(93)
 		 		try match(RFilter.Tokens.FOR.rawValue)
-		 		setState(92)
+		 		setState(95)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		if (//closure
@@ -1104,29 +1122,29 @@ open class RFilter: Parser {
 		 		      let testSet: Bool = _la == RFilter.Tokens.NL.rawValue
 		 		      return testSet
 		 		 }()) {
-		 			setState(91)
+		 			setState(94)
 		 			try eat()
 
 		 		}
 
-		 		setState(94)
+		 		setState(97)
 		 		try match(RFilter.Tokens.PAR_OPEN.rawValue)
-		 		setState(99)
+		 		setState(102)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(97)
+		 			setState(100)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -1182,14 +1200,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(95)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(98)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(96)
+		 				setState(99)
 		 				try eat()
 
 		 				break
@@ -1197,17 +1216,17 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(101)
+		 			setState(104)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(102)
+		 		setState(105)
 		 		try match(RFilter.Tokens.PAR_CLOSE.rawValue)
-		 		setState(104)
+		 		setState(107)
 		 		try _errHandler.sync(self)
 		 		switch (try getInterpreter().adaptivePredict(_input,20,_ctx)) {
 		 		case 1:
-		 			setState(103)
+		 			setState(106)
 		 			try eat()
 
 		 			break
@@ -1217,10 +1236,10 @@ open class RFilter: Parser {
 		 		break
 
 		 	case .WHILE:
-		 		try enterOuterAlt(_localctx, 9)
-		 		setState(106)
+		 		try enterOuterAlt(_localctx, 10)
+		 		setState(109)
 		 		try match(RFilter.Tokens.WHILE.rawValue)
-		 		setState(108)
+		 		setState(111)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		if (//closure
@@ -1228,29 +1247,29 @@ open class RFilter: Parser {
 		 		      let testSet: Bool = _la == RFilter.Tokens.NL.rawValue
 		 		      return testSet
 		 		 }()) {
-		 			setState(107)
+		 			setState(110)
 		 			try eat()
 
 		 		}
 
-		 		setState(110)
+		 		setState(113)
 		 		try match(RFilter.Tokens.PAR_OPEN.rawValue)
-		 		setState(115)
+		 		setState(118)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(113)
+		 			setState(116)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -1306,14 +1325,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(111)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(114)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(112)
+		 				setState(115)
 		 				try eat()
 
 		 				break
@@ -1321,17 +1341,17 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(117)
+		 			setState(120)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(118)
+		 		setState(121)
 		 		try match(RFilter.Tokens.PAR_CLOSE.rawValue)
-		 		setState(120)
+		 		setState(123)
 		 		try _errHandler.sync(self)
 		 		switch (try getInterpreter().adaptivePredict(_input,24,_ctx)) {
 		 		case 1:
-		 			setState(119)
+		 			setState(122)
 		 			try eat()
 
 		 			break
@@ -1341,10 +1361,10 @@ open class RFilter: Parser {
 		 		break
 
 		 	case .IF:
-		 		try enterOuterAlt(_localctx, 10)
-		 		setState(122)
+		 		try enterOuterAlt(_localctx, 11)
+		 		setState(125)
 		 		try match(RFilter.Tokens.IF.rawValue)
-		 		setState(124)
+		 		setState(127)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		if (//closure
@@ -1352,29 +1372,29 @@ open class RFilter: Parser {
 		 		      let testSet: Bool = _la == RFilter.Tokens.NL.rawValue
 		 		      return testSet
 		 		 }()) {
-		 			setState(123)
+		 			setState(126)
 		 			try eat()
 
 		 		}
 
-		 		setState(126)
+		 		setState(129)
 		 		try match(RFilter.Tokens.PAR_OPEN.rawValue)
-		 		setState(131)
+		 		setState(134)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      var testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 		   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.IF.rawValue,RFilter.Tokens.ELSE.rawValue,RFilter.Tokens.REPEAT.rawValue,RFilter.Tokens.WHILE.rawValue,RFilter.Tokens.FOR.rawValue,RFilter.Tokens.IN.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.FUNCTION.rawValue,RFilter.Tokens.PAR_OPEN.rawValue,RFilter.Tokens.BRA_OPEN.rawValue,RFilter.Tokens.DBRA_OPEN.rawValue,RFilter.Tokens.BRC_OPEN.rawValue,RFilter.Tokens.QMARK.rawValue,RFilter.Tokens.PLUS.rawValue,RFilter.Tokens.MINUS.rawValue,RFilter.Tokens.ASTERICK.rawValue,RFilter.Tokens.SLASH.rawValue,RFilter.Tokens.LT.rawValue,RFilter.Tokens.LTE.rawValue,RFilter.Tokens.GT.rawValue,RFilter.Tokens.GTE.rawValue,RFilter.Tokens.EQUAL_OP.rawValue,RFilter.Tokens.NOTEQUAL_OP.rawValue,RFilter.Tokens.NOT.rawValue,RFilter.Tokens.BAR.rawValue,RFilter.Tokens.DBAR.rawValue,RFilter.Tokens.AMP.rawValue,RFilter.Tokens.DAMP.rawValue,RFilter.Tokens.ASSIGN.rawValue,RFilter.Tokens.RASSIGN.rawValue,RFilter.Tokens.EQ_CHAR.rawValue,RFilter.Tokens.TRIPLE_COLON.rawValue,RFilter.Tokens.DOUBLE_COLON.rawValue,RFilter.Tokens.COLON.rawValue,RFilter.Tokens.DOLLAR_CHAR.rawValue,RFilter.Tokens.AT_CHAR.rawValue,RFilter.Tokens.TILDE.rawValue,RFilter.Tokens.TRIPLE_DOT.rawValue,RFilter.Tokens.COMMA.rawValue,RFilter.Tokens.CARAT.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
 		 		 }()) {
-		 			setState(129)
+		 			setState(132)
 		 			try _errHandler.sync(self)
 		 			switch (RFilter.Tokens(rawValue: try _input.LA(1))!) {
 		 			case .HEX:fallthrough
@@ -1430,14 +1450,15 @@ open class RFilter: Parser {
 		 			case .FALSE:fallthrough
 		 			case .NA:fallthrough
 		 			case .INF:fallthrough
-		 			case .USER_OP:
-		 				setState(127)
+		 			case .USER_OP:fallthrough
+		 			case .COMMENT:
+		 				setState(130)
 		 				try elem()
 
 		 				break
 
 		 			case .NL:
-		 				setState(128)
+		 				setState(131)
 		 				try eat()
 
 		 				break
@@ -1445,17 +1466,17 @@ open class RFilter: Parser {
 		 				throw ANTLRException.recognition(e: NoViableAltException(self))
 		 			}
 
-		 			setState(133)
+		 			setState(136)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
-		 		setState(134)
+		 		setState(137)
 		 		try match(RFilter.Tokens.PAR_CLOSE.rawValue)
-		 		setState(136)
+		 		setState(139)
 		 		try _errHandler.sync(self)
 		 		switch (try getInterpreter().adaptivePredict(_input,28,_ctx)) {
 		 		case 1:
-		 			setState(135)
+		 			setState(138)
 		 			try eat()
 
 		 			break
@@ -1465,8 +1486,8 @@ open class RFilter: Parser {
 		 		break
 
 		 	case .ELSE:
-		 		try enterOuterAlt(_localctx, 11)
-		 		setState(138)
+		 		try enterOuterAlt(_localctx, 12)
+		 		setState(141)
 		 		try match(RFilter.Tokens.ELSE.rawValue)
 
 		 		        // ``inside a compound expression, a newline before else is discarded,
@@ -1496,6 +1517,62 @@ open class RFilter: Parser {
 		 	default:
 		 		throw ANTLRException.recognition(e: NoViableAltException(self))
 		 	}
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	public class CommentContext: ParserRuleContext {
+			open
+			func COMMENT() -> TerminalNode? {
+				return getToken(RFilter.Tokens.COMMENT.rawValue, 0)
+			}
+		override open
+		func getRuleIndex() -> Int {
+			return RFilter.RULE_comment
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RFilterListener {
+				listener.enterComment(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RFilterListener {
+				listener.exitComment(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RFilterVisitor {
+			    return visitor.visitComment(self)
+			}
+			else if let visitor = visitor as? RFilterBaseVisitor {
+			    return visitor.visitComment(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	@discardableResult
+	 open func comment() throws -> CommentContext {
+		var _localctx: CommentContext = CommentContext(_ctx, getState())
+		try enterRule(_localctx, 6, RFilter.RULE_comment)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(145)
+		 	try match(RFilter.Tokens.COMMENT.rawValue)
+
 		}
 		catch ANTLRException.recognition(let re) {
 			_localctx.exception = re
@@ -1595,23 +1672,23 @@ open class RFilter: Parser {
 	@discardableResult
 	 open func atom() throws -> AtomContext {
 		var _localctx: AtomContext = AtomContext(_ctx, getState())
-		try enterRule(_localctx, 6, RFilter.RULE_atom)
+		try enterRule(_localctx, 8, RFilter.RULE_atom)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(142)
+		 	setState(147)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
 		 	      var testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue,RFilter.Tokens.NULL.rawValue]
+		 	   let testArray: [Int] = [_la, RFilter.Tokens.HEX.rawValue,RFilter.Tokens.INT.rawValue,RFilter.Tokens.FLOAT.rawValue,RFilter.Tokens.COMPLEX.rawValue,RFilter.Tokens.STRING.rawValue,RFilter.Tokens.ID.rawValue,RFilter.Tokens.BREAK.rawValue,RFilter.Tokens.NEXT.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	          testSet = testSet || {  () -> Bool in
-		 	             let testArray: [Int] = [_la, RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue]
+		 	             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue]
 		 	              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 	          }()
 		 	      return testSet
@@ -1790,14 +1867,14 @@ open class RFilter: Parser {
 	@discardableResult
 	 open func op() throws -> OpContext {
 		var _localctx: OpContext = OpContext(_ctx, getState())
-		try enterRule(_localctx, 8, RFilter.RULE_op)
+		try enterRule(_localctx, 10, RFilter.RULE_op)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(144)
+		 	setState(149)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in

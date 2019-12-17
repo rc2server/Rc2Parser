@@ -54,6 +54,19 @@ open class RFilterBaseListener: RFilterListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	open func enterComment(_ ctx: RFilter.CommentContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitComment(_ ctx: RFilter.CommentContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	open func enterAtom(_ ctx: RFilter.AtomContext) { }
 	/**
 	 * {@inheritDoc}
