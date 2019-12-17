@@ -14,14 +14,21 @@ extension Token {
 
 class RParserVisitor: RBaseVisitor<Void> {
 
-	let source: NSMutableAttributedString
+	let rKeywords = Set<String>(["if", "else", "repeat", "while", "for", "break", "in", "next", "function", "TRUE", "FALSE", "NA", "NaN", "Inf", "NULL"])
 	
-	init(string: NSMutableAttributedString) {
+	let source: NSMutableAttributedString
+	let parser: RParser
+	
+	init(string: NSMutableAttributedString, parser: RParser) {
 		source = string
+		self.parser = parser
 	}
 	
-	override open func visitAssignExp(_ ctx: RParser.AssignExpContext) -> Void? {
+	override open func visitAssignOp(_ ctx: RParser.AssignOpContext) -> Void? {
 		self.visitChildren(ctx)
+		if let tok = ctx.getChild(0)?.getPayload() as? Token {
+			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: tok.range)
+		}
 		return nil
 	}
 	
@@ -30,7 +37,12 @@ class RParserVisitor: RBaseVisitor<Void> {
 			let params = ctx.sublist()
 		else { fatalError() }
 		let range = funToken.range
-		source.addAttribute(SyntaxKey, value: SyntaxElement.keyword, range: range)
+		
+		if rKeywords.contains(funToken.getText()!.lowercased()) {
+			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: range)
+		} else {
+			source.addAttribute(SyntaxKey, value: SyntaxElement.keyword, range: range)
+		}
 		// know child1 is arg1
 //		print("name = \(funName), args=\(params.getText())")
 		self.visit(params)
@@ -42,12 +54,12 @@ class RParserVisitor: RBaseVisitor<Void> {
 //		return nil
 //	}
 	
-	override func visitAssignOp(_ ctx: RParser.AssignOpContext) -> Void? {
+//	override func visitAssignOp(_ ctx: RParser.AssignOpContext) -> Void? {
 //		if let range = ctx.getStart()?.range {
 //			source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.quote, range: range)
 //		}
-		return nil
-	}
+//		return nil
+//	}
 	
 	override func visitNumber(_ ctx: RParser.NumberContext) -> Void? {
 		if let range = ctx.getStart()?.range {
@@ -58,9 +70,13 @@ class RParserVisitor: RBaseVisitor<Void> {
 
 	override func visitStringRule(_ ctx: RParser.StringRuleContext) -> Void? {
 		if let range = ctx.getStart()?.range {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.quote, range: range)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.string, range: range)
 		}
 		return nil
+	}
+	
+	override func visitKeywordRule(_ ctx: RParser.KeywordRuleContext) -> Void? {
+		print("got kword")
 	}
 	
 	override func visitIdRule(_ ctx: RParser.IdRuleContext) -> Void? {

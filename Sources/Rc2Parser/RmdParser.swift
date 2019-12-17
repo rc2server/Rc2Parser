@@ -17,7 +17,7 @@ public let SyntaxKey = NSAttributedString.Key("Rc2Style")
 /// the types of styles that will be tagged under StyleKey
 public enum SyntaxElement: String, CaseIterable {
 	case none
-	case quote
+	case string
 	case comment
 	case keyword
 	case symbol
@@ -31,7 +31,11 @@ open class RmdParser {
 	/// parses a string of RMarkdown into chunks
 	public final func parse(input: String) throws -> ChunkCollection {
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
-		let parser = try Rc2RawParser(CommonTokenStream(lexer))
+		let tokens = CommonTokenStream(lexer)
+		let filter = try RFilter(tokens)
+		try filter.stream()
+		try tokens.reset()
+		let parser = try Rc2RawParser(tokens)
 		let doc = try parser.document()
 		let walker = ParseTreeWalker()
 		let errors = ErrorReporter()
@@ -45,9 +49,13 @@ open class RmdParser {
 
 	public final func highlight(content: NSMutableAttributedString) throws {
 		let lexer = RLexer(ANTLRInputStream(content.string))
-		let parser =  try RParser(CommonTokenStream(lexer))
+		let tokens = CommonTokenStream(lexer)
+		let filter = try RFilter(tokens)
+		try filter.stream()
+		try tokens.reset()
+		let parser =  try RParser(tokens)
 		let tree = try parser.prog()
-		let visitor = RParserVisitor(string: content)
+		let visitor = RParserVisitor(string: content, parser: parser)
 		visitor.visit(tree)
 	}
 }
