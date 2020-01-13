@@ -330,8 +330,8 @@ open class RFilter: Parser {
 		 		switch (_alt) {
 		 		case 1:
 		 			setState(22)
-		 			try match(RFilter.Tokens.NL.rawValue)
-		 			let token = _localctx.castdown(EatContext.self) as! WritableToken
+		 			let token = try match(RFilter.Tokens.NL.rawValue) as! WritableToken
+		 			//let token = _localctx.castdown(EatContext.self) as! WritableToken
 		 			token.setChannel(type(of: token).HIDDEN_CHANNEL)
 
 

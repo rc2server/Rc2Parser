@@ -13,7 +13,9 @@ final class RParserTests: XCTestCase {
 	let basicText = #"""
 	# some code
 	z <- 2 + 443.2
-	if (z != 445.32) { sleep(1) }
+	if (z != 445.32) {
+		sleep(1)
+	}
 	rnorm(x,plot(1,"dude"))
 	"""#
 		
