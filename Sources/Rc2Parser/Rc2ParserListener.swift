@@ -51,6 +51,11 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 			if curMarkdownChunk == nil {
 				curMarkdownChunk = MarkdownChunk(context: ctx)
 				aChunk = curMarkdownChunk
+			} else {
+				// append to curMarkdownChunk
+				let mctx = ctx.mdown()!
+				curMarkdownChunk?.append(context: mctx)
+				return
 			}
 		case Rc2Lexer.CODE_START:
 			aChunk = InternalCodeChunk(context: ctx)
@@ -80,7 +85,9 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 	}
 	
 	override func exitChunk(_ ctx: Rc2RawParser.ChunkContext) {
-		if curChunk?.type != .markdown {curMarkdownChunk = nil }
+		guard let cc = curChunk else { curContext = nil; return }
+		guard !cc.isInline else { curChunk = nil; return }
+		if cc.type != .markdown { curMarkdownChunk = nil }
 		curContext = nil
 		curChunk = nil
 	}

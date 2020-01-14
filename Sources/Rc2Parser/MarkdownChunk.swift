@@ -34,18 +34,17 @@ public class MarkdownChunk: InternalChunk {
 	/// inline chunks embedded in this chunk
 	public private(set) var inlineChunks: [AnyChunk]
 	
-	internal func append(markdown: Token) {
-		guard let txt = markdown.getText() else {
-			parserLog.warning("markdown told to append nil string")
-			return
-		}
-		content += txt
-		endCharIndex = markdown.getStopIndex()
+	internal func append(context: Rc2RawParser.MdownContext) {
+		guard let stop = context.stop else { fatalError("no stop index in markdown context") }
+		content += context.getText()
+		endCharIndex = stop.getStopIndex()
 	}
-	
+
 	internal func append(chunk: AnyChunk) {
 		guard chunk.isInline else { fatalError("markdown can not non-linline chunks") }
 		inlineChunks.append(chunk)
+		content += chunk.content
+		endCharIndex = chunk.endCharIndex
 	}
 	
 	internal func isEqualTo(_ other: Chunk) -> Bool {

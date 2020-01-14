@@ -18,7 +18,17 @@ final class RParserTests: XCTestCase {
 	}
 	rnorm(x,plot(1,"dude"))
 	"""#
-		
+	let ieqTest = #"""
+	value is $f$ dollars
+	"""#
+	
+	func testInlineEquation() throws {
+		let parser = RmdParser();
+		let chunks = try parser.parse(input: ieqTest)
+		XCTAssertEqual(chunks.count, 1)
+		XCTAssertEqual(chunks[0].asMarkdown?.inlineChunks.count ?? 0, 1)
+	}
+	
 	func testBasicHighlight() throws {
 		
 		let parser = RmdParser();
