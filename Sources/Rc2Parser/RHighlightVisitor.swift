@@ -1,5 +1,5 @@
 //
-//  RParserVisitor.swift
+//  RHighlightVisitor.swift
 //  
 //
 //  Created by Mark Lilback on 12/12/19.
@@ -12,7 +12,7 @@ extension Token {
 	var range: NSRange { return NSRange(location: getStartIndex(), length: getStopIndex() - getStartIndex() + 1) }
 }
 
-class RParserVisitor: RBaseVisitor<Void> {
+class RHighlightVisitor: RBaseVisitor<Void> {
 
 	let rKeywords = Set<String>(["if", "else", "repeat", "while", "for", "break", "in", "next", "function", "TRUE", "FALSE", "NA", "NaN", "Inf", "NULL"])
 	

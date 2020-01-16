@@ -62,7 +62,7 @@ open class RmdParser {
 		try tokens.reset()
 		let parser =  try RParser(tokens)
 		let tree = try parser.prog()
-		let visitor = RParserVisitor(string: content, parser: parser)
+		let visitor = RHighlightVisitor(string: content, parser: parser)
 		visitor.visit(tree)
 	}
 }
