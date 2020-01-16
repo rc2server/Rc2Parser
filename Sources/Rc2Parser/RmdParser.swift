@@ -37,6 +37,7 @@ open class RmdParser {
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
 		let tokens = CommonTokenStream(lexer)
 		let filter = try RFilter(tokens)
+		filter.setErrorHandler(FilterErrorStrategy())
 		try filter.stream()
 		try tokens.reset()
 		let parser = try Rc2RawParser(tokens)
@@ -48,6 +49,7 @@ open class RmdParser {
 		if errors.errors.count > 0 {
 			throw errors.errors[0]
 		}
+		parserLog.info("parsed \(listener.chunks.count) chunks")
 		return ChunkCollection(listener.chunks)
 	}
 
@@ -55,11 +57,27 @@ open class RmdParser {
 		let lexer = RLexer(ANTLRInputStream(content.string))
 		let tokens = CommonTokenStream(lexer)
 		let filter = try RFilter(tokens)
+		filter.setErrorHandler(FilterErrorStrategy())
 		try filter.stream()
 		try tokens.reset()
 		let parser =  try RParser(tokens)
 		let tree = try parser.prog()
 		let visitor = RParserVisitor(string: content, parser: parser)
 		visitor.visit(tree)
+	}
+}
+
+// used to not output any message about mismatched input, as that always happens for inline equations and code
+final class FilterErrorStrategy: DefaultErrorStrategy {
+	override func reportInputMismatch(_ recognizer: Parser, _ e: InputMismatchException) {
+		let tokStr = getSymbolText(e.getOffendingToken())
+		switch tokStr {
+			case "$", "$$", "```\n": return
+			case "\n":
+				// if a newline preceeded by a backtick, then is the end of inline code and ok
+				if e.getCtx()?.getText() == "`" { return }
+			default: break
+		}
+		super.reportInputMismatch(recognizer, e)
 	}
 }
