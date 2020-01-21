@@ -31,21 +31,31 @@ public enum SyntaxElement: String, CaseIterable {
 open class RmdParser {
 	
 	public init() {}
+
+	static func timeStr(_ val: Double) -> String {
+		return String(format: "%.5f", val)
+	}
 	
 	/// parses a string of RMarkdown into chunks
 	public final func parse(input: String) throws -> ChunkCollection {
+		let lstart = CFAbsoluteTimeGetCurrent()
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
 		let tokens = CommonTokenStream(lexer)
+		print("lexer took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - lstart))")
 		let filter = try RFilter(tokens)
 		filter.setErrorHandler(FilterErrorStrategy())
 		try filter.stream()
 		try tokens.reset()
+		let pstart = CFAbsoluteTimeGetCurrent()
 		let parser = try Rc2RawParser(tokens)
 		let doc = try parser.document()
+		print("parse took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - pstart))")
+		let wstart = CFAbsoluteTimeGetCurrent()
 		let walker = ParseTreeWalker()
 		let errors = ErrorReporter()
 		let listener = Rc2ParserListener(errorReporter: errors)
 		try walker.walk(listener, doc)
+		print("walker took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - wstart))")
 		if errors.errors.count > 0 {
 			throw errors.errors[0]
 		}
