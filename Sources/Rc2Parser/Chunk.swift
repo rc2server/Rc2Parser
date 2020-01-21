@@ -138,6 +138,12 @@ public struct ChunkCollection: RandomAccessCollection {
 		chunks = contents
 	}
 	
+	init(chunks: [InternalChunk]) {
+		let genericChunks = chunks.map { AnyChunk($0) }
+		self.chunks = genericChunks
+	}
+	
+	
 	public var startIndex: ChunkCollection.Index { return 0 }
 	public var endIndex: ChunkCollection.Index { return chunks.count }
 	
