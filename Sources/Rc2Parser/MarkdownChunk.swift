@@ -21,6 +21,15 @@ public class MarkdownChunk: InternalChunk {
 		inlineChunks = []
 	}
 	
+	internal init(content: String, line: Int, startIndex: Int, stopIndex: Int) {
+		type = .markdown
+		inlineChunks = []
+		self.content = content
+		self.startLine = line
+		self.startCharIndex = startIndex
+		self.endCharIndex = stopIndex
+	}
+	
 	public var type: ChunkType
 	
 	public var content: String
@@ -38,6 +47,11 @@ public class MarkdownChunk: InternalChunk {
 		guard let stop = context.stop else { fatalError("no stop index in markdown context") }
 		content += context.getText()
 		endCharIndex = stop.getStopIndex()
+	}
+	
+	internal func append(markdown other: MarkdownChunk) {
+		content += other.content
+		endCharIndex = other.endCharIndex
 	}
 
 	internal func append(chunk: AnyChunk) {

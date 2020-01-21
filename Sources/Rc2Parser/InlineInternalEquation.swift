@@ -28,6 +28,18 @@ public class InlineInternalEquation: InternalChunk, InlineChunk, EquationChunk {
 		innerRange = NSRange(location: eqcode.getStartIndex(), length: eqcode.getStopIndex() - eqcode.getStartIndex() + 1)
 	}
 	
+	internal init(content: String, line: Int, start: Int, end: Int) {
+		self.type = .inlineEquation
+		self.content = content
+		self.startLine = line
+		self.startCharIndex = start
+		self.endCharIndex = end
+		// need to strip start and end dollar signs
+		innerRange = NSRange(location: 1, length: end - start - 1)
+		code = ((content as NSString).substring(with: innerRange)) as String
+	}
+	
+	
 	public var type: ChunkType
 	
 	public var content: String

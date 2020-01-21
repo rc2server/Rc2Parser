@@ -72,6 +72,15 @@ final class RParserTests: XCTestCase {
 		var contents = ""
 		var previousStop = 0
 		var previousLine = 0
+		
+		let addMarkdown = { (chunk: MarkdownChunk) in
+			if let lastchunk = chunks.last, let prevChunk = lastchunk as? MarkdownChunk {
+				prevChunk.append(markdown: chunk)
+			} else {
+				chunks.append(chunk)
+			}
+		}
+		
 		repeat {
 			defer {
 				aToken = try! lexer.nextToken()
@@ -79,8 +88,8 @@ final class RParserTests: XCTestCase {
 				if aToken.getType() == Lexer.EOF, aToken.getStopIndex() < aToken.getStartIndex() {
 					contents = String(newton[newton.index(newton.startIndex, offsetBy: previousStop)..<newton.index(newton.startIndex, offsetBy: aToken.getStartIndex())])
 					if contents.count > 0 {
-						//chunks.append(MarkdownChunk(context:
-						print("MDOWN '\(previousLine)': \(contents)")
+						let chunk = MarkdownChunk(content: contents, line: previousLine, startIndex: aToken.getStartIndex(), stopIndex: aToken.getStopIndex())
+						addMarkdown(chunk)
 					}
 				}
 			}
@@ -94,8 +103,15 @@ final class RParserTests: XCTestCase {
 					contents = "\n"
 					previousLine = aToken.getLine()
 					range = newton.index(newton.startIndex, offsetBy: startIndex)...newton.index(newton.startIndex, offsetBy: aToken.getStopIndex()-1)
-//					print("push newline forward")
 				}
+				var chunk: InternalChunk?
+				switch aToken.getType() {
+				case Rc2Lexer.IEQ_END:
+					chunk = InlineInternalEquation(content: String(newton[range]), line: previousLine, start: startIndex, end: aToken.getStopIndex())
+				default:
+					break
+				}
+				if let c = chunk { chunks.append(c) }
 				print("\(Rc2Lexer.ruleNames[waitingFor-1]): \(newton[range])")
 				waitingFor = 0
 				continue
@@ -108,7 +124,8 @@ final class RParserTests: XCTestCase {
 //						contents += "\n"
 //					}
 					if contents.count > 0 {
-						print("MDOWN '\(previousLine)': \(contents)")
+						let chunk = MarkdownChunk(content: contents, line: previousLine, startIndex: aToken.getStartIndex(), stopIndex: aToken.getStopIndex())
+						addMarkdown(chunk)
 						contents = ""
 					}
 				}
@@ -141,11 +158,9 @@ final class RParserTests: XCTestCase {
 				contents += aToken.getText() ?? ""
 				continue
 			}
-			if contents.count > 0 {
-				print("MDOWN \(previousLine): '\(contents)'")
-			}
-
 		} while aToken.getType() != Lexer.EOF
+		print("got \(chunks.count) chunks")
+//		chunks.forEach { print("\($0.type)") }
 	}
 	
 	func testFilterSpeed() throws {
