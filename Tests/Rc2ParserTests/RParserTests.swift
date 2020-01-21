@@ -126,7 +126,7 @@ final class RParserTests: XCTestCase {
 				startingToken = nil
 				continue
 			}
-			let checkForAdd = { (aToken: Token, endType: Int) in
+			let checkForPreviousMarkdown = { (aToken: Token, endType: Int) in
 				let previousStop = previousToken?.getStopIndex() ?? 0
 				waitingFor = endType
 				if aToken.getStartIndex() > previousStop {
@@ -141,16 +141,16 @@ final class RParserTests: XCTestCase {
 			}
 			switch aToken.getType() {
 			case Rc2Lexer.IEQ_START:
-				checkForAdd(aToken, Rc2Lexer.IEQ_END)
+				checkForPreviousMarkdown(aToken, Rc2Lexer.IEQ_END)
 				startingToken = aToken
 			case Rc2Lexer.CODE_START:
-				checkForAdd(aToken, Rc2Lexer.CODE_END)
+				checkForPreviousMarkdown(aToken, Rc2Lexer.CODE_END)
 				startingToken = aToken
 			case Rc2Lexer.IC_START:
-				checkForAdd(aToken, Rc2Lexer.IC_END)
+				checkForPreviousMarkdown(aToken, Rc2Lexer.IC_END)
 				startingToken = aToken
 			case Rc2Lexer.EQ_START:
-				checkForAdd(aToken, Rc2Lexer.EQ_END)
+				checkForPreviousMarkdown(aToken, Rc2Lexer.EQ_END)
 				startingToken = aToken
 			case Rc2Lexer.MDOWN:
 				print("got mdown: \(contents)")
