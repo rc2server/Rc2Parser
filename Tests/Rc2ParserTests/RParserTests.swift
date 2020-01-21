@@ -68,115 +68,18 @@ final class RParserTests: XCTestCase {
 	}
 
 	
-	
-	
-	func testLexerOnly() throws {
-		var chunks: [InternalChunk] = []
-		let lexer = Rc2Lexer(ANTLRInputStream(newton))
-		var aToken: Token = try lexer.nextToken()
-		var waitingFor = 0
-		var startingToken: Token?
-		var previousToken: Token?
-		var argToken: Token?
-		var contents = ""
-		let typesToWaitFor = [Rc2Lexer.EQ_END, Rc2Lexer.CODE_END, Rc2Lexer.IEQ_END, Rc2Lexer.IC_END]
-		
-		let addMarkdown = { (chunk: MarkdownChunk) in
-			if let lastchunk = chunks.last, let prevChunk = lastchunk as? MarkdownChunk {
-				prevChunk.append(markdown: chunk)
-			} else {
-				chunks.append(chunk)
-			}
-		}
-		
-		repeat {
-			defer {
-				let tmpPrev = aToken
-				aToken = try! lexer.nextToken()
-				// EOF seems to have it's start at EOF, and stop at whatever was before eof
-				let pstop = previousToken?.getStopIndex() ?? 0
-				if aToken.getType() == Lexer.EOF, aToken.getStopIndex() < aToken.getStartIndex() {
-					contents = String(newton[newton.index(newton.startIndex, offsetBy: pstop)..<newton.index(newton.startIndex, offsetBy: aToken.getStartIndex())])
-					if contents.count > 0 {
-						let chunk = MarkdownChunk(content: contents, line: previousToken!.getLine(), startIndex: aToken.getStartIndex(), stopIndex: aToken.getStopIndex())
-						addMarkdown(chunk)
-					}
-				}
-				previousToken = tmpPrev
-			}
-			if aToken.getType() == Rc2Lexer.MDOWN { continue }
-			if aToken.getType() == Rc2Lexer.CODE_ARG { argToken = aToken }
-			if aToken.getType() == waitingFor {
-				guard let stoken = startingToken else { fatalError("can't find end tag without start") }
-				// if there is content, output as markdown
-				var range = newton.index(newton.startIndex, offsetBy: stoken.getStartIndex())...newton.index(newton.startIndex, offsetBy: aToken.getStopIndex())
-				contents = ""
-				if waitingFor == Rc2Lexer.CODE_END, newton[range].last == "\n" {
-					contents = "\n"
-					range = newton.index(newton.startIndex, offsetBy: stoken.getStartIndex())...newton.index(newton.startIndex, offsetBy: aToken.getStopIndex()-1)
-				}
-				var chunk: InternalChunk?
-				switch aToken.getType() {
-				case Rc2Lexer.EQ_END:
-					guard let codeToken = previousToken, codeToken.getType() == Rc2Lexer.EQ_CODE else { throw LexerErrors.mismatchedTokens }
-					chunk = InternalEquationChunk(content: String(newton[range]), startToken: startingToken!, codeToken: codeToken, endToken: aToken)
-				case Rc2Lexer.CODE_END:
-					guard let arg = argToken,
-						let codeToken = previousToken, codeToken.getType() == Rc2Lexer.CODE
-						else { throw LexerErrors.mismatchedTokens }
-					chunk = InternalCodeChunk(content: String(newton[range]), startToken: startingToken!, argToken: arg, codeToken: codeToken, endToken: aToken)
-				case Rc2Lexer.IEQ_END:
-					guard let codeToken = previousToken, codeToken.getType() == Rc2Lexer.IEQ_CODE else { throw LexerErrors.mismatchedTokens }
-					chunk = InlineInternalEquation(content: String(newton[range]), startToken: startingToken!, codeToken: codeToken, endToken: aToken)
-				case Rc2Lexer.IC_END:
-					guard let codeToken = previousToken, codeToken.getType() == Rc2Lexer.IC_CODE else { throw LexerErrors.mismatchedTokens }
-					chunk = InlineInternalCodeChunk(content: String(newton[range]), startToken: startingToken!, codeToken: codeToken, endToken: aToken)
-				default:
-					break
-				}
-				if let c = chunk { chunks.append(c) }
-				print("\(Rc2Lexer.ruleNames[waitingFor-1]): \(newton[range])")
-				waitingFor = 0
-				startingToken = nil
-				continue
-			}
-			let checkForPreviousMarkdown = { (aToken: Token, endType: Int) in
-				guard typesToWaitFor.contains(endType) else { fatalError("unsupported end token") }
-				let previousStop = previousToken?.getStopIndex() ?? 0
-				waitingFor = endType
-				if aToken.getStartIndex() > previousStop {
-					let rng = newton.index(newton.startIndex, offsetBy: previousStop)..<newton.index(newton.startIndex, offsetBy: aToken.getStartIndex())
-					contents += String(newton[rng])
-					if contents.count > 0 {
-						let chunk = MarkdownChunk(content: contents, line: previousToken?.getLine() ?? 0, startIndex: aToken.getStartIndex(), stopIndex: aToken.getStopIndex())
-						addMarkdown(chunk)
-						contents = ""
-					}
-				}
-			}
-			switch aToken.getType() {
-			case Rc2Lexer.IEQ_START:
-				checkForPreviousMarkdown(aToken, Rc2Lexer.IEQ_END)
-				startingToken = aToken
-			case Rc2Lexer.CODE_START:
-				checkForPreviousMarkdown(aToken, Rc2Lexer.CODE_END)
-				startingToken = aToken
-			case Rc2Lexer.IC_START:
-				checkForPreviousMarkdown(aToken, Rc2Lexer.IC_END)
-				startingToken = aToken
-			case Rc2Lexer.EQ_START:
-				checkForPreviousMarkdown(aToken, Rc2Lexer.EQ_END)
-				startingToken = aToken
-			case Rc2Lexer.MDOWN:
-				print("got mdown: \(contents)")
-				contents = ""
-			default:
-				contents += aToken.getText() ?? ""
-				continue
-			}
-		} while aToken.getType() != Lexer.EOF
-		print("\n\ngot \(chunks.count) chunks")
-		chunks.forEach { print("\($0.type)") }
+	func testManualParser() throws {
+		let parser = try ManualChunkParser(text: newton)
+		let chunks = parser.parsedChunks
+		XCTAssertEqual(chunks.count, 59)
+		XCTAssertEqual(chunks[0].type, .markdown)
+		XCTAssertEqual(chunks[1].type, .inlineEquation)
+		XCTAssertEqual(chunks[2].type, .markdown)
+		XCTAssertEqual(chunks[3].type, .inlineEquation)
+		XCTAssertEqual(chunks[5].type, .equation)
+		XCTAssertEqual(chunks[11].type, .code)
+		XCTAssertEqual(chunks.last!.type, .markdown)
+//		chunks.forEach { print($0.type) }
 	}
 	
 	func testFilterSpeed() throws {
@@ -190,6 +93,7 @@ final class RParserTests: XCTestCase {
 		("testInlineEquation", testInlineEquation),
 		("testBasicHighlight", testBasicHighlight),
 		("testNewton", testNewton),
+		("testManualParser", testManualParser),
 	]
 }
 
