@@ -126,15 +126,12 @@ final class RParserTests: XCTestCase {
 				startingToken = nil
 				continue
 			}
-			let checkForAdd = { (aToken: Token) in
+			let checkForAdd = { (aToken: Token, endType: Int) in
 				let previousStop = previousToken?.getStopIndex() ?? 0
+				waitingFor = endType
 				if aToken.getStartIndex() > previousStop {
-//					let addNewline = contents == "\n"
 					let rng = newton.index(newton.startIndex, offsetBy: previousStop)..<newton.index(newton.startIndex, offsetBy: aToken.getStartIndex())
 					contents += String(newton[rng])
-//					if addNewline {
-//						contents += "\n"
-//					}
 					if contents.count > 0 {
 						let chunk = MarkdownChunk(content: contents, line: previousToken?.getLine() ?? 0, startIndex: aToken.getStartIndex(), stopIndex: aToken.getStopIndex())
 						addMarkdown(chunk)
@@ -144,21 +141,17 @@ final class RParserTests: XCTestCase {
 			}
 			switch aToken.getType() {
 			case Rc2Lexer.IEQ_START:
-				checkForAdd(aToken)
+				checkForAdd(aToken, Rc2Lexer.IEQ_END)
 				startingToken = aToken
-				waitingFor = Rc2Lexer.IEQ_END
 			case Rc2Lexer.CODE_START:
-				checkForAdd(aToken)
+				checkForAdd(aToken, Rc2Lexer.CODE_END)
 				startingToken = aToken
-				waitingFor = Rc2Lexer.CODE_END
 			case Rc2Lexer.IC_START:
-				checkForAdd(aToken)
+				checkForAdd(aToken, Rc2Lexer.IC_END)
 				startingToken = aToken
-				waitingFor = Rc2Lexer.IC_END
 			case Rc2Lexer.EQ_START:
-				checkForAdd(aToken)
+				checkForAdd(aToken, Rc2Lexer.EQ_END)
 				startingToken = aToken
-				waitingFor = Rc2Lexer.EQ_END
 			case Rc2Lexer.MDOWN:
 				print("got mdown: \(contents)")
 				contents = ""
