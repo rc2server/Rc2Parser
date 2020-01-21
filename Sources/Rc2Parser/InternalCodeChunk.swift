@@ -26,6 +26,22 @@ class InternalCodeChunk: InternalChunk, CodeChunk {
 		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex() + 1)
 	}
 	
+	
+	internal init(content: String, startToken: Token, argToken: Token, codeToken: Token, endToken: Token) {
+		guard startToken.getType() == Rc2Lexer.CODE_START, codeToken.getType() == Rc2Lexer.CODE,
+			endToken.getType() == Rc2Lexer.CODE_END, let argText = argToken.getText()
+			else { fatalError("invalid token") }
+		
+		type = .code
+		self.content = content
+		code = codeToken.getText() ?? ""
+		startLine = startToken.getLine()
+		startCharIndex = startToken.getStartIndex()
+		endCharIndex = endToken.getStopIndex()
+		innerRange = NSRange(location: codeToken.getStartIndex(), length: codeToken.getStopIndex() - codeToken.getStartIndex() + 1)
+		arguments = argText
+	}
+
 	let type: ChunkType
 	public private(set) var arguments: String
 	public private(set) var code: String

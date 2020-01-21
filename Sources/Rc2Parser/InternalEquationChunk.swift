@@ -26,6 +26,20 @@ public class InternalEquationChunk: InternalChunk, EquationChunk {
 		innerRange = NSRange(location: eqcode.getStartIndex(), length: eqcode.getStopIndex() - eqcode.getStartIndex() + 1)
 	}
 	
+	internal init(content: String, startToken: Token, codeToken: Token, endToken: Token) {
+		guard startToken.getType() == Rc2Lexer.EQ_START, codeToken.getType() == Rc2Lexer.EQ_CODE, endToken.getType() == Rc2Lexer.EQ_END
+			else { fatalError("invalid token") }
+		
+		self.content = content
+		startLine = startToken.getLine()
+		startCharIndex = startToken.getStartIndex()
+		endCharIndex = endToken.getStopIndex()
+		type = .equation
+		code = codeToken.getText() ?? ""
+		innerRange = NSRange(location: codeToken.getStartIndex(), length: codeToken.getStopIndex() - codeToken.getStartIndex() + 1)
+	}
+
+	
 	public var type: ChunkType
 	
 	public var content: String

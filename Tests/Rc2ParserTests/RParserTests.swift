@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RParserTests.swift
 //  
 //
 //  Created by Mark Lilback on 12/11/19.
@@ -77,7 +77,9 @@ final class RParserTests: XCTestCase {
 		var waitingFor = 0
 		var startingToken: Token?
 		var previousToken: Token?
+		var argToken: Token?
 		var contents = ""
+		let typesToWaitFor = [Rc2Lexer.EQ_END, Rc2Lexer.CODE_END, Rc2Lexer.IEQ_END, Rc2Lexer.IC_END]
 		
 		let addMarkdown = { (chunk: MarkdownChunk) in
 			if let lastchunk = chunks.last, let prevChunk = lastchunk as? MarkdownChunk {
@@ -103,6 +105,7 @@ final class RParserTests: XCTestCase {
 				previousToken = tmpPrev
 			}
 			if aToken.getType() == Rc2Lexer.MDOWN { continue }
+			if aToken.getType() == Rc2Lexer.CODE_ARG { argToken = aToken }
 			if aToken.getType() == waitingFor {
 				guard let stoken = startingToken else { fatalError("can't find end tag without start") }
 				// if there is content, output as markdown
@@ -114,9 +117,20 @@ final class RParserTests: XCTestCase {
 				}
 				var chunk: InternalChunk?
 				switch aToken.getType() {
+				case Rc2Lexer.EQ_END:
+					guard let codeToken = previousToken, codeToken.getType() == Rc2Lexer.EQ_CODE else { throw LexerErrors.mismatchedTokens }
+					chunk = InternalEquationChunk(content: String(newton[range]), startToken: startingToken!, codeToken: codeToken, endToken: aToken)
+				case Rc2Lexer.CODE_END:
+					guard let arg = argToken,
+						let codeToken = previousToken, codeToken.getType() == Rc2Lexer.CODE
+						else { throw LexerErrors.mismatchedTokens }
+					chunk = InternalCodeChunk(content: String(newton[range]), startToken: startingToken!, argToken: arg, codeToken: codeToken, endToken: aToken)
 				case Rc2Lexer.IEQ_END:
 					guard let codeToken = previousToken, codeToken.getType() == Rc2Lexer.IEQ_CODE else { throw LexerErrors.mismatchedTokens }
 					chunk = InlineInternalEquation(content: String(newton[range]), startToken: startingToken!, codeToken: codeToken, endToken: aToken)
+				case Rc2Lexer.IC_END:
+					guard let codeToken = previousToken, codeToken.getType() == Rc2Lexer.IC_CODE else { throw LexerErrors.mismatchedTokens }
+					chunk = InlineInternalCodeChunk(content: String(newton[range]), startToken: startingToken!, codeToken: codeToken, endToken: aToken)
 				default:
 					break
 				}
@@ -127,6 +141,7 @@ final class RParserTests: XCTestCase {
 				continue
 			}
 			let checkForPreviousMarkdown = { (aToken: Token, endType: Int) in
+				guard typesToWaitFor.contains(endType) else { fatalError("unsupported end token") }
 				let previousStop = previousToken?.getStopIndex() ?? 0
 				waitingFor = endType
 				if aToken.getStartIndex() > previousStop {
@@ -160,8 +175,8 @@ final class RParserTests: XCTestCase {
 				continue
 			}
 		} while aToken.getType() != Lexer.EOF
-		print("got \(chunks.count) chunks")
-//		chunks.forEach { print("\($0.type)") }
+		print("\n\ngot \(chunks.count) chunks")
+		chunks.forEach { print("\($0.type)") }
 	}
 	
 	func testFilterSpeed() throws {

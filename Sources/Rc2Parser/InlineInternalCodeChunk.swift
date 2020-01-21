@@ -24,6 +24,19 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 		innerRange = NSRange(location: rawCode.getStartIndex(), length: rawCode.getStopIndex() - rawCode.getStartIndex() + 1)
 	}
 	
+	internal init(content: String, startToken: Token, codeToken: Token, endToken: Token) {
+		guard startToken.getType() == Rc2Lexer.IC_START, codeToken.getType() == Rc2Lexer.IC_CODE, endToken.getType() == Rc2Lexer.IC_END
+			else { fatalError("invalid token") }
+		
+		type = .inlineCode
+		self.content = content
+		code = codeToken.getText() ?? ""
+		startLine = startToken.getLine()
+		startCharIndex = startToken.getStartIndex()
+		endCharIndex = endToken.getStopIndex()
+		innerRange = NSRange(location: codeToken.getStartIndex(), length: codeToken.getStopIndex() - codeToken.getStartIndex() + 1)
+	}
+
 	// FIXME: why is this not being called?
 	public var description: String {
 		return "\(type): range:\(range) content:\(content)"

@@ -33,7 +33,7 @@ public class InlineInternalEquation: InternalChunk, InlineChunk, EquationChunk {
 			else { fatalError("invalid token") }
 
 		self.content = content
-		startLine = startToken.getStartIndex()
+		startLine = startToken.getLine()
 		startCharIndex = startToken.getStartIndex()
 		endCharIndex = endToken.getStopIndex()
 		type = .inlineEquation
