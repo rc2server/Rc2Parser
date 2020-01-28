@@ -67,13 +67,13 @@ open class RmdParser {
 		guard chunk.type == .code else { fatalError("can't highlight non R chunks") }
 		let text = contents.attributedSubstring(from: range).string
 		let lexer = RLexer(ANTLRInputStream(text))
-		let allTokens = try lexer.getAllTokens()
-		let vocab = lexer.getVocabulary()
-		for idx in 0..<allTokens.count {
-			let atoken = allTokens[idx]
-			print("\(vocab.getDisplayName(atoken.getType())) = \(atoken.getText() ?? "-")")
-		}
-		try lexer.reset()
+//		let allTokens = try lexer.getAllTokens()
+//		let vocab = lexer.getVocabulary()
+//		for idx in 0..<allTokens.count {
+//			let atoken = allTokens[idx]
+//			print("\(vocab.getDisplayName(atoken.getType())) = \(atoken.getText() ?? "-")")
+//		}
+//		try lexer.reset()
 		let tokens = CommonTokenStream(lexer)
 		let filter = try RFilter(tokens)
 		filter.setErrorHandler(FilterErrorStrategy())

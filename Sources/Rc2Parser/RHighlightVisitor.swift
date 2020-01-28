@@ -66,19 +66,9 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 		return nil
 	}
 
-	override func visitDefineFunc(_ ctx: RParser.DefineFuncContext) -> Void? {
-		print("def func \(ctx.getText())")
-		return nil
-	}
-//	override func visitSublist(_ ctx: RParser.SublistContext) -> Void? {
-//		self.visitChildren(ctx)
-//		return nil
-//	}
-	
-//	override func visitAssignOp(_ ctx: RParser.AssignOpContext) -> Void? {
-//		if let range = ctx.getStart()?.range {
-//			source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.quote, range: range)
-//		}
+	// I really don't like that this is never called. callFunc captures all defineFunc instances
+//	override func visitDefineFunc(_ ctx: RParser.DefineFuncContext) -> Void? {
+//		print("def func \(ctx.getText())")
 //		return nil
 //	}
 	
@@ -98,18 +88,15 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 		return nil
 	}
 	
-	override func visitKeywordRule(_ ctx: RParser.KeywordRuleContext) -> Void? {
-		print("got kword")
-	}
-	
-	override func visitIdRule(_ ctx: RParser.IdRuleContext) -> Void? {
+//	override func visitIdRule(_ ctx: RParser.IdRuleContext) -> Void? {
 //		guard let range = ctx.ID()?.getSymbol()?.range else {
 //			print("ERROR")
 //			return nil
 //		}
 //		source.addAttribute(RmdParser.SyntaxKey, value: RmdParser.SyntaxElement.keyword, range: range)
-		return nil
-	}
+//		return nil
+//	}
+	
 	override func visitComment(_ ctx: RParser.CommentContext) -> Void? {
 		if let range = ctx.getStart()?.range {
 			let rng = NSRange(location: globalRange.location + range.location, length: range.length)

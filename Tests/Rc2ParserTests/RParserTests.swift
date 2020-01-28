@@ -56,7 +56,7 @@ final class RParserTests: XCTestCase {
 			keys.append(element)
 			 print("got \(element.rawValue) for \(str.attributedSubstring(from: attrRange).string)")
 		}
-//		XCTAssertEqual(keys[0], SyntaxElement.comment)
+		XCTAssertEqual(keys[0], SyntaxElement.symbol)
 //		XCTAssertEqual(keys[1], SyntaxElement.symbol)
 //		XCTAssertEqual(keys[2], SyntaxElement.number)
 //		XCTAssertEqual(keys[3], SyntaxElement.number)
@@ -112,6 +112,7 @@ final class RParserTests: XCTestCase {
 let codeOnly = #"""
 ```{r}
 foo <- function(f, df, guess, conv) {
+# comment here
 rnorm(11)
 }
 ```
