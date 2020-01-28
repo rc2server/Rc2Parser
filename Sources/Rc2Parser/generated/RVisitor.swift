@@ -20,12 +20,24 @@ open class RVisitor<T>: ParseTreeVisitor<T> {
 	}
 
 	/**
-	 * Visit a parse tree produced by {@link RParser#expr_or_assign}.
+	 * Visit a parse tree produced by the {@code assignment}
+	 * labeled alternative in {@link RParser#expr_or_assign}.
 	- Parameters:
 	  - ctx: the parse tree
 	- returns: the visitor result
 	 */
-	open func visitExpr_or_assign(_ ctx: RParser.Expr_or_assignContext) -> T {
+	open func visitAssignment(_ ctx: RParser.AssignmentContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
+
+	/**
+	 * Visit a parse tree produced by the {@code singleExp}
+	 * labeled alternative in {@link RParser#expr_or_assign}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitSingleExp(_ ctx: RParser.SingleExpContext) -> T {
 	 	fatalError(#function + " must be overridden")
 	}
 

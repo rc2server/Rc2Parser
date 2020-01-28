@@ -19,17 +19,33 @@ public protocol RListener: ParseTreeListener {
 	 */
 	func exitProg(_ ctx: RParser.ProgContext)
 	/**
-	 * Enter a parse tree produced by {@link RParser#expr_or_assign}.
+	 * Enter a parse tree produced by the {@code assignment}
+	 * labeled alternative in {@link RParser#expr_or_assign}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func enterExpr_or_assign(_ ctx: RParser.Expr_or_assignContext)
+	func enterAssignment(_ ctx: RParser.AssignmentContext)
 	/**
-	 * Exit a parse tree produced by {@link RParser#expr_or_assign}.
+	 * Exit a parse tree produced by the {@code assignment}
+	 * labeled alternative in {@link RParser#expr_or_assign}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func exitExpr_or_assign(_ ctx: RParser.Expr_or_assignContext)
+	func exitAssignment(_ ctx: RParser.AssignmentContext)
+	/**
+	 * Enter a parse tree produced by the {@code singleExp}
+	 * labeled alternative in {@link RParser#expr_or_assign}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterSingleExp(_ ctx: RParser.SingleExpContext)
+	/**
+	 * Exit a parse tree produced by the {@code singleExp}
+	 * labeled alternative in {@link RParser#expr_or_assign}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitSingleExp(_ ctx: RParser.SingleExpContext)
 	/**
 	 * Enter a parse tree produced by the {@code whileLoop}
 	 * labeled alternative in {@link RParser#expr}.

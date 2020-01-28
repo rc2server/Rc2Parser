@@ -28,13 +28,26 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterExpr_or_assign(_ ctx: RParser.Expr_or_assignContext) { }
+	open func enterAssignment(_ ctx: RParser.AssignmentContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitExpr_or_assign(_ ctx: RParser.Expr_or_assignContext) { }
+	open func exitAssignment(_ ctx: RParser.AssignmentContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterSingleExp(_ ctx: RParser.SingleExpContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitSingleExp(_ ctx: RParser.SingleExpContext) { }
 
 	/**
 	 * {@inheritDoc}

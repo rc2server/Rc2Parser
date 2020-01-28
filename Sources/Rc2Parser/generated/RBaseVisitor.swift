@@ -23,7 +23,14 @@ open class RBaseVisitor<T>: AbstractParseTreeVisitor<T> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	open func visitExpr_or_assign(_ ctx: RParser.Expr_or_assignContext) -> T? { return visitChildren(ctx) }
+	open func visitAssignment(_ ctx: RParser.AssignmentContext) -> T? { return visitChildren(ctx) }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	open func visitSingleExp(_ ctx: RParser.SingleExpContext) -> T? { return visitChildren(ctx) }
 	/**
 	 * {@inheritDoc}
 	 *

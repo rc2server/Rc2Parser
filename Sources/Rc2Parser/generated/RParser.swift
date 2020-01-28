@@ -271,6 +271,12 @@ open class RParser: Parser {
 	}
 
 	public class Expr_or_assignContext: ParserRuleContext {
+		override open
+		func getRuleIndex() -> Int {
+			return RParser.RULE_expr_or_assign
+		}
+	}
+	public class AssignmentContext: Expr_or_assignContext {
 			open
 			func expr() -> ExprContext? {
 				return getRuleContext(ExprContext.self, 0)
@@ -283,29 +289,67 @@ open class RParser: Parser {
 			func expr_or_assign() -> Expr_or_assignContext? {
 				return getRuleContext(Expr_or_assignContext.self, 0)
 			}
-		override open
-		func getRuleIndex() -> Int {
-			return RParser.RULE_expr_or_assign
+
+		public
+		init(_ ctx: Expr_or_assignContext) {
+			super.init()
+			copyFrom(ctx)
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? RListener {
-				listener.enterExpr_or_assign(self)
+				listener.enterAssignment(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? RListener {
-				listener.exitExpr_or_assign(self)
+				listener.exitAssignment(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? RVisitor {
-			    return visitor.visitExpr_or_assign(self)
+			    return visitor.visitAssignment(self)
 			}
 			else if let visitor = visitor as? RBaseVisitor {
-			    return visitor.visitExpr_or_assign(self)
+			    return visitor.visitAssignment(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	public class SingleExpContext: Expr_or_assignContext {
+			open
+			func expr() -> ExprContext? {
+				return getRuleContext(ExprContext.self, 0)
+			}
+
+		public
+		init(_ ctx: Expr_or_assignContext) {
+			super.init()
+			copyFrom(ctx)
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterSingleExp(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitSingleExp(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitSingleExp(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitSingleExp(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -324,6 +368,7 @@ open class RParser: Parser {
 		 	try _errHandler.sync(self)
 		 	switch(try getInterpreter().adaptivePredict(_input,3, _ctx)) {
 		 	case 1:
+		 		_localctx =  AssignmentContext(_localctx);
 		 		try enterOuterAlt(_localctx, 1)
 		 		setState(43)
 		 		try expr(0)
@@ -334,6 +379,7 @@ open class RParser: Parser {
 
 		 		break
 		 	case 2:
+		 		_localctx =  SingleExpContext(_localctx);
 		 		try enterOuterAlt(_localctx, 2)
 		 		setState(47)
 		 		try expr(0)

@@ -18,17 +18,32 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 	
 	let source: NSMutableAttributedString
 	let parser: RParser
+	let globalRange: NSRange
 	
-	init(string: NSMutableAttributedString, parser: RParser) {
+	init(string: NSMutableAttributedString, range: NSRange, parser: RParser) {
 		source = string
 		self.parser = parser
+		self.globalRange = range
 	}
 	
 	override open func visitAssignOp(_ ctx: RParser.AssignOpContext) -> Void? {
 		self.visitChildren(ctx)
 		if let tok = ctx.getChild(0)?.getPayload() as? Token {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: tok.range)
+			let rng = NSRange(location: globalRange.location + tok.range.location, length: tok.range.length)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: rng)
 		}
+		return nil
+	}
+	
+	override func visitAssignExp(_ ctx: RParser.AssignExpContext) -> Void? {
+		self.visitChildren(ctx)
+		print("ass: \(ctx.getText())")
+		return nil
+	}
+	
+	override func visitAssignment(_ ctx: RParser.AssignmentContext) -> Void? {
+		visitChildren(ctx)
+		// ctx.getStart() if an ID, that is the variable the assignment is beeing made to
 		return nil
 	}
 	
@@ -39,9 +54,11 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 		let range = funToken.range
 		
 		if rKeywords.contains(funToken.getText()!.lowercased()) {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: range)
+			let rng = NSRange(location: globalRange.location + range.location, length: range.length)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: rng)
 		} else {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.functonName, range: range)
+			let rng = NSRange(location: globalRange.location + range.location, length: range.length)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.functonName, range: rng)
 		}
 		// know child1 is arg1
 //		print("name = \(funName), args=\(params.getText())")
@@ -49,6 +66,10 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 		return nil
 	}
 
+	override func visitDefineFunc(_ ctx: RParser.DefineFuncContext) -> Void? {
+		print("def func \(ctx.getText())")
+		return nil
+	}
 //	override func visitSublist(_ ctx: RParser.SublistContext) -> Void? {
 //		self.visitChildren(ctx)
 //		return nil
@@ -63,14 +84,16 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 	
 	override func visitNumber(_ ctx: RParser.NumberContext) -> Void? {
 		if let range = ctx.getStart()?.range {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.number, range: range)
+			let rng = NSRange(location: globalRange.location + range.location, length: range.length)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.number, range: rng)
 		}
 		return nil
 	}
 
 	override func visitStringRule(_ ctx: RParser.StringRuleContext) -> Void? {
 		if let range = ctx.getStart()?.range {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.string, range: range)
+			let rng = NSRange(location: globalRange.location + range.location, length: range.length)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.string, range: rng)
 		}
 		return nil
 	}
@@ -89,7 +112,8 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 	}
 	override func visitComment(_ ctx: RParser.CommentContext) -> Void? {
 		if let range = ctx.getStart()?.range {
-			source.addAttribute(SyntaxKey, value: SyntaxElement.comment, range: range)
+			let rng = NSRange(location: globalRange.location + range.location, length: range.length)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.comment, range: rng)
 		}
 		return nil
 	}

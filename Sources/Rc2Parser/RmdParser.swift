@@ -63,7 +63,29 @@ open class RmdParser {
 		return ChunkCollection(listener.chunks)
 	}
 
-	public final func highlight(content: NSMutableAttributedString) throws {
+	public final func highlight(chunk: AnyChunk, contents: NSMutableAttributedString, range: NSRange) throws {
+		guard chunk.type == .code else { fatalError("can't highlight non R chunks") }
+		let text = contents.attributedSubstring(from: range).string
+		let lexer = RLexer(ANTLRInputStream(text))
+		let allTokens = try lexer.getAllTokens()
+		let vocab = lexer.getVocabulary()
+		for idx in 0..<allTokens.count {
+			let atoken = allTokens[idx]
+			print("\(vocab.getDisplayName(atoken.getType())) = \(atoken.getText() ?? "-")")
+		}
+		try lexer.reset()
+		let tokens = CommonTokenStream(lexer)
+		let filter = try RFilter(tokens)
+		filter.setErrorHandler(FilterErrorStrategy())
+		try filter.stream()
+		try tokens.reset()
+		let parser =  try RParser(tokens)
+		let tree = try parser.prog()
+		let visitor = RHighlightVisitor(string: contents, range: range, parser: parser)
+		visitor.visit(tree)
+	}
+
+	public final func oldHighlight(content: NSMutableAttributedString) throws {
 		let lexer = RLexer(ANTLRInputStream(content.string))
 		let tokens = CommonTokenStream(lexer)
 		let filter = try RFilter(tokens)
@@ -72,7 +94,7 @@ open class RmdParser {
 		try tokens.reset()
 		let parser =  try RParser(tokens)
 		let tree = try parser.prog()
-		let visitor = RHighlightVisitor(string: content, parser: parser)
+		let visitor = RHighlightVisitor(string: content, range: NSRange(location: 0, length: content.length), parser: parser)
 		visitor.visit(tree)
 	}
 }

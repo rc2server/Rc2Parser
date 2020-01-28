@@ -44,18 +44,17 @@ $ java TestR sample.R
 */
 grammar R;
 
-prog:   (   expr (';'|NL)*
+prog:   (   expr_or_assign (';'|NL)*
         |   NL
         )*
         EOF
     ;
 
-/*
+
 expr_or_assign
-    :   expr (ASSIGN|EQ_CHAR|DASSIGN) expr_or_assign
-    |   expr
+    :   expr assignOp expr_or_assign # assignment
+    |   expr # singleExp
     ;
-*/
 
 expr:   expr '[[' sublist ']' ']'  # listRef // '[[' follows R's yacc grammar
     |   expr '[' sublist ']' # array
