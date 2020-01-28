@@ -35,15 +35,16 @@ open class RParser: Parser {
 	}
 
 	public
-	static let RULE_prog = 0, RULE_expr = 1, RULE_exprlist = 2, RULE_formlist = 3, 
-            RULE_form = 4, RULE_sublist = 5, RULE_sub = 6, RULE_functionCall = 7, 
-            RULE_rcomparison = 8, RULE_assignOp = 9, RULE_number = 10, RULE_rcomment = 11, 
-            RULE_keyword = 12
+	static let RULE_prog = 0, RULE_expr_or_assign = 1, RULE_expr = 2, RULE_exprlist = 3, 
+            RULE_formlist = 4, RULE_form = 5, RULE_sublist = 6, RULE_sub = 7, 
+            RULE_functionCall = 8, RULE_rcomparison = 9, RULE_assignOp = 10, 
+            RULE_number = 11, RULE_rcomment = 12, RULE_keyword = 13
 
 	public
 	static let ruleNames: [String] = [
-		"prog", "expr", "exprlist", "formlist", "form", "sublist", "sub", "functionCall", 
-		"rcomparison", "assignOp", "number", "rcomment", "keyword"
+		"prog", "expr_or_assign", "expr", "exprlist", "formlist", "form", "sublist", 
+		"sub", "functionCall", "rcomparison", "assignOp", "number", "rcomment", 
+		"keyword"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
@@ -103,12 +104,12 @@ open class RParser: Parser {
 				return getToken(RParser.Tokens.EOF.rawValue, 0)
 			}
 			open
-			func expr() -> [ExprContext] {
-				return getRuleContexts(ExprContext.self)
+			func expr_or_assign() -> [Expr_or_assignContext] {
+				return getRuleContexts(Expr_or_assignContext.self)
 			}
 			open
-			func expr(_ i: Int) -> ExprContext? {
-				return getRuleContext(ExprContext.self, i)
+			func expr_or_assign(_ i: Int) -> Expr_or_assignContext? {
+				return getRuleContext(Expr_or_assignContext.self, i)
 			}
 			open
 			func NL() -> [TerminalNode] {
@@ -166,7 +167,7 @@ open class RParser: Parser {
 		do {
 			var _alt:Int
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(36)
+		 	setState(38)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
@@ -181,7 +182,7 @@ open class RParser: Parser {
 		 	          }()
 		 	      return testSet
 		 	 }()) {
-		 		setState(34)
+		 		setState(36)
 		 		try _errHandler.sync(self)
 		 		switch (RParser.Tokens(rawValue: try _input.LA(1))!) {
 		 		case .HEX:fallthrough
@@ -213,14 +214,14 @@ open class RParser: Parser {
 		 		case .NA:fallthrough
 		 		case .INF:fallthrough
 		 		case .COMMENT:
-		 			setState(26)
-		 			try expr(0)
-		 			setState(30)
+		 			setState(28)
+		 			try expr_or_assign()
+		 			setState(32)
 		 			try _errHandler.sync(self)
 		 			_alt = try getInterpreter().adaptivePredict(_input,0,_ctx)
 		 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
 		 				if ( _alt==1 ) {
-		 					setState(27)
+		 					setState(29)
 		 					_la = try _input.LA(1)
 		 					if (!(//closure
 		 					 { () -> Bool in
@@ -236,7 +237,7 @@ open class RParser: Parser {
 
 		 			 
 		 				}
-		 				setState(32)
+		 				setState(34)
 		 				try _errHandler.sync(self)
 		 				_alt = try getInterpreter().adaptivePredict(_input,0,_ctx)
 		 			}
@@ -244,7 +245,7 @@ open class RParser: Parser {
 		 			break
 
 		 		case .NL:
-		 			setState(33)
+		 			setState(35)
 		 			try match(RParser.Tokens.NL.rawValue)
 
 		 			break
@@ -252,13 +253,94 @@ open class RParser: Parser {
 		 			throw ANTLRException.recognition(e: NoViableAltException(self))
 		 		}
 
-		 		setState(38)
+		 		setState(40)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(39)
+		 	setState(41)
 		 	try match(RParser.Tokens.EOF.rawValue)
 
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	public class Expr_or_assignContext: ParserRuleContext {
+			open
+			func expr() -> ExprContext? {
+				return getRuleContext(ExprContext.self, 0)
+			}
+			open
+			func assignOp() -> AssignOpContext? {
+				return getRuleContext(AssignOpContext.self, 0)
+			}
+			open
+			func expr_or_assign() -> Expr_or_assignContext? {
+				return getRuleContext(Expr_or_assignContext.self, 0)
+			}
+		override open
+		func getRuleIndex() -> Int {
+			return RParser.RULE_expr_or_assign
+		}
+		override open
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.enterExpr_or_assign(self)
+			}
+		}
+		override open
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? RListener {
+				listener.exitExpr_or_assign(self)
+			}
+		}
+		override open
+		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
+			if let visitor = visitor as? RVisitor {
+			    return visitor.visitExpr_or_assign(self)
+			}
+			else if let visitor = visitor as? RBaseVisitor {
+			    return visitor.visitExpr_or_assign(self)
+			}
+			else {
+			     return visitor.visitChildren(self)
+			}
+		}
+	}
+	@discardableResult
+	 open func expr_or_assign() throws -> Expr_or_assignContext {
+		var _localctx: Expr_or_assignContext = Expr_or_assignContext(_ctx, getState())
+		try enterRule(_localctx, 2, RParser.RULE_expr_or_assign)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	setState(48)
+		 	try _errHandler.sync(self)
+		 	switch(try getInterpreter().adaptivePredict(_input,3, _ctx)) {
+		 	case 1:
+		 		try enterOuterAlt(_localctx, 1)
+		 		setState(43)
+		 		try expr(0)
+		 		setState(44)
+		 		try assignOp()
+		 		setState(45)
+		 		try expr_or_assign()
+
+		 		break
+		 	case 2:
+		 		try enterOuterAlt(_localctx, 2)
+		 		setState(47)
+		 		try expr(0)
+
+		 		break
+		 	default: break
+		 	}
 		}
 		catch ANTLRException.recognition(let re) {
 			_localctx.exception = re
@@ -1762,8 +1844,8 @@ open class RParser: Parser {
 		var _parentState: Int = getState()
 		var _localctx: ExprContext = ExprContext(_ctx, _parentState)
 		var  _prevctx: ExprContext = _localctx
-		var _startState: Int = 2
-		try enterRecursionRule(_localctx, 2, RParser.RULE_expr, _p)
+		var _startState: Int = 4
+		try enterRecursionRule(_localctx, 4, RParser.RULE_expr, _p)
 		var _la: Int = 0
 		defer {
 	    		try! unrollRecursionContexts(_parentctx)
@@ -1771,15 +1853,15 @@ open class RParser: Parser {
 		do {
 			var _alt: Int
 			try enterOuterAlt(_localctx, 1)
-			setState(101)
+			setState(110)
 			try _errHandler.sync(self)
-			switch(try getInterpreter().adaptivePredict(_input,4, _ctx)) {
+			switch(try getInterpreter().adaptivePredict(_input,5, _ctx)) {
 			case 1:
 				_localctx = PlusNegContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
 
-				setState(42)
+				setState(51)
 				_la = try _input.LA(1)
 				if (!(//closure
 				 { () -> Bool in
@@ -1792,7 +1874,7 @@ open class RParser: Parser {
 					_errHandler.reportMatch(self)
 					try consume()
 				}
-				setState(43)
+				setState(52)
 				try expr(28)
 
 				break
@@ -1800,7 +1882,7 @@ open class RParser: Parser {
 				_localctx = CommentContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(44)
+				setState(53)
 				try rcomment()
 
 				break
@@ -1808,9 +1890,9 @@ open class RParser: Parser {
 				_localctx = NotExprContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(45)
+				setState(54)
 				try match(RParser.Tokens.NOT.rawValue)
-				setState(46)
+				setState(55)
 				try expr(21)
 
 				break
@@ -1818,9 +1900,9 @@ open class RParser: Parser {
 				_localctx = TildeExpContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(47)
+				setState(56)
 				try match(RParser.Tokens.TILDE.rawValue)
-				setState(48)
+				setState(57)
 				try expr(18)
 
 				break
@@ -1828,11 +1910,11 @@ open class RParser: Parser {
 				_localctx = DefineFuncContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(49)
+				setState(58)
 				try match(RParser.Tokens.FUNCTION.rawValue)
-				setState(50)
+				setState(59)
 				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(52)
+				setState(61)
 				try _errHandler.sync(self)
 				_la = try _input.LA(1)
 				if (//closure
@@ -1843,14 +1925,14 @@ open class RParser: Parser {
 				}()
 				      return testSet
 				 }()) {
-					setState(51)
+					setState(60)
 					try formlist()
 
 				}
 
-				setState(54)
+				setState(63)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(55)
+				setState(64)
 				try expr(15)
 
 				break
@@ -1858,11 +1940,11 @@ open class RParser: Parser {
 				_localctx = CompoundStmtContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(56)
+				setState(65)
 				try match(RParser.Tokens.BRC_OPEN.rawValue)
-				setState(57)
+				setState(66)
 				try exprlist()
-				setState(58)
+				setState(67)
 				try match(RParser.Tokens.BRC_CLOSE.rawValue)
 
 				break
@@ -1870,15 +1952,15 @@ open class RParser: Parser {
 				_localctx = IfStmtContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(60)
+				setState(69)
 				try match(RParser.Tokens.IF.rawValue)
-				setState(61)
+				setState(70)
 				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(62)
+				setState(71)
 				try expr(0)
-				setState(63)
+				setState(72)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(64)
+				setState(73)
 				try expr(12)
 
 				break
@@ -1886,19 +1968,19 @@ open class RParser: Parser {
 				_localctx = IfelseStmtContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(66)
+				setState(75)
 				try match(RParser.Tokens.IF.rawValue)
-				setState(67)
+				setState(76)
 				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(68)
+				setState(77)
 				try expr(0)
-				setState(69)
+				setState(78)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(70)
+				setState(79)
 				try expr(0)
-				setState(71)
+				setState(80)
 				try match(RParser.Tokens.ELSE.rawValue)
-				setState(72)
+				setState(81)
 				try expr(11)
 
 				break
@@ -1906,19 +1988,19 @@ open class RParser: Parser {
 				_localctx = ForLoopContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(74)
+				setState(83)
 				try match(RParser.Tokens.FOR.rawValue)
-				setState(75)
+				setState(84)
 				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(76)
+				setState(85)
 				try match(RParser.Tokens.ID.rawValue)
-				setState(77)
+				setState(86)
 				try match(RParser.Tokens.IN.rawValue)
-				setState(78)
+				setState(87)
 				try expr(0)
-				setState(79)
+				setState(88)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(80)
+				setState(89)
 				try expr(10)
 
 				break
@@ -1926,15 +2008,15 @@ open class RParser: Parser {
 				_localctx = WhileLoopContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(82)
+				setState(91)
 				try match(RParser.Tokens.WHILE.rawValue)
-				setState(83)
+				setState(92)
 				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(84)
+				setState(93)
 				try expr(0)
-				setState(85)
+				setState(94)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
-				setState(86)
+				setState(95)
 				try expr(9)
 
 				break
@@ -1942,9 +2024,9 @@ open class RParser: Parser {
 				_localctx = RepeatLoopContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(88)
+				setState(97)
 				try match(RParser.Tokens.REPEAT.rawValue)
-				setState(89)
+				setState(98)
 				try expr(8)
 
 				break
@@ -1952,9 +2034,9 @@ open class RParser: Parser {
 				_localctx = HelpRequestContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(90)
+				setState(99)
 				try match(RParser.Tokens.QMARK.rawValue)
-				setState(91)
+				setState(100)
 				try expr(7)
 
 				break
@@ -1962,7 +2044,7 @@ open class RParser: Parser {
 				_localctx = KeywordRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(92)
+				setState(101)
 				try keyword()
 
 				break
@@ -1970,11 +2052,11 @@ open class RParser: Parser {
 				_localctx = ListExpContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(93)
+				setState(102)
 				try match(RParser.Tokens.PAR_OPEN.rawValue)
-				setState(94)
+				setState(103)
 				try expr(0)
-				setState(95)
+				setState(104)
 				try match(RParser.Tokens.PAR_CLOSE.rawValue)
 
 				break
@@ -1982,7 +2064,7 @@ open class RParser: Parser {
 				_localctx = IdRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(97)
+				setState(106)
 				try match(RParser.Tokens.ID.rawValue)
 
 				break
@@ -1990,7 +2072,7 @@ open class RParser: Parser {
 				_localctx = StringRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(98)
+				setState(107)
 				try match(RParser.Tokens.STRING.rawValue)
 
 				break
@@ -1998,7 +2080,7 @@ open class RParser: Parser {
 				_localctx = HexRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(99)
+				setState(108)
 				try match(RParser.Tokens.HEX.rawValue)
 
 				break
@@ -2006,33 +2088,33 @@ open class RParser: Parser {
 				_localctx = NumRuleContext(_localctx)
 				_ctx = _localctx
 				_prevctx = _localctx
-				setState(100)
+				setState(109)
 				try number()
 
 				break
 			default: break
 			}
 			_ctx!.stop = try _input.LT(-1)
-			setState(159)
+			setState(168)
 			try _errHandler.sync(self)
-			_alt = try getInterpreter().adaptivePredict(_input,6,_ctx)
+			_alt = try getInterpreter().adaptivePredict(_input,7,_ctx)
 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
 				if ( _alt==1 ) {
 					if _parseListeners != nil {
 					   try triggerExitRuleEvent()
 					}
 					_prevctx = _localctx
-					setState(157)
+					setState(166)
 					try _errHandler.sync(self)
-					switch(try getInterpreter().adaptivePredict(_input,5, _ctx)) {
+					switch(try getInterpreter().adaptivePredict(_input,6, _ctx)) {
 					case 1:
 						_localctx = DescendantContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(103)
+						setState(112)
 						if (!(precpred(_ctx, 31))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 31)"))
 						}
-						setState(104)
+						setState(113)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2045,18 +2127,18 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(105)
+						setState(114)
 						try expr(32)
 
 						break
 					case 2:
 						_localctx = DollarOrAtContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(106)
+						setState(115)
 						if (!(precpred(_ctx, 30))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 30)"))
 						}
-						setState(107)
+						setState(116)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2069,57 +2151,57 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(108)
+						setState(117)
 						try expr(31)
 
 						break
 					case 3:
 						_localctx = HouseContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(109)
+						setState(118)
 						if (!(precpred(_ctx, 29))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 29)"))
 						}
-						setState(110)
+						setState(119)
 						try match(RParser.Tokens.CARAT.rawValue)
-						setState(111)
+						setState(120)
 						try expr(29)
 
 						break
 					case 4:
 						_localctx = ColonContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(112)
+						setState(121)
 						if (!(precpred(_ctx, 27))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 27)"))
 						}
-						setState(113)
+						setState(122)
 						try match(RParser.Tokens.COLON.rawValue)
-						setState(114)
+						setState(123)
 						try expr(28)
 
 						break
 					case 5:
 						_localctx = UserExprContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(115)
+						setState(124)
 						if (!(precpred(_ctx, 26))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 26)"))
 						}
-						setState(116)
+						setState(125)
 						try match(RParser.Tokens.USER_OP.rawValue)
-						setState(117)
+						setState(126)
 						try expr(27)
 
 						break
 					case 6:
 						_localctx = MulDivContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(118)
+						setState(127)
 						if (!(precpred(_ctx, 25))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 25)"))
 						}
-						setState(119)
+						setState(128)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2132,18 +2214,18 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(120)
+						setState(129)
 						try expr(26)
 
 						break
 					case 7:
 						_localctx = PlusMinusContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(121)
+						setState(130)
 						if (!(precpred(_ctx, 24))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 24)"))
 						}
-						setState(122)
+						setState(131)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2156,44 +2238,44 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(123)
+						setState(132)
 						try expr(25)
 
 						break
 					case 8:
 						_localctx = ComparisonContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(124)
+						setState(133)
 						if (!(precpred(_ctx, 23))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 23)"))
 						}
-						setState(125)
+						setState(134)
 						try rcomparison()
-						setState(126)
+						setState(135)
 						try expr(24)
 
 						break
 					case 9:
 						_localctx = AndExprContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(128)
+						setState(137)
 						if (!(precpred(_ctx, 20))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 20)"))
 						}
-						setState(129)
+						setState(138)
 						try match(RParser.Tokens.AND_OP.rawValue)
-						setState(130)
+						setState(139)
 						try expr(21)
 
 						break
 					case 10:
 						_localctx = OrExprContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(131)
+						setState(140)
 						if (!(precpred(_ctx, 19))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 19)"))
 						}
-						setState(132)
+						setState(141)
 						_la = try _input.LA(1)
 						if (!(//closure
 						 { () -> Bool in
@@ -2206,80 +2288,80 @@ open class RParser: Parser {
 							_errHandler.reportMatch(self)
 							try consume()
 						}
-						setState(133)
+						setState(142)
 						try expr(20)
 
 						break
 					case 11:
 						_localctx = ExpTildeExpContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(134)
+						setState(143)
 						if (!(precpred(_ctx, 17))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 17)"))
 						}
-						setState(135)
+						setState(144)
 						try match(RParser.Tokens.TILDE.rawValue)
-						setState(136)
+						setState(145)
 						try expr(18)
 
 						break
 					case 12:
 						_localctx = AssignExpContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(137)
+						setState(146)
 						if (!(precpred(_ctx, 16))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 16)"))
 						}
-						setState(138)
+						setState(147)
 						try assignOp()
-						setState(139)
+						setState(148)
 						try expr(17)
 
 						break
 					case 13:
 						_localctx = ListRefContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(141)
+						setState(150)
 						if (!(precpred(_ctx, 33))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 33)"))
 						}
-						setState(142)
+						setState(151)
 						try match(RParser.Tokens.DBRA_OPEN.rawValue)
-						setState(143)
+						setState(152)
 						try sublist()
-						setState(144)
+						setState(153)
 						try match(RParser.Tokens.BRA_CLOSE.rawValue)
-						setState(145)
+						setState(154)
 						try match(RParser.Tokens.BRA_CLOSE.rawValue)
 
 						break
 					case 14:
 						_localctx = ArrayContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(147)
+						setState(156)
 						if (!(precpred(_ctx, 32))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 32)"))
 						}
-						setState(148)
+						setState(157)
 						try match(RParser.Tokens.BRA_OPEN.rawValue)
-						setState(149)
+						setState(158)
 						try sublist()
-						setState(150)
+						setState(159)
 						try match(RParser.Tokens.BRA_CLOSE.rawValue)
 
 						break
 					case 15:
 						_localctx = CallFuncContext(  ExprContext(_parentctx, _parentState))
 						try pushNewRecursionContext(_localctx, _startState, RParser.RULE_expr)
-						setState(152)
+						setState(161)
 						if (!(precpred(_ctx, 14))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 14)"))
 						}
-						setState(153)
+						setState(162)
 						try match(RParser.Tokens.PAR_OPEN.rawValue)
-						setState(154)
+						setState(163)
 						try sublist()
-						setState(155)
+						setState(164)
 						try match(RParser.Tokens.PAR_CLOSE.rawValue)
 
 						break
@@ -2287,9 +2369,9 @@ open class RParser: Parser {
 					}
 			 
 				}
-				setState(161)
+				setState(170)
 				try _errHandler.sync(self)
-				_alt = try getInterpreter().adaptivePredict(_input,6,_ctx)
+				_alt = try getInterpreter().adaptivePredict(_input,7,_ctx)
 			}
 
 		}
@@ -2359,13 +2441,13 @@ open class RParser: Parser {
 	@discardableResult
 	 open func exprlist() throws -> ExprlistContext {
 		var _localctx: ExprlistContext = ExprlistContext(_ctx, getState())
-		try enterRule(_localctx, 4, RParser.RULE_exprlist)
+		try enterRule(_localctx, 6, RParser.RULE_exprlist)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(173)
+		 	setState(182)
 		 	try _errHandler.sync(self)
 		 	switch (RParser.Tokens(rawValue: try _input.LA(1))!) {
 		 	case .HEX:fallthrough
@@ -2398,9 +2480,9 @@ open class RParser: Parser {
 		 	case .INF:fallthrough
 		 	case .COMMENT:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(162)
+		 		setState(171)
 		 		try expr(0)
-		 		setState(169)
+		 		setState(178)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
@@ -2408,7 +2490,7 @@ open class RParser: Parser {
 		 		      let testSet: Bool = _la == RParser.Tokens.SEMI.rawValue || _la == RParser.Tokens.NL.rawValue
 		 		      return testSet
 		 		 }()) {
-		 			setState(163)
+		 			setState(172)
 		 			_la = try _input.LA(1)
 		 			if (!(//closure
 		 			 { () -> Bool in
@@ -2421,7 +2503,7 @@ open class RParser: Parser {
 		 				_errHandler.reportMatch(self)
 		 				try consume()
 		 			}
-		 			setState(165)
+		 			setState(174)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 			if (//closure
@@ -2436,14 +2518,14 @@ open class RParser: Parser {
 		 			          }()
 		 			      return testSet
 		 			 }()) {
-		 				setState(164)
+		 				setState(173)
 		 				try expr(0)
 
 		 			}
 
 
 
-		 			setState(171)
+		 			setState(180)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		}
@@ -2516,16 +2598,16 @@ open class RParser: Parser {
 	@discardableResult
 	 open func formlist() throws -> FormlistContext {
 		var _localctx: FormlistContext = FormlistContext(_ctx, getState())
-		try enterRule(_localctx, 6, RParser.RULE_formlist)
+		try enterRule(_localctx, 8, RParser.RULE_formlist)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(175)
+		 	setState(184)
 		 	try form()
-		 	setState(180)
+		 	setState(189)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
@@ -2533,13 +2615,13 @@ open class RParser: Parser {
 		 	      let testSet: Bool = _la == RParser.Tokens.COMMA.rawValue
 		 	      return testSet
 		 	 }()) {
-		 		setState(176)
+		 		setState(185)
 		 		try match(RParser.Tokens.COMMA.rawValue)
-		 		setState(177)
+		 		setState(186)
 		 		try form()
 
 
-		 		setState(182)
+		 		setState(191)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
@@ -2607,39 +2689,39 @@ open class RParser: Parser {
 	@discardableResult
 	 open func form() throws -> FormContext {
 		var _localctx: FormContext = FormContext(_ctx, getState())
-		try enterRule(_localctx, 8, RParser.RULE_form)
+		try enterRule(_localctx, 10, RParser.RULE_form)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(189)
+		 	setState(198)
 		 	try _errHandler.sync(self)
-		 	switch(try getInterpreter().adaptivePredict(_input,11, _ctx)) {
+		 	switch(try getInterpreter().adaptivePredict(_input,12, _ctx)) {
 		 	case 1:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(183)
+		 		setState(192)
 		 		try match(RParser.Tokens.ID.rawValue)
 
 		 		break
 		 	case 2:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(184)
+		 		setState(193)
 		 		try match(RParser.Tokens.ID.rawValue)
-		 		setState(185)
+		 		setState(194)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-		 		setState(186)
+		 		setState(195)
 		 		try expr(0)
 
 		 		break
 		 	case 3:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(187)
+		 		setState(196)
 		 		try match(RParser.Tokens.TRIPLE_DOT.rawValue)
 
 		 		break
 		 	case 4:
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(188)
+		 		setState(197)
 		 		try match(RParser.Tokens.PERIOD.rawValue)
 
 		 		break
@@ -2704,16 +2786,16 @@ open class RParser: Parser {
 	@discardableResult
 	 open func sublist() throws -> SublistContext {
 		var _localctx: SublistContext = SublistContext(_ctx, getState())
-		try enterRule(_localctx, 10, RParser.RULE_sublist)
+		try enterRule(_localctx, 12, RParser.RULE_sublist)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(191)
+		 	setState(200)
 		 	try sub()
-		 	setState(196)
+		 	setState(205)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
@@ -2721,13 +2803,13 @@ open class RParser: Parser {
 		 	      let testSet: Bool = _la == RParser.Tokens.COMMA.rawValue
 		 	      return testSet
 		 	 }()) {
-		 		setState(192)
+		 		setState(201)
 		 		try match(RParser.Tokens.COMMA.rawValue)
-		 		setState(193)
+		 		setState(202)
 		 		try sub()
 
 
-		 		setState(198)
+		 		setState(207)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
@@ -2803,83 +2885,83 @@ open class RParser: Parser {
 	@discardableResult
 	 open func sub() throws -> SubContext {
 		var _localctx: SubContext = SubContext(_ctx, getState())
-		try enterRule(_localctx, 12, RParser.RULE_sub)
+		try enterRule(_localctx, 14, RParser.RULE_sub)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(218)
+		 	setState(227)
 		 	try _errHandler.sync(self)
-		 	switch(try getInterpreter().adaptivePredict(_input,13, _ctx)) {
+		 	switch(try getInterpreter().adaptivePredict(_input,14, _ctx)) {
 		 	case 1:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(199)
+		 		setState(208)
 		 		try expr(0)
 
 		 		break
 		 	case 2:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(200)
+		 		setState(209)
 		 		try match(RParser.Tokens.ID.rawValue)
-		 		setState(201)
+		 		setState(210)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 3:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(202)
+		 		setState(211)
 		 		try match(RParser.Tokens.ID.rawValue)
-		 		setState(203)
+		 		setState(212)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-		 		setState(204)
+		 		setState(213)
 		 		try expr(0)
 
 		 		break
 		 	case 4:
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(205)
+		 		setState(214)
 		 		try match(RParser.Tokens.STRING.rawValue)
-		 		setState(206)
+		 		setState(215)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 5:
 		 		try enterOuterAlt(_localctx, 5)
-		 		setState(207)
+		 		setState(216)
 		 		try match(RParser.Tokens.STRING.rawValue)
-		 		setState(208)
+		 		setState(217)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-		 		setState(209)
+		 		setState(218)
 		 		try expr(0)
 
 		 		break
 		 	case 6:
 		 		try enterOuterAlt(_localctx, 6)
-		 		setState(210)
+		 		setState(219)
 		 		try match(RParser.Tokens.NULL.rawValue)
-		 		setState(211)
+		 		setState(220)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 7:
 		 		try enterOuterAlt(_localctx, 7)
-		 		setState(212)
+		 		setState(221)
 		 		try match(RParser.Tokens.NULL.rawValue)
-		 		setState(213)
+		 		setState(222)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
-		 		setState(214)
+		 		setState(223)
 		 		try expr(0)
 
 		 		break
 		 	case 8:
 		 		try enterOuterAlt(_localctx, 8)
-		 		setState(215)
+		 		setState(224)
 		 		try match(RParser.Tokens.TRIPLE_DOT.rawValue)
 
 		 		break
 		 	case 9:
 		 		try enterOuterAlt(_localctx, 9)
-		 		setState(216)
+		 		setState(225)
 		 		try match(RParser.Tokens.PERIOD.rawValue)
 
 		 		break
@@ -2948,19 +3030,19 @@ open class RParser: Parser {
 	@discardableResult
 	 open func functionCall() throws -> FunctionCallContext {
 		var _localctx: FunctionCallContext = FunctionCallContext(_ctx, getState())
-		try enterRule(_localctx, 14, RParser.RULE_functionCall)
+		try enterRule(_localctx, 16, RParser.RULE_functionCall)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(220)
+		 	setState(229)
 		 	try expr(0)
-		 	setState(221)
+		 	setState(230)
 		 	try match(RParser.Tokens.PAR_OPEN.rawValue)
-		 	setState(222)
+		 	setState(231)
 		 	try sublist()
-		 	setState(223)
+		 	setState(232)
 		 	try match(RParser.Tokens.PAR_CLOSE.rawValue)
 
 		}
@@ -3030,14 +3112,14 @@ open class RParser: Parser {
 	@discardableResult
 	 open func rcomparison() throws -> RcomparisonContext {
 		var _localctx: RcomparisonContext = RcomparisonContext(_ctx, getState())
-		try enterRule(_localctx, 16, RParser.RULE_rcomparison)
+		try enterRule(_localctx, 18, RParser.RULE_rcomparison)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(225)
+		 	setState(234)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
@@ -3117,14 +3199,14 @@ open class RParser: Parser {
 	@discardableResult
 	 open func assignOp() throws -> AssignOpContext {
 		var _localctx: AssignOpContext = AssignOpContext(_ctx, getState())
-		try enterRule(_localctx, 18, RParser.RULE_assignOp)
+		try enterRule(_localctx, 20, RParser.RULE_assignOp)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(227)
+		 	setState(236)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
@@ -3196,14 +3278,14 @@ open class RParser: Parser {
 	@discardableResult
 	 open func number() throws -> NumberContext {
 		var _localctx: NumberContext = NumberContext(_ctx, getState())
-		try enterRule(_localctx, 20, RParser.RULE_number)
+		try enterRule(_localctx, 22, RParser.RULE_number)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(229)
+		 	setState(238)
 		 	_la = try _input.LA(1)
 		 	if (!(//closure
 		 	 { () -> Bool in
@@ -3267,13 +3349,13 @@ open class RParser: Parser {
 	@discardableResult
 	 open func rcomment() throws -> RcommentContext {
 		var _localctx: RcommentContext = RcommentContext(_ctx, getState())
-		try enterRule(_localctx, 22, RParser.RULE_rcomment)
+		try enterRule(_localctx, 24, RParser.RULE_rcomment)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(231)
+		 	setState(240)
 		 	try match(RParser.Tokens.COMMENT.rawValue)
 
 		}
@@ -3835,18 +3917,18 @@ open class RParser: Parser {
 	@discardableResult
 	 open func keyword() throws -> KeywordContext {
 		var _localctx: KeywordContext = KeywordContext(_ctx, getState())
-		try enterRule(_localctx, 24, RParser.RULE_keyword)
+		try enterRule(_localctx, 26, RParser.RULE_keyword)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(248)
+		 	setState(257)
 		 	try _errHandler.sync(self)
 		 	switch (RParser.Tokens(rawValue: try _input.LA(1))!) {
 		 	case .IF:
 		 		_localctx =  IfKeyWordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(233)
+		 		setState(242)
 		 		try match(RParser.Tokens.IF.rawValue)
 
 		 		break
@@ -3854,7 +3936,7 @@ open class RParser: Parser {
 		 	case .ELSE:
 		 		_localctx =  ElseKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(234)
+		 		setState(243)
 		 		try match(RParser.Tokens.ELSE.rawValue)
 
 		 		break
@@ -3862,7 +3944,7 @@ open class RParser: Parser {
 		 	case .REPEAT:
 		 		_localctx =  RepeatKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(235)
+		 		setState(244)
 		 		try match(RParser.Tokens.REPEAT.rawValue)
 
 		 		break
@@ -3870,7 +3952,7 @@ open class RParser: Parser {
 		 	case .WHILE:
 		 		_localctx =  WhileKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(236)
+		 		setState(245)
 		 		try match(RParser.Tokens.WHILE.rawValue)
 
 		 		break
@@ -3878,7 +3960,7 @@ open class RParser: Parser {
 		 	case .FOR:
 		 		_localctx =  ForKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 5)
-		 		setState(237)
+		 		setState(246)
 		 		try match(RParser.Tokens.FOR.rawValue)
 
 		 		break
@@ -3886,7 +3968,7 @@ open class RParser: Parser {
 		 	case .BREAK:
 		 		_localctx =  BreakKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 6)
-		 		setState(238)
+		 		setState(247)
 		 		try match(RParser.Tokens.BREAK.rawValue)
 
 		 		break
@@ -3894,7 +3976,7 @@ open class RParser: Parser {
 		 	case .IN:
 		 		_localctx =  InKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 7)
-		 		setState(239)
+		 		setState(248)
 		 		try match(RParser.Tokens.IN.rawValue)
 
 		 		break
@@ -3902,7 +3984,7 @@ open class RParser: Parser {
 		 	case .NEXT:
 		 		_localctx =  HexKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 8)
-		 		setState(240)
+		 		setState(249)
 		 		try match(RParser.Tokens.NEXT.rawValue)
 
 		 		break
@@ -3910,7 +3992,7 @@ open class RParser: Parser {
 		 	case .FUNCTION:
 		 		_localctx =  FunctionKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 9)
-		 		setState(241)
+		 		setState(250)
 		 		try match(RParser.Tokens.FUNCTION.rawValue)
 
 		 		break
@@ -3918,7 +4000,7 @@ open class RParser: Parser {
 		 	case .TRUE:
 		 		_localctx =  TrueKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 10)
-		 		setState(242)
+		 		setState(251)
 		 		try match(RParser.Tokens.TRUE.rawValue)
 
 		 		break
@@ -3926,7 +4008,7 @@ open class RParser: Parser {
 		 	case .FALSE:
 		 		_localctx =  FalseKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 11)
-		 		setState(243)
+		 		setState(252)
 		 		try match(RParser.Tokens.FALSE.rawValue)
 
 		 		break
@@ -3934,7 +4016,7 @@ open class RParser: Parser {
 		 	case .NA:
 		 		_localctx =  NaKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 12)
-		 		setState(244)
+		 		setState(253)
 		 		try match(RParser.Tokens.NA.rawValue)
 
 		 		break
@@ -3942,7 +4024,7 @@ open class RParser: Parser {
 		 	case .NaN:
 		 		_localctx =  NanKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 13)
-		 		setState(245)
+		 		setState(254)
 		 		try match(RParser.Tokens.NaN.rawValue)
 
 		 		break
@@ -3950,7 +4032,7 @@ open class RParser: Parser {
 		 	case .INF:
 		 		_localctx =  InfKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 14)
-		 		setState(246)
+		 		setState(255)
 		 		try match(RParser.Tokens.INF.rawValue)
 
 		 		break
@@ -3958,7 +4040,7 @@ open class RParser: Parser {
 		 	case .NULL:
 		 		_localctx =  NullKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 15)
-		 		setState(247)
+		 		setState(256)
 		 		try match(RParser.Tokens.NULL.rawValue)
 
 		 		break
@@ -3978,7 +4060,7 @@ open class RParser: Parser {
 	override open
 	func sempred(_ _localctx: RuleContext?, _ ruleIndex: Int,  _ predIndex: Int)throws -> Bool {
 		switch (ruleIndex) {
-		case  1:
+		case  2:
 			return try expr_sempred(_localctx?.castdown(ExprContext.self), predIndex)
 	    default: return true
 		}

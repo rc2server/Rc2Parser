@@ -28,6 +28,19 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	open func enterExpr_or_assign(_ ctx: RParser.Expr_or_assignContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitExpr_or_assign(_ ctx: RParser.Expr_or_assignContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	open func enterWhileLoop(_ ctx: RParser.WhileLoopContext) { }
 	/**
 	 * {@inheritDoc}
