@@ -49,7 +49,7 @@ final class RParserTests: XCTestCase {
 		let codeChunk = chunks.first(where: { $0.type == .code} )!
 		let str = NSMutableAttributedString(string: src)
 		let rmdParser = RmdParser()
-		try rmdParser.highlight(chunk: codeChunk, contents: str, range: codeChunk.innerRange)
+		try rmdParser.highlightR(contents: str, range: codeChunk.innerRange)
 		var keys = [SyntaxElement]()
 		str.enumerateAttribute(SyntaxKey, in: codeChunk.innerRange, options: []) { (keyValue, attrRange, _) in
 			guard let element = keyValue as? SyntaxElement else { return }

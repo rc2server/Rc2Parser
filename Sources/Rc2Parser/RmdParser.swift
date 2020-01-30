@@ -63,8 +63,7 @@ open class RmdParser {
 		return ChunkCollection(listener.chunks)
 	}
 
-	public final func highlight(chunk: AnyChunk, contents: NSMutableAttributedString, range: NSRange) throws {
-		guard chunk.type == .code else { fatalError("can't highlight non R chunks") }
+	public final func highlightR(contents: NSMutableAttributedString, range: NSRange) throws {
 		let text = contents.attributedSubstring(from: range).string
 		let lexer = RLexer(ANTLRInputStream(text))
 //		let allTokens = try lexer.getAllTokens()
