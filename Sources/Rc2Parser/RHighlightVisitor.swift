@@ -35,11 +35,11 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 		return nil
 	}
 	
-	override func visitAssignExp(_ ctx: RParser.AssignExpContext) -> Void? {
-		self.visitChildren(ctx)
-		print("ass: \(ctx.getText())")
-		return nil
-	}
+//	override func visitAssignExp(_ ctx: RParser.AssignExpContext) -> Void? {
+//		self.visitChildren(ctx)
+//		print("ass: \(ctx.getText())")
+//		return nil
+//	}
 	
 	override func visitAssignment(_ ctx: RParser.AssignmentContext) -> Void? {
 		visitChildren(ctx)
