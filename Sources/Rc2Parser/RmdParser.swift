@@ -41,7 +41,7 @@ open class RmdParser {
 		let lstart = CFAbsoluteTimeGetCurrent()
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
 		let tokens = CommonTokenStream(lexer)
-		print("lexer took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - lstart))")
+		parserLog.debug("lexer took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - lstart))")
 		let filter = try RFilter(tokens)
 		filter.setErrorHandler(FilterErrorStrategy())
 		try filter.stream()
@@ -49,13 +49,13 @@ open class RmdParser {
 		let pstart = CFAbsoluteTimeGetCurrent()
 		let parser = try Rc2RawParser(tokens)
 		let doc = try parser.document()
-		print("parse took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - pstart))")
+		parserLog.debug("parse took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - pstart))")
 		let wstart = CFAbsoluteTimeGetCurrent()
 		let walker = ParseTreeWalker()
 		let errors = ErrorReporter()
 		let listener = Rc2ParserListener(errorReporter: errors)
 		try walker.walk(listener, doc)
-		print("walker took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - wstart))")
+		parserLog.debug("walker took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - wstart))")
 		if errors.errors.count > 0 {
 			throw errors.errors[0]
 		}
