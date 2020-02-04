@@ -108,6 +108,10 @@ public class AnyChunk: Chunk {
 	public var isInline: Bool { return chunk is InlineChunk }
 	public var range: NSRange { return chunk.range }
 	public var innerRange: NSRange { return chunk.innerRange }
+	
+	public var isMarkdown: Bool { return type == .markdown }
+	public var isEquation: Bool { return type == .equation || type == .inlineEquation }
+	public var isCode: Bool { return type == .code || type == .inlineCode }
 }
 
 extension AnyChunk: ChunkPrivate {
