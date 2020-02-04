@@ -42,8 +42,7 @@ open class RmdParser {
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
 		let tokens = CommonTokenStream(lexer)
 		parserLog.debug("lexer took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - lstart))")
-		let filter = try RFilter(tokens)
-		filter.setErrorHandler(FilterErrorStrategy())
+		let filter = try Rc2RFilter(tokens, logLevel: .info)
 		try filter.stream()
 		try tokens.reset()
 		let pstart = CFAbsoluteTimeGetCurrent()
@@ -74,7 +73,7 @@ open class RmdParser {
 //		}
 //		try lexer.reset()
 		let tokens = CommonTokenStream(lexer)
-		let filter = try RFilter(tokens)
+		let filter = try Rc2RFilter(tokens, logLevel: .info)
 		filter.setErrorHandler(FilterErrorStrategy())
 		try filter.stream()
 		try tokens.reset()
@@ -87,7 +86,7 @@ open class RmdParser {
 	public final func oldHighlight(content: NSMutableAttributedString) throws {
 		let lexer = RLexer(ANTLRInputStream(content.string))
 		let tokens = CommonTokenStream(lexer)
-		let filter = try RFilter(tokens)
+		let filter = try Rc2RFilter(tokens, logLevel: .info)
 		filter.setErrorHandler(FilterErrorStrategy())
 		try filter.stream()
 		try tokens.reset()
@@ -98,17 +97,3 @@ open class RmdParser {
 	}
 }
 
-// used to not output any message about mismatched input, as that always happens for inline equations and code
-final class FilterErrorStrategy: DefaultErrorStrategy {
-	override func reportInputMismatch(_ recognizer: Parser, _ e: InputMismatchException) {
-		let tokStr = getSymbolText(e.getOffendingToken())
-		switch tokStr {
-			case "$", "$$", "```\n": return
-			case "\n":
-				// if a newline preceeded by a backtick, then is the end of inline code and ok
-				if e.getCtx()?.getText() == "`" { return }
-			default: break
-		}
-		super.reportInputMismatch(recognizer, e)
-	}
-}
