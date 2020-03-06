@@ -13,6 +13,8 @@ internal let parserLog = Logger(label: "io.rc2.rc2parser")
 
 /// the key the highlighter's will use to mark attributes
 public let SyntaxKey = NSAttributedString.Key("Rc2Style")
+/// the key that encloses each chunk. Value is ChunkType
+public let ChunkKey = NSAttributedString.Key("Rc2ChunkType")
 
 /// the types of styles that will be tagged under StyleKey
 public enum SyntaxElement: String, CaseIterable {
@@ -29,6 +31,7 @@ public enum SyntaxElement: String, CaseIterable {
 }
 
 open class RmdParser {
+	let latexH = EquationHighlighter()
 	
 	public init() {}
 
@@ -82,18 +85,9 @@ open class RmdParser {
 		let visitor = RHighlightVisitor(string: contents, range: range, parser: parser)
 		visitor.visit(tree)
 	}
-
-	public final func oldHighlight(content: NSMutableAttributedString) throws {
-		let lexer = RLexer(ANTLRInputStream(content.string))
-		let tokens = CommonTokenStream(lexer)
-		let filter = try Rc2RFilter(tokens, logLevel: .info)
-		filter.setErrorHandler(FilterErrorStrategy())
-		try filter.stream()
-		try tokens.reset()
-		let parser =  try RParser(tokens)
-		let tree = try parser.prog()
-		let visitor = RHighlightVisitor(string: content, range: NSRange(location: 0, length: content.length), parser: parser)
-		visitor.visit(tree)
+	
+	public final func highlightLatex(contents: NSMutableAttributedString, range: NSRange) {
+		latexH.highlightLaTeX(string: contents, range: range)
 	}
 }
 
