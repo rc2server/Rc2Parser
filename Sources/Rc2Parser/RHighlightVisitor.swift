@@ -58,7 +58,7 @@ class RHighlightVisitor: RBaseVisitor<Void> {
 			source.addAttribute(SyntaxKey, value: SyntaxElement.symbol, range: rng)
 		} else {
 			let rng = NSRange(location: globalRange.location + range.location, length: range.length)
-			source.addAttribute(SyntaxKey, value: SyntaxElement.functonName, range: rng)
+			source.addAttribute(SyntaxKey, value: SyntaxElement.functionName, range: rng)
 		}
 		// know child1 is arg1
 //		print("name = \(funName), args=\(params.getText())")

@@ -23,7 +23,7 @@ public enum SyntaxElement: String, CaseIterable {
 	/// a comment starting with #
 	case comment
 	/// the name oi a function
-	case functonName
+	case functionName
 	/// an operator or reserved work (if, else, etc.)
 	case symbol
 	/// a numeric value, including integer, real, and complex numbers

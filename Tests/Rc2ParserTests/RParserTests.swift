@@ -87,7 +87,7 @@ final class RParserTests: XCTestCase {
 		let cattrs = str.attributes(at: 8, effectiveRange: nil)
 		XCTAssertEqual(cattrs.count, 1)
 		XCTAssertEqual(cattrs.first!.key, SyntaxKey)
-		XCTAssertEqual(cattrs.first!.value as! SyntaxElement, SyntaxElement.functonName)
+		XCTAssertEqual(cattrs.first!.value as! SyntaxElement, SyntaxElement.functionName)
 		print(str)
 	}
 

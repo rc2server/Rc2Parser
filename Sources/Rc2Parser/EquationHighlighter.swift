@@ -38,7 +38,7 @@ class EquationHighlighter {
 			guard let tcresult = result, tcresult.numberOfRanges == 2
 				else { parserLog.warning("got nil result"); return }
 			let contentRange = tcresult.range(at: 1)
-			string.addAttribute(SyntaxKey, value: SyntaxElement.functonName, range: contentRange)
+			string.addAttribute(SyntaxKey, value: SyntaxElement.functionName, range: contentRange)
 		}
 	}
 }
