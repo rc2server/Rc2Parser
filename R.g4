@@ -106,8 +106,7 @@ form:   ID
 
 sublist : sub (',' sub)* ;
 
-sub :   expr
-    |   ID '='
+sub :   ID '='
     |   ID '=' expr
     |   STRING '='
     |   STRING '=' expr
@@ -115,6 +114,7 @@ sub :   expr
     |   'NULL' '=' expr
     |   '...'
     |   '.'
+    | 	expr
     |
     ;
 

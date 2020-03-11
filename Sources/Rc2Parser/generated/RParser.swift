@@ -2872,16 +2872,16 @@ open class RParser: Parser {
 
 	public class SubContext: ParserRuleContext {
 			open
-			func expr() -> ExprContext? {
-				return getRuleContext(ExprContext.self, 0)
-			}
-			open
 			func ID() -> TerminalNode? {
 				return getToken(RParser.Tokens.ID.rawValue, 0)
 			}
 			open
 			func EQ_CHAR() -> TerminalNode? {
 				return getToken(RParser.Tokens.EQ_CHAR.rawValue, 0)
+			}
+			open
+			func expr() -> ExprContext? {
+				return getRuleContext(ExprContext.self, 0)
 			}
 			open
 			func STRING() -> TerminalNode? {
@@ -2942,73 +2942,73 @@ open class RParser: Parser {
 		 	case 1:
 		 		try enterOuterAlt(_localctx, 1)
 		 		setState(208)
-		 		try expr(0)
+		 		try match(RParser.Tokens.ID.rawValue)
+		 		setState(209)
+		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 2:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(209)
-		 		try match(RParser.Tokens.ID.rawValue)
 		 		setState(210)
+		 		try match(RParser.Tokens.ID.rawValue)
+		 		setState(211)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
+		 		setState(212)
+		 		try expr(0)
 
 		 		break
 		 	case 3:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(211)
-		 		try match(RParser.Tokens.ID.rawValue)
-		 		setState(212)
-		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 		 		setState(213)
-		 		try expr(0)
+		 		try match(RParser.Tokens.STRING.rawValue)
+		 		setState(214)
+		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 4:
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(214)
-		 		try match(RParser.Tokens.STRING.rawValue)
 		 		setState(215)
+		 		try match(RParser.Tokens.STRING.rawValue)
+		 		setState(216)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
+		 		setState(217)
+		 		try expr(0)
 
 		 		break
 		 	case 5:
 		 		try enterOuterAlt(_localctx, 5)
-		 		setState(216)
-		 		try match(RParser.Tokens.STRING.rawValue)
-		 		setState(217)
-		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 		 		setState(218)
-		 		try expr(0)
+		 		try match(RParser.Tokens.NULL.rawValue)
+		 		setState(219)
+		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
 		 		break
 		 	case 6:
 		 		try enterOuterAlt(_localctx, 6)
-		 		setState(219)
-		 		try match(RParser.Tokens.NULL.rawValue)
 		 		setState(220)
+		 		try match(RParser.Tokens.NULL.rawValue)
+		 		setState(221)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
+		 		setState(222)
+		 		try expr(0)
 
 		 		break
 		 	case 7:
 		 		try enterOuterAlt(_localctx, 7)
-		 		setState(221)
-		 		try match(RParser.Tokens.NULL.rawValue)
-		 		setState(222)
-		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 		 		setState(223)
-		 		try expr(0)
+		 		try match(RParser.Tokens.TRIPLE_DOT.rawValue)
 
 		 		break
 		 	case 8:
 		 		try enterOuterAlt(_localctx, 8)
 		 		setState(224)
-		 		try match(RParser.Tokens.TRIPLE_DOT.rawValue)
+		 		try match(RParser.Tokens.PERIOD.rawValue)
 
 		 		break
 		 	case 9:
 		 		try enterOuterAlt(_localctx, 9)
 		 		setState(225)
-		 		try match(RParser.Tokens.PERIOD.rawValue)
+		 		try expr(0)
 
 		 		break
 		 	case 10:

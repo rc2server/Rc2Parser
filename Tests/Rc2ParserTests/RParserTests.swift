@@ -71,12 +71,24 @@ final class RParserTests: XCTestCase {
 	
 
 	func testNewton() throws {
-		let parser = RmdParser();
+		let parser = RmdParser()
 		let start = CFAbsoluteTimeGetCurrent()
 		let chunks = try parser.parse(input: newton)
 		let stop = CFAbsoluteTimeGetCurrent()
 		print("took \(String(format: "%.5f", stop - start)) seconds")
 		XCTAssertEqual(chunks.count, 19)
+	}
+
+	func testParamters() throws {
+		let parser = RmdParser()
+		let str = NSMutableAttributedString(string: "foo(bar=c(1,2))")
+		try parser.highlightR(contents: str, range: NSRange(location: 0, length: str.length))
+		XCTAssertEqual(str.attributes(at: 5, effectiveRange: nil).count, 0) // confirm no attributes on 'bar' which is a parameter name
+		let cattrs = str.attributes(at: 8, effectiveRange: nil)
+		XCTAssertEqual(cattrs.count, 1)
+		XCTAssertEqual(cattrs.first!.key, SyntaxKey)
+		XCTAssertEqual(cattrs.first!.value as! SyntaxElement, SyntaxElement.functonName)
+		print(str)
 	}
 
 	
