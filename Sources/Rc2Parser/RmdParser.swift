@@ -30,8 +30,14 @@ public enum SyntaxElement: String, CaseIterable {
 	case number
 }
 
+public enum RParserError: Error {
+	case timeout
+	case canceled
+	case unknown
+}
+
+
 open class RmdParser {
-	let latexH = EquationHighlighter()
 	
 	public init() {}
 
@@ -64,8 +70,15 @@ open class RmdParser {
 		parserLog.info("parsed \(listener.chunks.count) chunks")
 		return ChunkCollection(listener.chunks)
 	}
-
-	public final func highlightR(contents: NSMutableAttributedString, range: NSRange) throws {
+	
+	/// Highlights R code
+	/// - Parameters:
+	///   - contents: the code to highlight
+	///   - range: the range of contents to highlight
+	///   - timeout: A timeout value that when elapsed, the parser will stop with a timeout error. If <= 0, no timer will be useed
+	private final func highlightR(contents: NSMutableAttributedString, range: NSRange, timeout: TimeInterval = -1.0) throws {
+		
+		
 		let text = contents.attributedSubstring(from: range).string
 		let lexer = RLexer(ANTLRInputStream(text))
 //		let allTokens = try lexer.getAllTokens()
@@ -81,13 +94,11 @@ open class RmdParser {
 		try filter.stream()
 		try tokens.reset()
 		let parser =  try RParser(tokens)
+		if timeout > 0 {
+			parser.addParseListener(RParserTimeoutListener(timeout: timeout))
+		}
 		let tree = try parser.prog()
 		let visitor = RHighlightVisitor(string: contents, range: range, parser: parser)
 		visitor.visit(tree)
 	}
-	
-	public final func highlightLatex(contents: NSMutableAttributedString, range: NSRange) {
-		latexH.highlightLaTeX(string: contents, range: range)
-	}
 }
-

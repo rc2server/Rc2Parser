@@ -18,6 +18,11 @@ which is incorrect as self will never be a writable token. The result of match, 
 
 this change needs to be made everytime code is regeneratred.
 
+## Missing throw declarations
+
+ParseTreeLiatener declares enter/exitEveryRule as throws. The generated listeners do not. A pull request has been sumbitted to antlr.
+Until then, 
+
 ## Testing
 
 copy test1.Rmd to /tmp
