@@ -1,5 +1,13 @@
 lexer grammar Rc2Lexer;
 
+@lexer::declarations {
+    #include "../LexerHelpers.hpp"
+}
+
+@lexer::definitions {
+#include "../LexerHelpers.cpp"
+}
+
 CODE_START: {getCharPositionInLine() == 0}? '```' ;
 CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
 EQ_START: { isEQStart() }? '$$' -> pushMode(IN_EQ);
