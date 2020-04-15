@@ -42,32 +42,32 @@ final class RParserTests: XCTestCase {
 //		"""
 //	}
 
-	func testBasicHighlight() throws {
-		let src = codeOnly
-		let parser = try ManualChunkParser(text: src)
-		let chunks = parser.parsedChunks
-		let codeChunk = chunks.first(where: { $0.type == .code} )!
-		let str = NSMutableAttributedString(string: src)
-		let rmdParser = RmdParser()
-		try rmdParser.highlightR(contents: str, range: codeChunk.innerRange)
-		var keys = [SyntaxElement]()
-		str.enumerateAttribute(SyntaxKey, in: codeChunk.innerRange, options: []) { (keyValue, attrRange, _) in
-			guard let element = keyValue as? SyntaxElement else { return }
-			keys.append(element)
-			 print("got \(element.rawValue) for \(str.attributedSubstring(from: attrRange).string)")
-		}
-		XCTAssertEqual(keys[0], SyntaxElement.symbol)
-//		XCTAssertEqual(keys[1], SyntaxElement.symbol)
-//		XCTAssertEqual(keys[2], SyntaxElement.number)
-//		XCTAssertEqual(keys[3], SyntaxElement.number)
-//		XCTAssertEqual(keys[4], SyntaxElement.symbol)
-//		XCTAssertEqual(keys[5], SyntaxElement.number)
-//		XCTAssertEqual(keys[6], SyntaxElement.functonName)
-//		XCTAssertEqual(keys[7], SyntaxElement.number)
-//		XCTAssertEqual(keys[8], SyntaxElement.functonName)
-//		XCTAssertEqual(keys[9], SyntaxElement.functonName)
-//		XCTAssertEqual(keys[10], SyntaxElement.number)
-	}
+//	func testBasicHighlight() throws {
+//		let src = codeOnly
+//		let parser = try ManualChunkParser(text: src)
+//		let chunks = parser.parsedChunks
+//		let codeChunk = chunks.first(where: { $0.type == .code} )!
+//		let str = NSMutableAttributedString(string: src)
+//		let rmdParser = RmdParser()
+//		try rmdParser.highlightR(contents: str, range: codeChunk.innerRange)
+//		var keys = [SyntaxElement]()
+//		str.enumerateAttribute(SyntaxKey, in: codeChunk.innerRange, options: []) { (keyValue, attrRange, _) in
+//			guard let element = keyValue as? SyntaxElement else { return }
+//			keys.append(element)
+//			 print("got \(element.rawValue) for \(str.attributedSubstring(from: attrRange).string)")
+//		}
+//		XCTAssertEqual(keys[0], SyntaxElement.symbol)
+////		XCTAssertEqual(keys[1], SyntaxElement.symbol)
+////		XCTAssertEqual(keys[2], SyntaxElement.number)
+////		XCTAssertEqual(keys[3], SyntaxElement.number)
+////		XCTAssertEqual(keys[4], SyntaxElement.symbol)
+////		XCTAssertEqual(keys[5], SyntaxElement.number)
+////		XCTAssertEqual(keys[6], SyntaxElement.functonName)
+////		XCTAssertEqual(keys[7], SyntaxElement.number)
+////		XCTAssertEqual(keys[8], SyntaxElement.functonName)
+////		XCTAssertEqual(keys[9], SyntaxElement.functonName)
+////		XCTAssertEqual(keys[10], SyntaxElement.number)
+//	}
 	
 
 	func testNewton() throws {
@@ -115,7 +115,7 @@ final class RParserTests: XCTestCase {
 
 	static var allTests = [
 		("testInlineEquation", testInlineEquation),
-		("testBasicHighlight", testBasicHighlight),
+//		("testBasicHighlight", testBasicHighlight),
 		("testNewton", testNewton),
 		("testManualParser", testManualParser),
 	]

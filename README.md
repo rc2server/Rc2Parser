@@ -9,7 +9,7 @@ An Rmd parser based on Antlr 4.
 
 ## Generator Error
 
-For some reason, RFilter.eat will generate the lines
+For some reason, RFilter.eat will generate the lines (aprox line 333)
 	`try match(RFilter.Tokens.NL.rawValue)
 	let token = _localctx.castdown(EatContext.self) as! WritableToken`
 

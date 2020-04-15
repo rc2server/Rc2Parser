@@ -76,9 +76,8 @@ open class RmdParser {
 	///   - contents: the code to highlight
 	///   - range: the range of contents to highlight
 	///   - timeout: A timeout value that when elapsed, the parser will stop with a timeout error. If <= 0, no timer will be useed
-	private final func highlightR(contents: NSMutableAttributedString, range: NSRange, timeout: TimeInterval = -1.0) throws {
-		
-		
+	@available(*, deprecated, message: "should switch to using RHighlighter class")
+	final func highlightR(contents: NSMutableAttributedString, range: NSRange, timeout: TimeInterval = -1.0) throws {
 		let text = contents.attributedSubstring(from: range).string
 		let lexer = RLexer(ANTLRInputStream(text))
 //		let allTokens = try lexer.getAllTokens()

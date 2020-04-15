@@ -142,7 +142,7 @@ keyword : IF # ifKeyWord
 		| NA # naKeyword
 		| NaN # nanKeyword
 		| INF # infKeyword
-		| NULL # nullKeyword
+		| NULLT # nullKeyword
 		;
 
 
@@ -264,7 +264,7 @@ COMMA: ',';
 BACKTICK: '`';
 SEMI: ';';
 CARAT: '^';
-NULL: 'NULL';
+NULLT: 'NULL';
 NaN: 'NaN';
 TRUE: 'TRUE';
 FALSE: 'FALSE';

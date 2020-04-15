@@ -29,7 +29,7 @@ open class RFilter: Parser {
                  DOUBLE_COLON = 50, COLON = 51, DOLLAR_CHAR = 52, AT_CHAR = 53, 
                  TILDE = 54, USCORE = 55, PERIOD = 56, SQUOTE = 57, DQUOTE = 58, 
                  TRIPLE_DOT = 59, COMMA = 60, BACKTICK = 61, SEMI = 62, 
-                 CARAT = 63, NULL = 64, NaN = 65, TRUE = 66, FALSE = 67, 
+                 CARAT = 63, NULLT = 64, NaN = 65, TRUE = 66, FALSE = 67, 
                  NA = 68, INF = 69, USER_OP = 70, COMMENT = 71, NL = 72, 
                  WS = 73
 	}
@@ -62,7 +62,7 @@ open class RFilter: Parser {
 		"DBAR", "AMP", "DAMP", "COLEQ", "ASSIGN", "DASSIGN", "RASSIGN", "DRASSIGN", 
 		"EQ_CHAR", "TRIPLE_COLON", "DOUBLE_COLON", "COLON", "DOLLAR_CHAR", "AT_CHAR", 
 		"TILDE", "USCORE", "PERIOD", "SQUOTE", "DQUOTE", "TRIPLE_DOT", "COMMA", 
-		"BACKTICK", "SEMI", "CARAT", "NULL", "NaN", "TRUE", "FALSE", "NA", "INF", 
+		"BACKTICK", "SEMI", "CARAT", "NULLT", "NaN", "TRUE", "FALSE", "NA", "INF", 
 		"USER_OP", "COMMENT", "NL", "WS"
 	]
 	public
@@ -175,7 +175,7 @@ open class RFilter: Parser {
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	          testSet = testSet || {  () -> Bool in
-		 	             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 	             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 	              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 	          }()
 		 	      return testSet
@@ -230,7 +230,7 @@ open class RFilter: Parser {
 		 		case .TRIPLE_DOT:fallthrough
 		 		case .COMMA:fallthrough
 		 		case .CARAT:fallthrough
-		 		case .NULL:fallthrough
+		 		case .NULLT:fallthrough
 		 		case .NaN:fallthrough
 		 		case .TRUE:fallthrough
 		 		case .FALSE:fallthrough
@@ -546,7 +546,7 @@ open class RFilter: Parser {
 		 	case .ID:fallthrough
 		 	case .BREAK:fallthrough
 		 	case .NEXT:fallthrough
-		 	case .NULL:fallthrough
+		 	case .NULLT:fallthrough
 		 	case .NaN:fallthrough
 		 	case .TRUE:fallthrough
 		 	case .FALSE:fallthrough
@@ -590,7 +590,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -645,7 +645,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -697,7 +697,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -752,7 +752,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -797,7 +797,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -852,7 +852,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -897,7 +897,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -952,7 +952,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -1014,7 +1014,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -1069,7 +1069,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -1139,7 +1139,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -1194,7 +1194,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -1264,7 +1264,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -1319,7 +1319,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -1389,7 +1389,7 @@ open class RFilter: Parser {
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		          testSet = testSet || {  () -> Bool in
-		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
+		 		             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue,RFilter.Tokens.USER_OP.rawValue,RFilter.Tokens.COMMENT.rawValue,RFilter.Tokens.NL.rawValue]
 		 		              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 		          }()
 		 		      return testSet
@@ -1444,7 +1444,7 @@ open class RFilter: Parser {
 		 			case .TRIPLE_DOT:fallthrough
 		 			case .COMMA:fallthrough
 		 			case .CARAT:fallthrough
-		 			case .NULL:fallthrough
+		 			case .NULLT:fallthrough
 		 			case .NaN:fallthrough
 		 			case .TRUE:fallthrough
 		 			case .FALSE:fallthrough
@@ -1617,8 +1617,8 @@ open class RFilter: Parser {
 				return getToken(RFilter.Tokens.COMPLEX.rawValue, 0)
 			}
 			open
-			func NULL() -> TerminalNode? {
-				return getToken(RFilter.Tokens.NULL.rawValue, 0)
+			func NULLT() -> TerminalNode? {
+				return getToken(RFilter.Tokens.NULLT.rawValue, 0)
 			}
 			open
 			func NA() -> TerminalNode? {
@@ -1688,7 +1688,7 @@ open class RFilter: Parser {
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	          testSet = testSet || {  () -> Bool in
-		 	             let testArray: [Int] = [_la, RFilter.Tokens.NULL.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue]
+		 	             let testArray: [Int] = [_la, RFilter.Tokens.NULLT.rawValue,RFilter.Tokens.NaN.rawValue,RFilter.Tokens.TRUE.rawValue,RFilter.Tokens.FALSE.rawValue,RFilter.Tokens.NA.rawValue,RFilter.Tokens.INF.rawValue]
 		 	              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 	          }()
 		 	      return testSet

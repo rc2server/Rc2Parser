@@ -29,7 +29,7 @@ open class RParser: Parser {
                  DOUBLE_COLON = 50, COLON = 51, DOLLAR_CHAR = 52, AT_CHAR = 53, 
                  TILDE = 54, USCORE = 55, PERIOD = 56, SQUOTE = 57, DQUOTE = 58, 
                  TRIPLE_DOT = 59, COMMA = 60, BACKTICK = 61, SEMI = 62, 
-                 CARAT = 63, NULL = 64, NaN = 65, TRUE = 66, FALSE = 67, 
+                 CARAT = 63, NULLT = 64, NaN = 65, TRUE = 66, FALSE = 67, 
                  NA = 68, INF = 69, USER_OP = 70, COMMENT = 71, NL = 72, 
                  WS = 73
 	}
@@ -66,7 +66,7 @@ open class RParser: Parser {
 		"DBAR", "AMP", "DAMP", "COLEQ", "ASSIGN", "DASSIGN", "RASSIGN", "DRASSIGN", 
 		"EQ_CHAR", "TRIPLE_COLON", "DOUBLE_COLON", "COLON", "DOLLAR_CHAR", "AT_CHAR", 
 		"TILDE", "USCORE", "PERIOD", "SQUOTE", "DQUOTE", "TRIPLE_DOT", "COMMA", 
-		"BACKTICK", "SEMI", "CARAT", "NULL", "NaN", "TRUE", "FALSE", "NA", "INF", 
+		"BACKTICK", "SEMI", "CARAT", "NULLT", "NaN", "TRUE", "FALSE", "NA", "INF", 
 		"USER_OP", "COMMENT", "NL", "WS"
 	]
 	public
@@ -177,7 +177,7 @@ open class RParser: Parser {
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	          testSet = testSet || {  () -> Bool in
-		 	             let testArray: [Int] = [_la, RParser.Tokens.NULL.rawValue,RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue,RParser.Tokens.NL.rawValue]
+		 	             let testArray: [Int] = [_la, RParser.Tokens.NULLT.rawValue,RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue,RParser.Tokens.NL.rawValue]
 		 	              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 	          }()
 		 	      return testSet
@@ -207,7 +207,7 @@ open class RParser: Parser {
 		 		case .MINUS:fallthrough
 		 		case .NOT:fallthrough
 		 		case .TILDE:fallthrough
-		 		case .NULL:fallthrough
+		 		case .NULLT:fallthrough
 		 		case .NaN:fallthrough
 		 		case .TRUE:fallthrough
 		 		case .FALSE:fallthrough
@@ -2518,7 +2518,7 @@ open class RParser: Parser {
 		 	case .MINUS:fallthrough
 		 	case .NOT:fallthrough
 		 	case .TILDE:fallthrough
-		 	case .NULL:fallthrough
+		 	case .NULLT:fallthrough
 		 	case .NaN:fallthrough
 		 	case .TRUE:fallthrough
 		 	case .FALSE:fallthrough
@@ -2559,7 +2559,7 @@ open class RParser: Parser {
 		 			    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 			}()
 		 			          testSet = testSet || {  () -> Bool in
-		 			             let testArray: [Int] = [_la, RParser.Tokens.NULL.rawValue,RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue]
+		 			             let testArray: [Int] = [_la, RParser.Tokens.NULLT.rawValue,RParser.Tokens.NaN.rawValue,RParser.Tokens.TRUE.rawValue,RParser.Tokens.FALSE.rawValue,RParser.Tokens.NA.rawValue,RParser.Tokens.INF.rawValue,RParser.Tokens.COMMENT.rawValue]
 		 			              return  Utils.testBitLeftShiftArray(testArray, 64)
 		 			          }()
 		 			      return testSet
@@ -2888,8 +2888,8 @@ open class RParser: Parser {
 				return getToken(RParser.Tokens.STRING.rawValue, 0)
 			}
 			open
-			func NULL() -> TerminalNode? {
-				return getToken(RParser.Tokens.NULL.rawValue, 0)
+			func NULLT() -> TerminalNode? {
+				return getToken(RParser.Tokens.NULLT.rawValue, 0)
 			}
 			open
 			func TRIPLE_DOT() -> TerminalNode? {
@@ -2978,7 +2978,7 @@ open class RParser: Parser {
 		 	case 5:
 		 		try enterOuterAlt(_localctx, 5)
 		 		setState(218)
-		 		try match(RParser.Tokens.NULL.rawValue)
+		 		try match(RParser.Tokens.NULLT.rawValue)
 		 		setState(219)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 
@@ -2986,7 +2986,7 @@ open class RParser: Parser {
 		 	case 6:
 		 		try enterOuterAlt(_localctx, 6)
 		 		setState(220)
-		 		try match(RParser.Tokens.NULL.rawValue)
+		 		try match(RParser.Tokens.NULLT.rawValue)
 		 		setState(221)
 		 		try match(RParser.Tokens.EQ_CHAR.rawValue)
 		 		setState(222)
@@ -3458,8 +3458,8 @@ open class RParser: Parser {
 	}
 	public class NullKeywordContext: KeywordContext {
 			open
-			func NULL() -> TerminalNode? {
-				return getToken(RParser.Tokens.NULL.rawValue, 0)
+			func NULLT() -> TerminalNode? {
+				return getToken(RParser.Tokens.NULLT.rawValue, 0)
 			}
 
 		public
@@ -4083,11 +4083,11 @@ open class RParser: Parser {
 
 		 		break
 
-		 	case .NULL:
+		 	case .NULLT:
 		 		_localctx =  NullKeywordContext(_localctx);
 		 		try enterOuterAlt(_localctx, 15)
 		 		setState(256)
-		 		try match(RParser.Tokens.NULL.rawValue)
+		 		try match(RParser.Tokens.NULLT.rawValue)
 
 		 		break
 		 	default:
