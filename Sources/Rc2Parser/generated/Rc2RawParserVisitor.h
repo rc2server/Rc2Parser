@@ -23,6 +23,8 @@ public:
 
     virtual antlrcpp::Any visitChunk(Rc2RawParser::ChunkContext *context) = 0;
 
+    virtual antlrcpp::Any visitYaml(Rc2RawParser::YamlContext *context) = 0;
+
     virtual antlrcpp::Any visitMdown(Rc2RawParser::MdownContext *context) = 0;
 
     virtual antlrcpp::Any visitCode(Rc2RawParser::CodeContext *context) = 0;

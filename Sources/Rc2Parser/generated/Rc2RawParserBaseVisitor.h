@@ -23,6 +23,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitYaml(Rc2RawParser::YamlContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitMdown(Rc2RawParser::MdownContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -20,6 +20,9 @@ public:
   virtual void enterChunk(Rc2RawParser::ChunkContext *ctx) = 0;
   virtual void exitChunk(Rc2RawParser::ChunkContext *ctx) = 0;
 
+  virtual void enterYaml(Rc2RawParser::YamlContext *ctx) = 0;
+  virtual void exitYaml(Rc2RawParser::YamlContext *ctx) = 0;
+
   virtual void enterMdown(Rc2RawParser::MdownContext *ctx) = 0;
   virtual void exitMdown(Rc2RawParser::MdownContext *ctx) = 0;
 

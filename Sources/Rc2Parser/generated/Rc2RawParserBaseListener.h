@@ -22,6 +22,9 @@ public:
   virtual void enterChunk(Rc2RawParser::ChunkContext * /*ctx*/) override { }
   virtual void exitChunk(Rc2RawParser::ChunkContext * /*ctx*/) override { }
 
+  virtual void enterYaml(Rc2RawParser::YamlContext * /*ctx*/) override { }
+  virtual void exitYaml(Rc2RawParser::YamlContext * /*ctx*/) override { }
+
   virtual void enterMdown(Rc2RawParser::MdownContext * /*ctx*/) override { }
   virtual void exitMdown(Rc2RawParser::MdownContext * /*ctx*/) override { }
 

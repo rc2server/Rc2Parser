@@ -8,9 +8,11 @@ lexer grammar Rc2Lexer;
 #include "../LexerHelpers.cpp"
 }
 
-// TODO: Finish yaml component.
-//YAML_START: '---' -> pushMode(IN_YAML);
-CODE_START      :   {getCharPositionInLine() == 0}? '```' ;
+// Two different ways to handle yaml (CG 2020-07-16)
+YAML_START          :   '---' -> pushMode(IN_YAML);
+//Alternate YAML Lexing ---> No real parsing or lexing.
+//YAML                :   '---' .+? '---';
+CODE_START          :   {getCharPositionInLine() == 0}? '```' ;
 //CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
 // Go into CODE_ARGS MODE, then into IN_CODE.
 CODE_ARGS_START     :   '{r' -> pushMode(CODE_ARGS);
@@ -19,6 +21,10 @@ IEQ_START           :   '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);
 IC_START            :   '`r ' -> pushMode(IN_ICODE);
 
 MDOWN               :   .+?;
+
+mode IN_YAML;
+YAML                :   .+?;
+YAML_END            :   '---' -> popMode;
 
 mode CODE_ARGS;
 

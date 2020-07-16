@@ -3,9 +3,13 @@ options { tokenVocab=Rc2Lexer; }
 
 document            :   chunk* EOF;
 
-// chunk: yaml | code | equation | inlineCode | inlineEQ | mdown;
-// CG:  TODO:  add correct yaml parser.
-chunk               :   code | equation | inlineCode | inlineEQ | mdown;
+chunk               :   yaml | code | equation | inlineCode | inlineEQ | mdown;
+
+//chunk               :   code | equation | inlineCode | inlineEQ | mdown;
+
+//Commented out is an alternate way. (CG 2020-07-16)
+//yaml                :   YAML;
+yaml                :   YAML_START YAML* YAML_END;
 
 mdown               :   (MDOWN|WS|NL)+;
 

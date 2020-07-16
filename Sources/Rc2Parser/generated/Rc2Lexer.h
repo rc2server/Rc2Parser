@@ -12,16 +12,16 @@
 class  Rc2Lexer : public antlr4::Lexer {
 public:
   enum {
-    CODE_START = 1, CODE_ARGS_START = 2, EQ_START = 3, IEQ_START = 4, IC_START = 5, 
-    MDOWN = 6, WS = 7, NL = 8, EQ_CHAR = 9, COMMA = 10, HEX = 11, INT = 12, 
-    FLOAT = 13, COMPLEX = 14, PLUS = 15, MINUS = 16, BOOL = 17, STRING = 18, 
-    ID = 19, CODE_ARGS_END = 20, IC_CODE = 21, IC_END = 22, EQ_CODE = 23, 
-    EQ_END = 24, IEQ_CODE = 25, IEQ_END = 26, CODE = 27, NOT_BACKTICK = 28, 
-    CODE_END = 29
+    YAML_START = 1, CODE_START = 2, CODE_ARGS_START = 3, EQ_START = 4, IEQ_START = 5, 
+    IC_START = 6, MDOWN = 7, YAML = 8, YAML_END = 9, WS = 10, NL = 11, EQ_CHAR = 12, 
+    COMMA = 13, HEX = 14, INT = 15, FLOAT = 16, COMPLEX = 17, PLUS = 18, 
+    MINUS = 19, BOOL = 20, STRING = 21, ID = 22, CODE_ARGS_END = 23, IC_CODE = 24, 
+    IC_END = 25, EQ_CODE = 26, EQ_END = 27, IEQ_CODE = 28, IEQ_END = 29, 
+    CODE = 30, NOT_BACKTICK = 31, CODE_END = 32
   };
 
   enum {
-    CODE_ARGS = 1, IN_ICODE = 2, IN_EQ = 3, IN_IN_EQ = 4, IN_CODE = 5
+    IN_YAML = 1, CODE_ARGS = 2, IN_ICODE = 3, IN_EQ = 4, IN_IN_EQ = 5, IN_CODE = 6
   };
 
   Rc2Lexer(antlr4::CharStream *input);
