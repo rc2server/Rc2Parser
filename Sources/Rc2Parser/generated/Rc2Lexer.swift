@@ -96,7 +96,7 @@ open class Rc2Lexer: Lexer {
 	}
 	private func CODE_START_sempred(_ _localctx: RuleContext!,  _ predIndex: Int) throws -> Bool {
 		switch (predIndex) {
-		    case 0:return getCharPositionInLine() == 0
+		    case 0:return  isCodeBackticks()
 		    default: return true
 		}
 	}
@@ -114,7 +114,7 @@ open class Rc2Lexer: Lexer {
 	}
 	private func CODE_END_sempred(_ _localctx: RuleContext!,  _ predIndex: Int) throws -> Bool {
 		switch (predIndex) {
-		    case 3:return getCharPositionInLine() == 0
+		    case 3:return isCodeBackticks()
 		    default: return true
 		}
 	}

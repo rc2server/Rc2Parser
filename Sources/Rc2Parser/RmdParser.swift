@@ -49,6 +49,17 @@ open class RmdParser {
 	public final func parse(input: String) throws -> ChunkCollection {
 		let lstart = CFAbsoluteTimeGetCurrent()
 		let lexer = Rc2Lexer(ANTLRInputStream(input))
+		
+		let allTokens = try lexer.getAllTokens()
+		let vocab = lexer.getVocabulary()
+		for idx in 0..<allTokens.count {
+			let atoken = allTokens[idx]
+			print("\(vocab.getDisplayName(atoken.getType())) = \(atoken.getText() ?? "-")")
+		}
+		try lexer.reset()
+
+		
+		
 		let tokens = CommonTokenStream(lexer)
 		parserLog.debug("lexer took \(Self.timeStr(CFAbsoluteTimeGetCurrent() - lstart))")
 		let filter = try Rc2RFilter(tokens, logLevel: .info)

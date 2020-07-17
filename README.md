@@ -16,6 +16,8 @@ For some reason, RFilter.eat will generate the lines (aprox line 333)
 which is incorrect as self will never be a writable token. The result of match, howver, will. 
 	`let token = try match(RFilter.Tokens.NL.rawValue) as! WritableToken`
 
+RBaseListener needs throws added to enterEveryRule function
+
 this change needs to be made everytime code is regeneratred.
 
 ## Missing throw declarations

@@ -17,6 +17,16 @@ final class Rc2ParserTests: XCTestCase {
 		XCTAssertEqual(chunks[2].type, ChunkType.equation)
 	}
 
+	func testBackticksWithIndents() throws {
+		let parser = RmdParser();
+		let chunks = try parser.parse(input: src2)
+		for aChunk in chunks {
+			print("\(aChunk.type) range=\(aChunk.range) irange=\(aChunk.innerRange) c:\(aChunk.content)")
+		}
+		XCTAssertEqual(chunks.count, 3)
+		XCTAssertEqual(chunks[1].type, ChunkType.code)
+}
+	
 	func testRMd1() throws {
 		let path = "/tmp/test1.Rmd"
 		print("looking for \(path)")
@@ -36,9 +46,18 @@ final class Rc2ParserTests: XCTestCase {
     static var allTests = [
         ("testBasicChunks", testBasicChunks),
 		("testRMd1", testRMd1),
+		("testBackticksWithIndents", testBackticksWithIndents),
     ]
 }
 
+let src2 = #"""
+doodle
+*news*
+```{r foo}
+	rnorm(20)
+	```
+something
+"""#
 
 let src1 = #"""
 ```{r title}

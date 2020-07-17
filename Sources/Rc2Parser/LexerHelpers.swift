@@ -22,7 +22,7 @@ extension Rc2Lexer {
 	static let dollar = Character("$").asciiValue!
 	static let newline = Character("\n").asciiValue!
 	
-	func isEQStart() ->Bool {
+	func isEQStart() -> Bool {
 		// _inputLA(-1|1) is the character being evaluated
 		guard let back1 = try? _input!.LA(-1),
 			let cur =  try? _input!.LA(1),
@@ -34,6 +34,25 @@ extension Rc2Lexer {
 			next2 != Self.dollar &&
 			back1 != Self.dollar
 		return valid
+	}
+	
+	func isCodeBackticks() -> Bool {
+		do {
+			guard let input = _input else { return false }
+			guard try input.LA(1) == 96,
+				try input.LA(2) == 96,
+				try input.LA(3) == 96
+				else { return false }
+			let rng = -1..<(-getCharPositionInLine())
+			for backIdx in rng {
+				guard try input.LA(backIdx) != 9,
+					try input.LA(backIdx) != 32
+					else { return false }
+			}
+			return true
+		} catch {
+			return false
+		}
 	}
 	
 	func isInlineEqStart() -> Bool {
