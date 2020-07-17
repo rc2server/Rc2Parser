@@ -30,5 +30,10 @@ f_a <- function(x){
 ```
 
 More markdown.
+```{r chunkName, echo=TRUE}
+    whitespace <- c(' ', '\t')
+    print(whitespace[1])
+```
+
 
 END
