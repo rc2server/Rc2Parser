@@ -9,12 +9,13 @@ final class Rc2ParserTests: XCTestCase {
 			print("\(aChunk.type) range=\(aChunk.range) irange=\(aChunk.innerRange) c:\(aChunk.content)")
 		}
 		XCTAssertEqual(chunks.count, 4)
-		XCTAssertEqual(chunks[0].type, ChunkType.code)
-		XCTAssertEqual(chunks[0].content, "```{r title}\nu <- 22 `21`\n```\n")
+		XCTAssertEqual(chunks[0].type, ChunkType.equation)
 		XCTAssertEqual(chunks[1].type, ChunkType.markdown)
-		XCTAssertEqual(chunks[1].asMarkdown!.inlineChunks[0].type, ChunkType.inlineCode);
-		XCTAssertEqual(chunks[1].asMarkdown!.inlineChunks[1].type, ChunkType.inlineEquation);
-		XCTAssertEqual(chunks[2].type, ChunkType.equation)
+		XCTAssertEqual(chunks[2].type, ChunkType.code)
+		XCTAssertEqual(chunks[2].content, "```{r title}\nu <- 22 `21`\n```\n")
+		XCTAssertEqual(chunks[3].asMarkdown!.inlineChunks.count, 2);
+		XCTAssertEqual(chunks[3].asMarkdown!.inlineChunks[0].type, ChunkType.inlineCode);
+		XCTAssertEqual(chunks[3].asMarkdown!.inlineChunks[1].type, ChunkType.inlineEquation);
 	}
 
 	func testBackticksWithIndents() throws {
@@ -60,14 +61,15 @@ something
 """#
 
 let src1 = #"""
+$$
+\{ 43 ^ 42 \}
+5-3^4
+$$
 ```{r title}
 u <- 22 `21`
 ```
 ##two `r \"oo\"` dl $\frac{1}{n} \sum_{i=i}^{n} x_{i}$
 
-$$
-\{ 43 ^ 42 \}
-5-3^4
-$$ some other content
+some other content
 """#
 
