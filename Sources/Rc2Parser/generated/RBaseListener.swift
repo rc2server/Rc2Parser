@@ -814,7 +814,7 @@ open class RBaseListener: RListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitEveryRule(_ ctx: ParserRuleContext) throws { }
+	open func exitEveryRule(_ ctx: ParserRuleContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
