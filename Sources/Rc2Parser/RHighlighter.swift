@@ -25,7 +25,8 @@ public class RHighlighter {
 	}
 	
 	public func start() throws {
-		let contentStr = src.string
+		guard let strRange = Range(range, in: src.string) else { fatalError() }
+		let contentStr = String(src.string[strRange])
 		lexer = RLexer(ANTLRInputStream(contentStr))
 		tokens = CommonTokenStream(lexer!)
 		// filter newlines
