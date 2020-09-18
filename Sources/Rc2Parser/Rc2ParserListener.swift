@@ -46,6 +46,10 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		guard let start = ctx.getStart() else { print("chunk with no start??"); return }
 		var aChunk: InternalChunk?
 		
+		// skip whitespace only chunks
+		if ctx.getText().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+			return
+		}
 		switch start.getType() {
 		case Rc2Lexer.MDOWN:
 			if curMarkdownChunk == nil {
