@@ -25,6 +25,7 @@ public class RHighlighter {
 	}
 	
 	public func start() throws {
+		guard range.location != NSNotFound else { return }
 		guard let strRange = Range(range, in: src.string) else { fatalError() }
 		let contentStr = String(src.string[strRange])
 		lexer = RLexer(ANTLRInputStream(contentStr))
