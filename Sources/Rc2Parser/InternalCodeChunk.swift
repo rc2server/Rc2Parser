@@ -50,6 +50,8 @@ class InternalCodeChunk: InternalChunk, CodeChunk {
 	var startCharIndex: Int
 	private(set) var endCharIndex: Int
 	var innerRange: NSRange
+	public private(set) var parseInProgress: Bool = false
+	public private(set) var readyForAutoComplete: Bool = false
 	
 	var description: String {
 		let nl = code.firstIndex(of: "\n") ?? code.endIndex

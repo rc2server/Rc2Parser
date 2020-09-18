@@ -66,6 +66,8 @@ public protocol InlineChunk: Chunk {}
 public protocol CodeChunk: Chunk {
 	var arguments: String { get }
 	var code: String { get }
+	var parseInProgress: Bool { get }
+	var readyForAutoComplete: Bool { get }
 }
 
 public protocol EquationChunk: Chunk {

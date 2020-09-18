@@ -54,6 +54,11 @@ class InlineInternalCodeChunk: InternalChunk, InlineChunk, CodeChunk {
 	
 	public var innerRange: NSRange
 	
+	public private(set) var parseInProgress: Bool = false
+	
+	public private(set) var readyForAutoComplete: Bool = false
+	
+	
 	public var isInline: Bool { return true }
 	
 	var arguments: String = ""
