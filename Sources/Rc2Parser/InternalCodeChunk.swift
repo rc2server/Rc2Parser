@@ -11,15 +11,32 @@ import Antlr4
 class InternalCodeChunk: InternalChunk, CodeChunk {
 	init(context: Rc2RawParser.ChunkContext) {
 		guard let ctx = context.code(),
-			let start = ctx.CODE_START()?.getSymbol(),
-			let args = ctx.CODE_ARG()?.getSymbol(),
+			let start = ctx.CODE_START()?.getSymbol()
+		else { fatalError() }
+		guard let args = ctx.CODE_ARG()?.getSymbol(),
 			let rawCode = ctx.CODE()?.getSymbol(),
 			let end = ctx.CODE_END()?.getSymbol()
-			else { fatalError() }
+		else {
+			// user must be typeing a new code block and is not finished with it
+			type = .code
+			content = ""
+			arguments = ""
+			self.code = ""
+			startLine = start.getLine()
+			startCharIndex = start.getStartIndex()
+			endCharIndex = startCharIndex
+			innerRange = NSRange(location: NSNotFound, length: 0)
+			parseInProgress = true;
+			if let args = ctx.CODE_ARG()?.getSymbol() {
+				print("args = \(args.getText() ?? "")")
+				readyForAutoComplete = true
+			}
+			return
+		}
 		type = .code
 		content = ctx.getText()
 		arguments = args.getText() ?? ""
-		code = rawCode.getText() ?? ""
+		self.code = rawCode.getText() ?? ""
 		startLine = start.getLine()
 		startCharIndex = start.getStartIndex()
 		endCharIndex = end.getStopIndex()
