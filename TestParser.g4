@@ -9,17 +9,17 @@ markdown            :   mdown | inlineCode | inlineEQ;
 
 code                :   CODE_DELIM codeOpts contents+? CODE_DELIM;
 
-codeOpts            :   CODE_OPTS_START contents CODE_OPTS_END;
+codeOpts            :   CODE_OPTS_START contents+? CODE_OPTS_END;
 
-equation            :   EQ_DELIM contents* EQ_DELIM;
+equation            :   EQ_DELIM contents+? EQ_DELIM;
 
-yaml                :   YAML_DELIM contents* YAML_DELIM;
+yaml                :   YAML_DELIM contents+? YAML_DELIM;
 
-mdown               :   contents+;
+mdown               :   contents+?;
 
-inlineCode          :   ICODE_START contents* ICODE_END;
+inlineCode          :   ICODE_START contents+? ICODE_END;
 
-inlineEQ            :   IEQ_DELIM contents* IEQ_DELIM;
+inlineEQ            :   IEQ_DELIM contents+? IEQ_DELIM;
 
 contents            :   (TEXT|WS|NL|CODE_OPTS_END|CODE_OPTS_START)+?;
 
