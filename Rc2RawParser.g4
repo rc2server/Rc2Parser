@@ -5,25 +5,18 @@ document            :   chunk* EOF;
 
 chunk               :   yaml | code | equation | inlineCode | inlineEQ | mdown;
 
-//chunk               :   code | equation | inlineCode | inlineEQ | mdown;
+yaml                :   YAML_START YAML+ YAML_END;
 
-//Commented out is an alternate way. (CG 2020-07-16)
-//yaml                :   YAML;
-yaml                :   YAML_START YAML* YAML_END;
+equation            :   EQ_START EQUATION+ EQ_END;
 
 mdown               :   (MDOWN|WS|NL)+;
 
-code                :   CODE_START CODE_ARGS_START codeArg* CODE_ARGS_END CODE CODE_END;
+code                :   CODE_START CODE_OPTS_START CODE_OPTS+ CODE_OPTS_END CODE+ CODE_END;
 
-codeArg             :   ID '=' (INT|FLOAT|BOOL|STRING|ID)
-                    |   ID
-                    ;
+inlineCode          :   IC_START IC_CODE+ IC_END;
 
-inlineCode          :   IC_START IC_CODE IC_END;
+inlineEQ            :   IEQ_START IEQ_CODE+ IEQ_END;
 
-inlineEQ            :   IEQ_START IEQ_CODE IEQ_END;
-
-equation            :   EQ_START EQ_CODE EQ_END;
 
 // yaml: YAML_START NL keyValuePairs* YAML_END;
 

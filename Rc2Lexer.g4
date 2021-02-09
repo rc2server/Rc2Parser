@@ -9,100 +9,116 @@ lexer grammar Rc2Lexer;
 }
 
 // Two different ways to handle yaml (CG 2020-07-16)
-YAML_START          :   '---' -> pushMode(IN_YAML);
-//Alternate YAML Lexing ---> No real parsing or lexing.
-//YAML                :   '---' .+? '---';
-CODE_START          :   {getCharPositionInLine() == 0}? '```' ;
-//CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
-// Go into CODE_ARGS MODE, then into IN_CODE.
-CODE_ARGS_START     :   '{r' -> pushMode(CODE_ARGS);
-EQ_START            :   { isEQStart() }? '$$' -> pushMode(IN_EQ);
-IEQ_START           :   '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);
-IC_START            :   '`r ' -> pushMode(IN_ICODE);
-
+YAML_START          :   '---' -> pushMode(YAML_MODE);
+EQ_START            :   '$$' -> pushMode(EQ_MODE);
+IEQ_START           :   '$' { isInlineEqStart() }? -> pushMode(IEQ_MODE);
+IC_START            :   '`r ' -> pushMode(IC_MODE);
+CODE_START          :   '```' -> pushMode(CODE_MODE);
 MDOWN               :   .+?;
-
-mode IN_YAML;
-YAML                :   .+?;
-YAML_END            :   '---' -> popMode;
-
-mode CODE_ARGS;
-
 WS                  :   [ \t] ->skip;
 NL                  :   '\r'? '\n';
-EQ_CHAR             :   '=';
-COMMA               :   ','-> skip;
-HEX                 :   '0' ('x'|'X') HEXDIGIT+ [Ll]? ;
 
-INT                 :   DIGIT+ [Ll]? ;
+mode YAML_MODE;
+YAML_END            :   '---' -> popMode;
+YAML                :   .+?;
 
-fragment HEXDIGIT   :   ('0'..'9'|'a'..'f'|'A'..'F') ;
-
-FLOAT               :   DIGIT+ '.' DIGIT* EXP? [Ll]?
-                    |   DIGIT+ EXP? [Ll]?
-                    |   '.' DIGIT+ EXP? [Ll]?
-                    ;
-
-fragment DIGIT      :   '0'..'9' ;
-
-fragment EXP        :   ('E' | 'e') (PLUS | MINUS)? INT ;
-
-COMPLEX             :   INT 'i'
-                    |   FLOAT 'i'
-                    ;
-PLUS                :   '+';
-MINUS               :   '-';
-
-BOOL                :   'TRUE' | 'FALSE';
-
-STRING              :   '"' ( ESC | ~[\\"] )*? '"'
-                    |   '\'' ( ESC | ~[\\'] )*? '\''
-                    |   '`' ( ESC | ~[\\'] )*? '`'
-                    ;
-
-ID                  :   '.' (LETTER|'_'|'.') (LETTER|DIGIT|'_'|'.')*
-                    |   LETTER (LETTER|DIGIT|'_'|'.')*
-                    ;
-fragment LETTER     :   [a-zA-Z] ;
-
-fragment ESC        :   '\\' [abtnfrv"'\\]
-                    |   UNICODE_ESCAPE
-                    |   HEX_ESCAPE
-                    |   OCTAL_ESCAPE
-                    ;
-
-fragment UNICODE_ESCAPE
-                    :   '\\' 'u' HEXDIGIT HEXDIGIT HEXDIGIT HEXDIGIT
-                    |   '\\' 'u' '{' HEXDIGIT HEXDIGIT HEXDIGIT HEXDIGIT '}'
-                    ;
-
-fragment OCTAL_ESCAPE
-                    :   '\\' [0-3] [0-7] [0-7]
-                    |   '\\' [0-7] [0-7]
-                    |   '\\' [0-7]
-                    ;
-
-fragment HEX_ESCAPE :   '\\' HEXDIGIT HEXDIGIT?;
-
-CODE_ARGS_END       :   '}' NL -> mode(IN_CODE);
-
-mode IN_ICODE;
-IC_CODE             :   ~[`]+;
-IC_END              :   '`' -> popMode;
-
-mode IN_EQ;
-EQ_CODE             :   ('$' ~'$' | ~'$')+;
+mode EQ_MODE;
 EQ_END              :   '$$' -> popMode;
+EQUATION            :   .+?;
 
-mode IN_IN_EQ;
-IEQ_CODE            :   ( ~'$' | [ \t\n] '$')+;
+
+mode IEQ_MODE;
 IEQ_END             :   '$' -> popMode;
+IEQ_CODE            :   ( ~'$' | [ \t\n] '$')+;
 
-mode IN_CODE;
-CODE                :   ANY+ NL?;
+mode IC_MODE;
+IC_END              :   '`' -> popMode;
+IC_CODE             :   ~[`]+;
+
+mode CODE_MODE;
+CODE_END            :   '```' -> mode(DEFAULT_MODE);
+//CODE                :   .+?;
+CODE                :   ANY;
 NOT_BACKTICK        :   ~('`');
 fragment ANY        :   '`'? '`'? NOT_BACKTICK .*?;
-CODE_END            :   {getCharPositionInLine() == 0}?'```' (NL | EOF) -> popMode;
+CODE_OPTS_START     :   '{r' -> pushMode(CODE_OPTS_MODE);
+
+
+
+mode CODE_OPTS_MODE;
+CODE_OPTS_END       :   '}' -> mode(CODE_MODE);
+CODE_OPTS           :   ~('}')+;
+
+
+
+
+//
+//mode CODE_ARGS;
+//
+//WS                  :   [ \t] ->skip;
+//NL                  :   '\r'? '\n';
+//EQ_CHAR             :   '=';
+//COMMA               :   ','-> skip;
+//HEX                 :   '0' ('x'|'X') HEXDIGIT+ [Ll]? ;
+//
+//INT                 :   DIGIT+ [Ll]? ;
+//
+//fragment HEXDIGIT   :   ('0'..'9'|'a'..'f'|'A'..'F') ;
+//
+//FLOAT               :   DIGIT+ '.' DIGIT* EXP? [Ll]?
+//                    |   DIGIT+ EXP? [Ll]?
+//                    |   '.' DIGIT+ EXP? [Ll]?
+//                    ;
+//
+//fragment DIGIT      :   '0'..'9' ;
+//
+//fragment EXP        :   ('E' | 'e') (PLUS | MINUS)? INT ;
+//
+//COMPLEX             :   INT 'i'
+//                    |   FLOAT 'i'
+//                    ;
+//PLUS                :   '+';
+//MINUS               :   '-';
+//
+//BOOL                :   'TRUE' | 'FALSE';
+//
+//STRING              :   '"' ( ESC | ~[\\"] )*? '"'
+//                    |   '\'' ( ESC | ~[\\'] )*? '\''
+//                    |   '`' ( ESC | ~[\\'] )*? '`'
+//                    ;
+//
+//ID                  :   '.' (LETTER|'_'|'.') (LETTER|DIGIT|'_'|'.')*
+//                    |   LETTER (LETTER|DIGIT|'_'|'.')*
+//                    ;
+//fragment LETTER     :   [a-zA-Z] ;
+//
+//fragment ESC        :   '\\' [abtnfrv"'\\]
+//                    |   UNICODE_ESCAPE
+//                    |   HEX_ESCAPE
+//                    |   OCTAL_ESCAPE
+//                    ;
+//
+//fragment UNICODE_ESCAPE
+//                    :   '\\' 'u' HEXDIGIT HEXDIGIT HEXDIGIT HEXDIGIT
+//                    |   '\\' 'u' '{' HEXDIGIT HEXDIGIT HEXDIGIT HEXDIGIT '}'
+//                    ;
+//
+//fragment OCTAL_ESCAPE
+//                    :   '\\' [0-3] [0-7] [0-7]
+//                    |   '\\' [0-7] [0-7]
+//                    |   '\\' [0-7]
+//                    ;
+//
+//fragment HEX_ESCAPE :   '\\' HEXDIGIT HEXDIGIT?;
+//
+//CODE_ARGS_END       :   '}' NL -> mode(IN_CODE);
+
+
+//mode IN_CODE;
+//CODE                :   ANY+ NL?;
+//NOT_BACKTICK        :   ~('`');
+//fragment ANY        :   '`'? '`'? NOT_BACKTICK .*?;
+//CODE_END            :   {getCharPositionInLine() == 0}?'```' (NL | EOF) -> popMode;
 
 //MDOWN: .+?;
 //WS: [ \t]; // ->skip;
