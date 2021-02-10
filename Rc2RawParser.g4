@@ -5,7 +5,8 @@ document            :   chunk* EOF;
 
 chunk               :   yaml | code | equation | inlineCode | inlineEQ | mdown;
 
-yaml                :   YAML_START YAML+ YAML_END;
+//yaml                :   YAML_START YAML+ YAML_END;
+yaml                :   YAML_START YAML YAML_END;
 
 equation            :   EQ_START EQUATION+ EQ_END;
 

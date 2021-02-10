@@ -9,7 +9,7 @@ lexer grammar Rc2Lexer;
 }
 
 // Two different ways to handle yaml (CG 2020-07-16)
-YAML_START          :   '---' -> pushMode(YAML_MODE);
+YAML_START          :   '---\n' -> pushMode(YAML_MODE);
 EQ_START            :   '$$' -> pushMode(EQ_MODE);
 IEQ_START           :   '$' { isInlineEqStart() }? -> pushMode(IEQ_MODE);
 IC_START            :   '`r ' -> pushMode(IC_MODE);
@@ -19,8 +19,14 @@ WS                  :   [ \t] ->skip;
 NL                  :   '\r'? '\n';
 
 mode YAML_MODE;
-YAML_END            :   '---' -> popMode;
-YAML                :   .+?;
+YAML                :   NOT_YAML_END+;
+fragment
+NOT_YAML_END        :   '-'? '-'? NOT_HYPHEN;
+fragment
+NOT_HYPHEN          :   ~('-');
+YAML_END           :   '---' -> popMode;
+
+//YAML                :   . -> more;
 
 mode EQ_MODE;
 EQ_END              :   '$$' -> popMode;
@@ -38,7 +44,7 @@ IC_CODE             :   ~[`]+;
 mode CODE_MODE;
 CODE_END            :   '```' -> mode(DEFAULT_MODE);
 //CODE                :   .+?;
-CODE                :   ANY;
+CODE                :   ANY+;
 NOT_BACKTICK        :   ~('`');
 fragment ANY        :   '`'? '`'? NOT_BACKTICK .*?;
 CODE_OPTS_START     :   '{r' -> pushMode(CODE_OPTS_MODE);
