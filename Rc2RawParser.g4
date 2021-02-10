@@ -8,15 +8,15 @@ chunk               :   yaml | code | equation | inlineCode | inlineEQ | mdown;
 //yaml                :   YAML_START YAML+ YAML_END;
 yaml                :   YAML_START YAML YAML_END;
 
-equation            :   EQ_START EQUATION+ EQ_END;
+equation            :   EQ_START EQUATION EQ_END;
+
+code                :   CODE_START CODE_OPTS CODE CODE_END;
 
 mdown               :   (MDOWN|WS|NL)+;
 
-code                :   CODE_START CODE_OPTS_START CODE_OPTS+ CODE_OPTS_END CODE+ CODE_END;
+inlineCode          :   IC_START IC_CODE IC_END;
 
-inlineCode          :   IC_START IC_CODE+ IC_END;
-
-inlineEQ            :   IEQ_START IEQ_CODE+ IEQ_END;
+inlineEQ            :   IEQ_START IEQ_CODE IEQ_END;
 
 
 // yaml: YAML_START NL keyValuePairs* YAML_END;

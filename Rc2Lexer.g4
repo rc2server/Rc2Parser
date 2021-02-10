@@ -13,10 +13,11 @@ YAML_START          :   '---\n' -> pushMode(YAML_MODE);
 EQ_START            :   '$$' -> pushMode(EQ_MODE);
 IEQ_START           :   '$' { isInlineEqStart() }? -> pushMode(IEQ_MODE);
 IC_START            :   '`r ' -> pushMode(IC_MODE);
-CODE_START          :   '```' -> pushMode(CODE_MODE);
+CODE_START          :   '```{' -> pushMode(CODE_OPTS_MODE);
 MDOWN               :   .+?;
 WS                  :   [ \t] ->skip;
 NL                  :   '\r'? '\n';
+
 
 mode YAML_MODE;
 YAML                :   NOT_YAML_END+;
@@ -29,31 +30,37 @@ YAML_END           :   '---' -> popMode;
 //YAML                :   . -> more;
 
 mode EQ_MODE;
+EQUATION            :   NOT_DOLLAR+ NOT_DOLLAR;
+fragment
+NOT_DOLLAR          :   ~('$');
 EQ_END              :   '$$' -> popMode;
-EQUATION            :   .+?;
 
 
 mode IEQ_MODE;
 IEQ_END             :   '$' -> popMode;
-IEQ_CODE            :   ( ~'$' | [ \t\n] '$')+;
+IEQ_CODE            :   ( ~'$')+ ~('$');
 
 mode IC_MODE;
 IC_END              :   '`' -> popMode;
-IC_CODE             :   ~[`]+;
-
-mode CODE_MODE;
-CODE_END            :   '```' -> mode(DEFAULT_MODE);
-//CODE                :   .+?;
-CODE                :   ANY+;
-NOT_BACKTICK        :   ~('`');
-fragment ANY        :   '`'? '`'? NOT_BACKTICK .*?;
-CODE_OPTS_START     :   '{r' -> pushMode(CODE_OPTS_MODE);
-
-
+IC_CODE             :   (~[`])+;
 
 mode CODE_OPTS_MODE;
-CODE_OPTS_END       :   '}' -> mode(CODE_MODE);
-CODE_OPTS           :   ~('}')+;
+CODE_OPTS           :    NOT_CURLY* NOT_CURLY;
+CODE_OPTS_END       :   '}' -> skip, mode(CODE_MODE);
+fragment
+NOT_CURLY         :   ~('}'|'{');
+
+mode CODE_MODE;
+CODE                :   NOT_CODE_END+;
+fragment
+NOT_CODE_END        :   '`'? '`'? NOT_BACKTICK;
+fragment
+NOT_BACKTICK        :   ~('`');
+CODE_END            :   '```' -> mode(DEFAULT_MODE);
+
+
+
+
 
 
 
