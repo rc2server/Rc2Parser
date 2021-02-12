@@ -12,7 +12,8 @@ CODE_START: { isCodeBackticks()}? '```' ;
 CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
 EQ_START: { isEQStart() }? '$$' -> pushMode(IN_EQ);
 IEQ_START: '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);
-IC_START: '`r ' -> pushMode(IN_ICODE);
+IC_START: { isInlineCodeStart }? '`r ' -> pushMode(IN_ICODE);
+YAML_START: { isYamlDashes() }? '---' -> pushMode(IN_YAML);
 MDOWN: .+?;
 
 mode IN_ICODE;
@@ -30,9 +31,15 @@ mode IN_IN_EQ;
 IEQ_CODE: ( ~'$' | [ \t\n] '$')+;
 IEQ_END: '$' -> popMode;
 
+mode IN_YAML;
+YAML_END: { isYamlDashes() }? '---' (NL | EOF) -> popMode;
+YAML: NL FRONT_MATTER+;
+NOT_DASH: ~('-');
+fragment FRONT_MATTER: '-'? '-'? NOT_DASH .*?;
+
 mode IN_CODE;
 
-CODE_END: {isCodeBackticks()}? '```' (NL | EOF) -> popMode;
+CODE_END: { isCodeBackticks() }? '```' (NL | EOF) -> popMode;
 NL: '\r'? '\n';
 CODE: NL ANY+;
 NOT_BACKTICK: ~('`');
