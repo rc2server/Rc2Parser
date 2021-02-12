@@ -75,12 +75,19 @@ extension Rc2Lexer {
 		}
 	}
 
-	func isInlineCodeStart() -> Bool {
-		// _inputLA(-1) is the character being evaluated
-		guard let prev = try? _input!.LA(-2), let next = try? _input!.LA(1)
+	func isInlineCodeStart()  -> Bool {
+		// _inputLA(-1|1) is the character being evaluated
+		guard let back1 = try? _input!.LA(-1),
+			let cur =  try? _input!.LA(1),
+			let next1 = try? _input!.LA(2),
+			let next2 = try? _input!.LA(3)
 			else { return false }
-		if prev == Self.backtick || next == Self.backtick { return false }
-		return true
+		let valid = cur == Self.backtick &&
+			next1 == 114 &&
+			next2 != 32 &&
+			back1 != Self.backtick
+		return valid
+		//ASCII for "r" = 114, SPACE = 32
 	}
 
 	func isInlineEqStart() -> Bool {
