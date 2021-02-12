@@ -21,6 +21,7 @@ extension ParserRuleContext {
 extension Rc2Lexer {
 	static let dollar = Character("$").asciiValue!
 	static let newline = Character("\n").asciiValue!
+	static let backtick = Character("`").asciiValue!
 	
 	func isEQStart() -> Bool {
 		// _inputLA(-1|1) is the character being evaluated
@@ -54,7 +55,34 @@ extension Rc2Lexer {
 			return false
 		}
 	}
-	
+
+	func isYamlDashes() -> Bool {
+		do {
+			guard let input = _input else { return false }
+			guard try input.LA(1) == 45,
+				try input.LA(2) == 45,
+				try input.LA(3) == 45
+				else { return false }
+			let rng = -1..<(-getCharPositionInLine())
+			for backIdx in rng {
+				guard try input.LA(backIdx) != 9,
+					try input.LA(backIdx) != 32
+					else { return false }
+			}
+			return true
+		} catch {
+			return false
+		}
+	}
+
+	func isInlineCodeStart() -> Bool {
+		// _inputLA(-1) is the character being evaluated
+		guard let prev = try? _input!.LA(-2), let next = try? _input!.LA(1)
+			else { return false }
+		if prev == Self.backtick || next == Self.backtick { return false }
+		return true
+	}
+
 	func isInlineEqStart() -> Bool {
 		// _inputLA(-1) is the character being evaluated
 		guard let prev = try? _input!.LA(-2), let next = try? _input!.LA(1)

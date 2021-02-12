@@ -19,6 +19,7 @@ class InternalCodeChunk: InternalChunk, CodeChunk {
 		type = .code
 		content = ctx.getText()
 		arguments = args.getText() ?? ""
+		//need to handle arguments here.
 		code = rawCode.getText() ?? ""
 		startLine = start.getLine()
 		startCharIndex = start.getStartIndex()
