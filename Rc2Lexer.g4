@@ -12,7 +12,7 @@ CODE_START: { isCodeBackticks() }? '```' ;
 CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
 EQ_START: { isEQStart() }? '$$' -> pushMode(IN_EQ);
 IEQ_START: '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);
-IC_START: { isInlineCodeStart }? '`r ' -> pushMode(IN_ICODE);
+IC_START: { isInlineCodeStart() }? '`r ' -> pushMode(IN_ICODE);
 YAML_START: { isYamlDashes() }? '---' -> pushMode(IN_YAML);
 MDOWN: .+?;
 
