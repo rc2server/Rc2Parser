@@ -20,7 +20,7 @@ public class InlineInternalEquation: InternalChunk, InlineChunk, EquationChunk {
 			let end = icontext.IEQ_END()?.getSymbol()
 		else { fatalError() }
 		content = icontext.getText()
-		startLine = start.getStartIndex()
+		startLine = start.getLine()
 		startCharIndex = start.getStartIndex()
 		endCharIndex = end.getStopIndex()
 		type = .inlineEquation
