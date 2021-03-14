@@ -21,6 +21,9 @@ extension ParserRuleContext {
 extension Rc2Lexer {
 	static let dollar = Character("$").asciiValue!
 	static let newline = Character("\n").asciiValue!
+	static let backtick = Character("`").asciiValue!
+	static let openCurly = Character("{").asciiValue!
+	static let space = Character(" ").asciiValue!
 	
 	func isEQStart() -> Bool {
 		// _inputLA(-1|1) is the character being evaluated
@@ -36,25 +39,49 @@ extension Rc2Lexer {
 		return valid
 	}
 	
-	func isCodeBackticks() -> Bool {
+	func isCodeStartBackticks() -> Bool {
 		do {
 			guard let input = _input else { return false }
-			guard try input.LA(1) == 96,
-				try input.LA(2) == 96,
-				try input.LA(3) == 96
+			guard getCharPositionInLine() <= 3 else { return false } // can only be preceeded by at most 3 spaces
+			guard try input.LA(1) == Self.backtick,
+				  try input.LA(2) == Self.backtick,
+				try input.LA(3) == Self.backtick,
+				try input.LA(4) == Self.openCurly
 				else { return false }
-			let rng = -1..<(-getCharPositionInLine())
-			for backIdx in rng {
-				guard try input.LA(backIdx) != 9,
-					try input.LA(backIdx) != 32
-					else { return false }
+			// check that preceeding characters, if any, are all spaces (limited to 3 above)
+			if getCharPositionInLine() > 0 {
+				let rng = (-getCharPositionInLine()) ... -1
+				for backIdx in rng {
+					if try input.LA(backIdx) != Self.space { return false }
+				}
 			}
 			return true
 		} catch {
 			return false
 		}
 	}
-	
+
+	func isCodeEndBackticks() -> Bool {
+		do {
+			guard let input = _input else { return false }
+			guard getCharPositionInLine() <= 3 else { return false } // can only be preceeded by at most 3 spaces
+			guard try input.LA(1) == Self.backtick,
+				  try input.LA(2) == Self.backtick,
+				  try input.LA(3) == Self.backtick
+			else { return false }
+			// check that preceeding characters, if any, are all spaces (limited to 3 above)
+			if getCharPositionInLine() > 0 {
+				let rng = (-getCharPositionInLine()) ... -1
+				for backIdx in rng {
+					if try input.LA(backIdx) != Self.space { return false }
+				}
+			}
+			return true
+		} catch {
+			return false
+		}
+	}
+
 	func isInlineEqStart() -> Bool {
 		// _inputLA(-1) is the character being evaluated
 		guard let prev = try? _input!.LA(-2), let next = try? _input!.LA(1)

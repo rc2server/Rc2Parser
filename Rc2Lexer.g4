@@ -8,7 +8,7 @@ lexer grammar Rc2Lexer;
 #include "../LexerHelpers.cpp"
 }
 
-CODE_START: { isCodeBackticks()}? '```' ;
+CODE_START: { isCodeStartBackticks()}? '```' ;
 CODE_ARG: '{r' ~'}'* '}' -> pushMode(IN_CODE);
 EQ_START: { isEQStart() }? '$$' -> pushMode(IN_EQ);
 IEQ_START: '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);
@@ -32,7 +32,7 @@ IEQ_END: '$' -> popMode;
 
 mode IN_CODE;
 
-CODE_END: {isCodeBackticks()}? '```' (NL | EOF) -> popMode;
+CODE_END: {isCodeEndBackticks()}? '```' ' '* (NL | EOF) -> popMode;
 NL: '\r'? '\n';
 CODE: NL ANY+;
 NOT_BACKTICK: ~('`');

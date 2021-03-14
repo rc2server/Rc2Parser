@@ -330,7 +330,7 @@ open class RFilter: Parser {
 		 		switch (_alt) {
 		 		case 1:
 		 			setState(22)
-                    let token = try match(RFilter.Tokens.NL.rawValue) as! WritableToken
+					let token = try match(RFilter.Tokens.NL.rawValue) as! WritableToken
 		 			token.setChannel(type(of: token).HIDDEN_CHANNEL)
 
 
@@ -352,7 +352,6 @@ open class RFilter: Parser {
 
 		return _localctx
 	}
-
 
 	public class ElemContext: ParserRuleContext {
 			open
