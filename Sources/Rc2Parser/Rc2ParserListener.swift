@@ -36,6 +36,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 	var curChunk: AnyChunk?
 	var curMarkdownChunk: MarkdownChunk?
 	let errorReporter: ErrorReporter?
+	var skippedWhitespaceContent = false
 	
 	init(errorReporter reporter: ErrorReporter?) {
 		errorReporter = reporter
@@ -48,6 +49,7 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 		
 		// skip whitespace only chunks
 		if ctx.getText().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+			skippedWhitespaceContent = true
 			return
 		}
 		switch start.getType() {
@@ -89,6 +91,10 @@ class Rc2ParserListener: Rc2RawParserBaseListener {
 	}
 	
 	override func exitChunk(_ ctx: Rc2RawParser.ChunkContext) {
+		if skippedWhitespaceContent {
+			skippedWhitespaceContent = false
+			return
+		}
 		guard let cc = curChunk else { curContext = nil; return }
 		guard !cc.isInline else { curChunk = nil; return }
 		if cc.type != .markdown { curMarkdownChunk = nil }
