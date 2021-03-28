@@ -8,6 +8,7 @@ lexer grammar Rc2Lexer;
 #include "../LexerHelpers.cpp"
 }
 
+YAML: '---' .+ '---';
 CODE_START: { isCodeStartBackticks()}? '```{' -> pushMode(IN_CODE_ARG) ;
 EQ_START: { isEQStart() }? '$$' -> pushMode(IN_EQ);
 IEQ_START: '$' { isInlineEqStart() }? -> pushMode(IN_IN_EQ);

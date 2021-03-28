@@ -3,9 +3,11 @@ options { tokenVocab=Rc2Lexer; }
 
 document: chunk* EOF;
 
-chunk: code | equation | inlineCode | inlineEQ | mdown;
+chunk: code | equation | inlineCode | inlineEQ | mdown | yaml;
 
 mdown: MDOWN+;
+
+yaml: YAML;
 
 code: CODE_START CODE_ARG CODE CODE_END;
 
